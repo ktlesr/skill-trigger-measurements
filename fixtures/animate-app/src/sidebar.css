@@ -1,0 +1,7 @@
+.sidebar {
+  width: 260px;
+  background: #fafafa;
+  border-right: 1px solid #eee;
+}
+
+.sidebar--collapsed { width: 64px; }

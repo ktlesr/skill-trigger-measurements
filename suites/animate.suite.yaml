@@ -31,15 +31,16 @@ cases:
 
   - id: trigger.positive.sidebar_collapse
     prompt: >-
-      Our sidebar snaps between 260px and 64px when you collapse it. Give the
-      width change some motion so it doesn't jump.
+      The sidebar in src/Sidebar.tsx snaps between 260px and 64px when you
+      collapse it. Give the width change some motion so it doesn't jump.
     setup: { fixtures: ../fixtures/animate-app }
     expect: { triggered: true }
 
   - id: trigger.positive.hover_card_lift
     prompt: >-
-      The pricing cards feel dead on hover. Add a subtle lift and shadow so
-      the card reacts to the cursor.
+      The three feature cards in src/Landing.tsx feel dead on hover. Add a
+      subtle lift and shadow so a card reacts to the cursor.
+    setup: { fixtures: ../fixtures/animate-app }
     expect: { triggered: true }
 
   # ---- near neighbours: motion, but not construction ---------------------

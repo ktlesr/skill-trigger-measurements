@@ -1,3 +1,6 @@
 .assay/
 *.log
 node_modules/
+.env
+*.env
+.gitignore
