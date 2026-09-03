@@ -1,0 +1,97 @@
+# Round 2 for `animate`. Round 1's near neighbours never broke, which bounds
+# the false-positive rate without showing where the set's discriminating power
+# ends. These neighbours sit closer to the line: every one of them is a request
+# about motion that already exists in the workspace, and none of them asks for
+# an animation to be built.
+#
+# Positives, unrelated cases and the completion case are carried over unchanged
+# so the two rounds differ on one axis only.
+
+version: 1
+
+target:
+  skill: animate
+  source: emilkowalski/skills@d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7
+
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills: [animate]
+
+runs: 10
+
+cases:
+  - id: trigger.positive.build_toast_entrance
+    prompt: >-
+      The toast in src/Toast.tsx pops in and out with no transition at all.
+      Make it slide up when it appears and fade away when it leaves.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.sidebar_collapse
+    prompt: >-
+      The sidebar in src/Sidebar.tsx snaps between 260px and 64px when you
+      collapse it. Give the width change some motion so it does not jump.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.hover_card_lift
+    prompt: >-
+      The three feature cards in src/Landing.tsx feel dead on hover. Add a
+      subtle lift and shadow so a card reacts to the cursor.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: true }
+
+  # ---- tighter near neighbours ------------------------------------------
+  - id: trigger.negative.near_neighbor.strip_motion
+    prompt: >-
+      src/palette.css eases the command palette in on every Cmd+K. Take the
+      transition out entirely - it should just be there the instant you press
+      the shortcut.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.duration_swap
+    prompt: >-
+      src/drawer.css says 900ms. Design settled on 300ms. Change the number,
+      leave everything else alone.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.mount_flash_bug
+    prompt: >-
+      The drawer flashes across the screen once on first paint before it
+      settles closed, because the transition runs on mount. Fix that flash.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.yes_no_question
+    prompt: >-
+      Straight answer, no code: should the overlay in src/modal.css move at
+      all when it opens, or is a hard cut better here? One paragraph.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.unrelated.ci_workflow
+    prompt: >-
+      Set up a GitHub Actions workflow that runs the test suite on every push
+      to main and fails the job on a non-zero exit.
+    expect: { triggered: false }
+
+  - id: trigger.negative.unrelated.slow_query
+    prompt: >-
+      This Postgres query for monthly revenue takes 12 seconds on 4M rows.
+      Work out which index it is missing.
+    expect: { triggered: false }
+
+  - id: complete.writes_toast_motion
+    prompt: >-
+      src/Toast.tsx has no transition. Give it a real entrance and exit, and
+      put the CSS in a new file src/toast.css that Toast.tsx imports.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect:
+      triggered: true
+      assertions:
+        - { type: file_exists, path: 'src/toast.css' }
+        - { type: trace, rule: no_swallowed_errors }

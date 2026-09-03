@@ -1,0 +1,102 @@
+# Round 2 for `better-typography`. Round 1's near neighbours never broke.
+# These are tighter: each one is a real design decision about text, and each
+# one is handed to a sibling skill by name in this skill's own SKILL.md -
+# words to better-writing, heading structure to better-accessibility, logical
+# properties to better-layout, contrast to better-colors. The description's
+# keyword list ("spacing", "sizing") covers them; the body disclaims them.
+#
+# Positives, unrelated cases and the completion case are carried over
+# unchanged so the two rounds differ on one axis only.
+
+version: 1
+
+target:
+  skill: better-typography
+  source: jakubkrehel/skills@267330e1adfc66a718fb65fa6918c1f06d0a689e
+
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills: [better-typography]
+
+runs: 10
+
+cases:
+  - id: trigger.positive.ad_hoc_sizes
+    prompt: >-
+      src/app.css has eight text sizes that were each picked by eye. Replace
+      them with a proper scale and move every class onto it.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.measure_and_widows
+    prompt: >-
+      In src/article.tsx the paragraph runs the full 1400px and the heading
+      leaves one word alone on the last line. Make this comfortable to read.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.variable_font_numerals
+    prompt: >-
+      We just moved to a variable family. The numbers in src/dashboard.tsx
+      jitter as they update and the weights are all over the place. Set the
+      face up properly for these tables.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect: { triggered: true }
+
+  # ---- tighter near neighbours: sibling skills' territory ----------------
+  - id: trigger.negative.near_neighbor.contrast
+    prompt: >-
+      The .caption-muted rule in src/app.css is #999 on white and people
+      cannot read it. Work out whether it clears the accessible threshold and
+      pick a value that does.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.heading_outline
+    prompt: >-
+      src/cards.tsx puts an h2 inside every card and src/article.tsx has an
+      h2 with no h1 above it anywhere. Fix the document outline so screen
+      readers get a sane structure.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.logical_properties
+    prompt: >-
+      We are launching in Arabic next month. Convert the margin-left,
+      margin-right and padding-left declarations in src/app.css to logical
+      properties so the layout mirrors.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.grid_gap
+    prompt: >-
+      The 8px gap in .card-grid makes the three cards feel cramped against
+      each other. Open it up to something that breathes.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.unrelated.rate_limit
+    prompt: >-
+      Put rate limiting on the /login endpoint: five attempts per minute per
+      IP, then a 429.
+    expect: { triggered: false }
+
+  - id: trigger.negative.unrelated.docker_build
+    prompt: >-
+      Our Docker image takes nine minutes to build. Work out where the time
+      goes and cut it down.
+    expect: { triggered: false }
+
+  - id: complete.writes_scale_tokens
+    prompt: >-
+      src/app.css has no system behind its text sizes. Define a named scale
+      as CSS custom properties in a new file src/type-scale.css, and point
+      the classes in app.css at it.
+    setup: { fixtures: ../fixtures/typography-app }
+    expect:
+      triggered: true
+      assertions:
+        - { type: file_exists, path: 'src/type-scale.css' }
+        - { type: trace, rule: no_swallowed_errors }
