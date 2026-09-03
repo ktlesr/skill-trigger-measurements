@@ -300,6 +300,12 @@ held 10/10.
   Round 2 ran clean with 0 unknowns. Note that assay routes a dead session to
   `unknown` for the trigger signal but still evaluates file assertions against the
   empty workspace, so an aborted attempt can surface as an assertion `fail`.
+- **Isolation is from the user's skills, not the host's.** The runner points
+  `CLAUDE_CONFIG_DIR` at a fresh directory, which removes the user's own skills,
+  plugins and CLAUDE.md — but Claude Code's *bundled* skills stay available and
+  can win a request. Checked after the fact from the full skill list in every
+  trigger observation: across both rounds of this suite, no skill other than
+  `better-typography` fired on any attempt.
 - **Trigger is observed, not enforced.** Assay reads the `Skill` tool call from
   the host's stream-json. A skill whose content the model absorbed some other way
   would read as "did not trigger".

@@ -51,8 +51,11 @@ def load_traces(records: list[Path]):
         run = json.loads(rec.read_text(encoding="utf-8"))["run"]
         for case in run["cases"]:
             for attempt in case["attempts"]:
+                # The run id is part of the key: two rounds reuse case ids, and
+                # without it the attempt count silently collapses.
+                key = f'{run["id"]}/{case["caseId"]}'
                 for event in attempt.get("trace") or []:
-                    yield case["caseId"], attempt["index"], event
+                    yield key, attempt["index"], event
 
 
 def direct_hits(events, names: set[str]) -> dict[str, int]:
@@ -283,9 +286,13 @@ def main() -> int:
             print(f"| `{f}` | {files.get(f, 0):,} | {n} |")
         print()
 
-    modes = search_modes(cmds)
+    # When nothing executed, the modes the runs *reached for* are still the
+    # interesting number: it says which parts of the data the skill aimed at,
+    # and which it never aimed at even once.
+    modes = search_modes(cmds or attempted)
     if modes:
-        print("## Search modes actually used\n")
+        label = "actually used" if cmds else "attempted (none executed)"
+        print(f"## Search modes {label}\n")
         print("| Flag | Invocations |")
         print("| --- | --- |")
         for flag, n in sorted(modes.items(), key=lambda kv: -kv[1]):

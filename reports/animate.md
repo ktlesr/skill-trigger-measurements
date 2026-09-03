@@ -294,6 +294,13 @@ deflected requests. Both the description-level boundary (critique →
 - **Trigger is observed, not enforced.** Assay reads the `Skill` tool call from
   the host's stream-json. A skill whose content the model absorbed some other way
   would read as "did not trigger".
+- **Isolation is from the user's skills, not the host's.** The runner points
+  `CLAUDE_CONFIG_DIR` at a fresh directory, which removes the user's own skills,
+  plugins and CLAUDE.md — but Claude Code's *bundled* skills stay available. In
+  round 1 the bundled `run` skill co-fired on 3 attempts of
+  `trigger.positive.hover_card_lift`, alongside the target rather than instead of
+  it; no verdict turned on it, and round 2 saw none. Checked after the fact from
+  the full skill list in each trigger observation.
 - **Siblings absent.** Measuring the boundary with `review-animations` and
   `improve-animations` installed would test something different — competition
   between skills rather than one skill's self-restraint. This run measures the
