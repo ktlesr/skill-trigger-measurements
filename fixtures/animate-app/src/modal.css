@@ -1,0 +1,20 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal {
+  width: 420px;
+  margin: 10vh auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  transform-origin: center;
+  animation: pop 420ms ease-in;
+}
+
+@keyframes pop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}

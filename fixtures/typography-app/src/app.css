@@ -1,0 +1,17 @@
+:root {
+  --brand: #1a1a1a;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  color: var(--brand);
+}
+
+.hero-title   { font-size: 52px; font-weight: 800; line-height: 1.4; }
+.hero-sub     { font-size: 21px; line-height: 1.2; }
+.section-head { font-size: 19px; font-weight: 700; }
+.card-title   { font-size: 23px; font-weight: 600; }
+.body         { font-size: 15px; line-height: 1.25; }
+.caption      { font-size: 11px; font-weight: 200; }
+.price        { font-size: 14px; font-weight: 600; }
+.label        { font-size: 10px; text-transform: uppercase; }

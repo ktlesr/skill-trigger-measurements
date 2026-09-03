@@ -1,0 +1,3 @@
+.assay/
+*.log
+node_modules/

@@ -1,0 +1,101 @@
+# Trigger discrimination for the `animate` skill.
+#
+# The skill's own description draws a boundary: build motion here, critique
+# existing motion with review-animations, audit a codebase with
+# improve-animations. The near-neighbour cases are written exactly on that
+# line — every one of them is about motion, none of them asks for motion to
+# be built. No prompt names the skill.
+
+version: 1
+
+target:
+  skill: animate
+  source: emilkowalski/skills@d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7
+
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills: [animate]
+
+runs: 10
+
+cases:
+  # ---- positives: build motion that does not exist yet -------------------
+  - id: trigger.positive.build_toast_entrance
+    prompt: >-
+      The toast in src/Toast.tsx pops in and out with no transition at all.
+      Make it slide up when it appears and fade away when it leaves.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.sidebar_collapse
+    prompt: >-
+      Our sidebar snaps between 260px and 64px when you collapse it. Give the
+      width change some motion so it doesn't jump.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.hover_card_lift
+    prompt: >-
+      The pricing cards feel dead on hover. Add a subtle lift and shadow so
+      the card reacts to the cursor.
+    expect: { triggered: true }
+
+  # ---- near neighbours: motion, but not construction ---------------------
+  # The boundary the author declared in the skill description.
+  - id: trigger.negative.near_neighbor.critique_modal_feel
+    prompt: >-
+      src/modal.css is what our modal uses today. Tell me why the entrance
+      feels cheap. I want your read on it only — do not change a single line.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.critique_drawer_diff
+    prompt: >-
+      A teammate opened a PR that adds src/drawer.css. Write the review
+      comment I should leave on the transition it introduces. Leave the code
+      as it is.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.codebase_audit
+    prompt: >-
+      Walk every component under src/ and give me an inventory of the motion
+      already in this codebase, ranked by how badly each one holds up. Report
+      only — no edits, no new code.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.opportunity_scan
+    prompt: >-
+      src/Landing.tsx is completely static. Point out the places on this page
+      where movement would earn its keep, and rank them. Don't write any of
+      them.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect: { triggered: false }
+
+  # ---- unrelated --------------------------------------------------------
+  - id: trigger.negative.unrelated.ci_workflow
+    prompt: >-
+      Set up a GitHub Actions workflow that runs the test suite on every push
+      to main and fails the job on a non-zero exit.
+    expect: { triggered: false }
+
+  - id: trigger.negative.unrelated.slow_query
+    prompt: >-
+      This Postgres query for monthly revenue takes 12 seconds on 4M rows.
+      Work out which index it is missing.
+    expect: { triggered: false }
+
+  # ---- completion -------------------------------------------------------
+  - id: complete.writes_toast_motion
+    prompt: >-
+      src/Toast.tsx has no transition. Give it a real entrance and exit, and
+      put the CSS in a new file src/toast.css that Toast.tsx imports.
+    setup: { fixtures: ../fixtures/animate-app }
+    expect:
+      triggered: true
+      assertions:
+        - { type: file_exists, path: 'src/toast.css' }
+        - { type: trace, rule: no_swallowed_errors }
