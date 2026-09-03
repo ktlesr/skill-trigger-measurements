@@ -1,0 +1,112 @@
+# Trigger discrimination for the `ui-ux-pro-max` skill.
+#
+# This skill is built to be comprehensive: its description advertises 79 styles,
+# 192 palettes, 74 font pairings, 119 UX guidelines, 25 chart types and 22
+# stacks, and it claims "designing, building, reviewing, or fixing interfaces".
+# The two skills measured before this one returned zero false positives, so the
+# question here is the opposite one: does a skill this broad fire on work that
+# is next to design rather than design?
+#
+# The near neighbours come in two flavours, per that question:
+#   - frontend work with no design decision in it (a render loop, a mechanical
+#     styling migration)
+#   - a real design decision that is not an interface (print, a wordmark)
+#
+# No prompt contains the skill's name, or the bare tokens "UI" and "UX".
+
+version: 1
+
+target:
+  skill: ui-ux-pro-max
+  source: nextlevelbuilder/ui-ux-pro-max-skill@f3ac195224eac1eb0dfe1a3059c2a6add78ffbe3
+
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills: [ui-ux-pro-max]
+
+runs: 10
+
+cases:
+  # ---- positives: an interface decision the skill claims -----------------
+  - id: trigger.positive.pricing_page
+    prompt: >-
+      src/app/pricing/page.tsx is a placeholder. Build the real pricing page for
+      our B2B SaaS - three tiers, a monthly/annual toggle, a comparison table.
+      Choose the visual direction yourself: colour, type, spacing.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.review_component
+    prompt: >-
+      Go through src/components/StatCard.tsx and tell me where it falls down on
+      accessibility and visual hierarchy, then fix what you find.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.chart_choice
+    prompt: >-
+      src/components/RevenueChart.tsx draws monthly revenue for 14 accounts as a
+      pie. Pick the right chart for that data and rebuild it, with colours that
+      still work for someone who cannot separate red from green.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: true }
+
+  # ---- near neighbours A: frontend, no design decision -------------------
+  - id: trigger.negative.near_neighbor.render_loop
+    prompt: >-
+      src/components/ProjectList.tsx refetches on every render and never
+      settles. Fix the loop. Nothing visual changes.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.css_modules_migration
+    prompt: >-
+      Move src/components/Button.tsx off styled-components onto a CSS module.
+      The rendered result must be identical - same sizes, same colours, same
+      states. This is a mechanical migration, not a redesign.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  # ---- near neighbours B: a design decision, but not an interface --------
+  - id: trigger.negative.near_neighbor.print_report
+    prompt: >-
+      Read print/annual-report/brief.md. For the printed pages, decide which
+      chart types carry the financials and what colour palette survives CMYK on
+      uncoated stock. Print only - there is no screen version.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.wordmark
+    prompt: >-
+      Read brand/brief.md and give me three directions for the wordmark itself -
+      the letterforms and the mark. Not where it sits on a page, the mark.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  # ---- unrelated: the same two controls as the earlier measurements ------
+  - id: trigger.negative.unrelated.slow_query
+    prompt: >-
+      This Postgres query for monthly revenue takes 12 seconds on 4M rows.
+      Work out which index it is missing.
+    expect: { triggered: false }
+
+  - id: trigger.negative.unrelated.docker_build
+    prompt: >-
+      Our Docker image takes nine minutes to build. Work out where the time
+      goes and cut it down.
+    expect: { triggered: false }
+
+  # ---- completion: the artefact the skill documents ----------------------
+  - id: complete.persists_design_system
+    prompt: >-
+      Work out the visual direction for this product - it is a console for
+      platform engineers - and save it under the project root so the rest of
+      the team can pick it up in a later session.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect:
+      triggered: true
+      assertions:
+        - { type: file_exists, path: 'design-system/*/MASTER.md' }
+        - { type: trace, rule: no_swallowed_errors }
