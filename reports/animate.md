@@ -250,14 +250,22 @@ of its second failure mode, and a missed attempt wrote exactly that.
 So the recall gap is not cosmetic: the 10% of attempts that skip the skill
 produce the output the skill was written to prevent, and they look finished.
 
-**What the misses have in common.** They are the requests whose *mechanism* is
-already obvious from the request — add a transition to a width, add a hover lift,
-add an entrance and an exit. The skill's description lists the *tasks* it covers
-("animate something, add motion, ... build a transition"), so a request that
-already reads as one of those tasks has nothing left to distinguish "I need the
-skill" from "I know how to do this". The cases where the ask is a *feel* problem
-rather than a mechanism (`build_toast_entrance` in round 1, 10/10) fired more
-reliably than the ones spelling out the edit.
+**The misses are spread, not clustered.** Pooled across both rounds, every
+positive case sits at the same rate:
+
+| Case | Fired |
+| --- | --- |
+| `trigger.positive.build_toast_entrance` | 18/20 |
+| `trigger.positive.sidebar_collapse` | 18/20 |
+| `trigger.positive.hover_card_lift` | 18/20 |
+| `complete.writes_toast_motion` | 17/19 |
+
+No phrasing pattern separates them: the request stated as a feel problem
+("the toast pops in and out", "the cards feel dead on hover") misses as often as
+the one stating the mechanism ("give the width change some motion"). That is what
+a uniform ~10% routing loss looks like, not a describable blind spot. It means
+there is no single sentence to add that would obviously close it — but also that
+one attempt in ten on any request in scope ships hand-approximated values.
 
 ### 2. The declared boundary holds
 

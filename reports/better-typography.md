@@ -247,6 +247,16 @@ call  Skill    better-typography
 SKILL better-typography
 ```
 
+The gap is specific to that one prompt shape, not a general routing loss. Pooled
+per-case trigger rates:
+
+| Case | Fired |
+| --- | --- |
+| `trigger.positive.ad_hoc_sizes` | 20/20 |
+| `trigger.positive.measure_and_widows` | 19/20 |
+| `trigger.positive.variable_font_numerals` | 20/20 |
+| `complete.writes_scale_tokens` | **9/18** |
+
 Nothing in the request is out of scope — a type scale is the first thing the
 skill's body teaches. What changes is that the second phrasing already names the
 mechanism (custom properties, a new file, repoint the classes), so the work reads
