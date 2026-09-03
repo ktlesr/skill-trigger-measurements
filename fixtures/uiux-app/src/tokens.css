@@ -1,0 +1,11 @@
+:root {
+  --color-brand: #18181b;
+  --color-brand-muted: #52525b;
+  --space-2: 8px;
+  --space-4: 16px;
+  --radius-md: 6px;
+}
+
+.button-primary { background: var(--color-brand); border-radius: var(--radius-md); }
+.card          { padding: var(--space-4); border-radius: var(--radius-md); }
+.hint          { color: var(--color-brand-muted); padding: var(--space-2); }

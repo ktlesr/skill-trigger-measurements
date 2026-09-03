@@ -56,9 +56,20 @@ def load_traces(records: list[Path]):
 
 
 def direct_hits(events, names: set[str]) -> dict[str, int]:
-    """Skill-relative paths the agent named itself, with a count of attempts."""
+    """Skill-relative paths the agent opened, counted per tool call.
+
+    A refused tool call names a path but never opens it, so refused calls do not
+    count — otherwise a blocked command would be indistinguishable from a read.
+    """
+    refused = {
+        e["callId"]
+        for _c, _i, e in events
+        if e.get("kind") == "tool_result" and e.get("isError") and e.get("callId")
+    }
     hits: dict[str, int] = {}
     for _case, _idx, e in events:
+        if e.get("kind") == "tool_call" and e.get("id") in refused:
+            continue
         blob = json.dumps(e.get("args") or {})
         if e.get("kind") != "tool_call" or not blob:
             continue
@@ -69,11 +80,25 @@ def direct_hits(events, names: set[str]) -> dict[str, int]:
     return hits
 
 
-def search_commands(events) -> list[list[str]]:
-    """Every search.py invocation that really happened, as an argv list."""
+def search_commands(events, executed_only: bool) -> list[list[str]]:
+    """search.py invocations, as argv lists.
+
+    A tool call is not proof the command ran: the host's permission layer can
+    refuse it, and a refused command opens nothing. `executed_only` keeps just
+    the calls whose tool_result came back without an error, which is the set a
+    claim about real file reads has to be built on.
+    """
+    refused: set[str] = set()
+    ran: set[str] = set()
+    for _c, _i, e in events:
+        if e.get("kind") == "tool_result" and e.get("callId"):
+            (refused if e.get("isError") else ran).add(e["callId"])
+
     cmds = []
     for _case, _idx, e in events:
-        if e.get("kind") != "tool_call" or e.get("tool") != "Bash":
+        if e.get("kind") != "tool_call" or e.get("tool") not in ("Bash", "PowerShell"):
+            continue
+        if executed_only and e.get("id") not in ran:
             continue
         raw = str((e.get("args") or {}).get("command") or "")
         if "search.py" not in raw:
@@ -148,6 +173,32 @@ def replay(script: Path, argv: list[str], skill_dir: Path) -> set[str]:
     return opened
 
 
+def group_of(path: str) -> str:
+    """Why a file ships, which decides how a never-opened verdict should read."""
+    if path.startswith("scripts/tests/") or path == "scripts/validate_data.py":
+        return "dev tooling (not a runtime file)"
+    if path.startswith("data/stacks/"):
+        return "stack data"
+    if path.startswith("references/"):
+        return "documented on-demand reference"
+    if path.startswith("data/"):
+        return "domain data"
+    return "runtime code"
+
+
+def search_modes(cmds: list[list[str]]) -> dict[str, int]:
+    """Which query modes the runs actually used."""
+    modes: dict[str, int] = {}
+    for argv in cmds:
+        used = [a for a in argv if a.startswith("--")]
+        for flag in ("--design-system", "--domain", "--stack", "--persist"):
+            if flag in used:
+                modes[flag] = modes.get(flag, 0) + 1
+        if not any(f in used for f in ("--design-system", "--domain", "--stack")):
+            modes["(no mode flag)"] = modes.get("(no mode flag)", 0) + 1
+    return modes
+
+
 def main() -> int:
     if len(sys.argv) < 3:
         print(__doc__)
@@ -159,14 +210,15 @@ def main() -> int:
     events = list(load_traces(records))
 
     direct = direct_hits(events, set(files))
-    cmds = search_commands(events)
+    attempted = search_commands(events, executed_only=False)
+    cmds = search_commands(events, executed_only=True)
 
     # Replay each distinct command once; the read set is deterministic.
     script = skill_dir / "scripts" / "search.py"
     indirect: dict[str, int] = {}
     distinct = []
     seen = set()
-    for c in cmds:
+    for c in (cmds or attempted):
         key = tuple(clean(c))
         if key in seen:
             continue
@@ -196,7 +248,13 @@ def main() -> int:
     print(f"skill directory : {skill_dir}")
     print(f"records         : {len(records)}")
     print(f"attempts traced : {len({(c, i) for c, i, _ in events})}")
-    print(f"search.py calls : {len(cmds)} ({len(distinct)} distinct, replayed)\n")
+    print(f"search.py calls : {len(attempted)} attempted, {len(cmds)} executed "
+          f"({len(distinct)} distinct, replayed)\n")
+    if attempted and not cmds:
+        print("> **The host's permission layer refused every `search.py` invocation**, so\n"
+              "> the skill's search tool never actually ran in this configuration. The\n"
+              "> coverage below is what the *attempted* queries would have opened had they\n"
+              "> been allowed - an upper bound on reach, not an observation of it.\n")
 
     print(f"| | Files | Bytes |")
     print(f"| --- | --- | --- |")
@@ -225,11 +283,30 @@ def main() -> int:
             print(f"| `{f}` | {files.get(f, 0):,} | {n} |")
         print()
 
+    modes = search_modes(cmds)
+    if modes:
+        print("## Search modes actually used\n")
+        print("| Flag | Invocations |")
+        print("| --- | --- |")
+        for flag, n in sorted(modes.items(), key=lambda kv: -kv[1]):
+            print(f"| `{flag}` | {n} |")
+        print()
+
+    print("## Never opened, by why the file ships\n")
+    groups: dict[str, list[str]] = {}
+    for f in never:
+        groups.setdefault(group_of(f), []).append(f)
+    print("| Group | Files | Bytes |")
+    print("| --- | --- | --- |")
+    for g, fs in sorted(groups.items(), key=lambda kv: -sum(files[f] for f in kv[1])):
+        print(f"| {g} | {len(fs)} | {sum(files[f] for f in fs):,} |")
+    print()
+
     print("## Never opened\n")
-    print("| File | Bytes |")
-    print("| --- | --- |")
+    print("| File | Bytes | Group |")
+    print("| --- | --- | --- |")
     for f in sorted(never, key=lambda x: -files[x]):
-        print(f"| `{f}` | {files[f]:,} |")
+        print(f"| `{f}` | {files[f]:,} | {group_of(f)} |")
     return 0
 
 

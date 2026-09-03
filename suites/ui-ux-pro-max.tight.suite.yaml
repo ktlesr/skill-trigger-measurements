@@ -1,0 +1,110 @@
+# Round 2 for `ui-ux-pro-max`. Round 1's near neighbours never broke, so these
+# are tighter on both axes.
+#
+#   - frontend work that changes what the screen looks like, with the design
+#     decision already made: restore a rendering after a dependency upgrade,
+#     rename a token whose value does not move
+#   - a real visual-direction decision on something that is not a product
+#     interface: a projected conference deck, blog header imagery
+#
+# Positives, unrelated cases and the completion case are carried over unchanged
+# so the two rounds differ on one axis only. No prompt contains the skill's
+# name, or the bare tokens "UI" and "UX".
+
+version: 1
+
+target:
+  skill: ui-ux-pro-max
+  source: nextlevelbuilder/ui-ux-pro-max-skill@f3ac195224eac1eb0dfe1a3059c2a6add78ffbe3
+
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills: [ui-ux-pro-max]
+
+runs: 10
+
+cases:
+  - id: trigger.positive.pricing_page
+    prompt: >-
+      src/app/pricing/page.tsx is a placeholder. Build the real pricing page for
+      our B2B SaaS - three tiers, a monthly/annual toggle, a comparison table.
+      Choose the visual direction yourself: colour, type, spacing.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.review_component
+    prompt: >-
+      Go through src/components/StatCard.tsx and tell me where it falls down on
+      accessibility and visual hierarchy, then fix what you find.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.chart_choice
+    prompt: >-
+      src/components/RevenueChart.tsx draws monthly revenue for 14 accounts as a
+      pie. Pick the right chart for that data and rebuild it, with colours that
+      still work for someone who cannot separate red from green.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: true }
+
+  # ---- tighter near neighbours A: the screen changes, the decision does not --
+  - id: trigger.negative.near_neighbor.upgrade_regression
+    prompt: >-
+      After the Tailwind 4 upgrade three components render differently - spacing
+      and border colours moved. Work out which utility classes changed meaning
+      and restore exactly what we had before. No new decisions.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.token_rename
+    prompt: >-
+      In src/tokens.css rename --color-brand to --color-primary and
+      --color-brand-muted to --color-primary-muted, and update every usage. The
+      values stay exactly as they are.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  # ---- tighter near neighbours B: a visual decision, not an interface -------
+  - id: trigger.negative.near_neighbor.conference_deck
+    prompt: >-
+      Read marketing/deck-brief.md. Decide the visual direction for the slides -
+      type, colour, how the code walkthroughs should look projected in a dark
+      room. It ships as a PDF and never goes on the web.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.blog_imagery
+    prompt: >-
+      Read marketing/blog-brief.md and pick one direction for the header
+      imagery itself - illustration, photo treatment or generated. I am asking
+      about the pictures, not about where they sit on the page.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect: { triggered: false }
+
+  # ---- unrelated: the same two controls as the earlier measurements ---------
+  - id: trigger.negative.unrelated.slow_query
+    prompt: >-
+      This Postgres query for monthly revenue takes 12 seconds on 4M rows.
+      Work out which index it is missing.
+    expect: { triggered: false }
+
+  - id: trigger.negative.unrelated.docker_build
+    prompt: >-
+      Our Docker image takes nine minutes to build. Work out where the time
+      goes and cut it down.
+    expect: { triggered: false }
+
+  # ---- completion ----------------------------------------------------------
+  - id: complete.persists_design_system
+    prompt: >-
+      Work out the visual direction for this product - it is a console for
+      platform engineers - and save it under the project root so the rest of
+      the team can pick it up in a later session.
+    setup: { fixtures: ../fixtures/uiux-app }
+    expect:
+      triggered: true
+      assertions:
+        - { type: file_exists, path: 'design-system/*/MASTER.md' }
+        - { type: trace, rule: no_swallowed_errors }
