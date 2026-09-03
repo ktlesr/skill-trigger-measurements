@@ -1,4 +1,4 @@
-# Measurement: `better-typography`'s boundaries hold at 120/120, but a request that names its own mechanism reaches the skill only half the time
+# Naming the mechanism halves the trigger rate: 9/18 vs 20/20
 
 I ran a trigger-discrimination measurement against `skills/better-typography/`.
 The boundary result is clean and worth knowing; one prompt shape is a reproducible
@@ -145,8 +145,8 @@ npx @ktlsr/assay@0.1.2 run suites/better-typography.tight.suite.yaml \
   --skill ./skills/better-typography
 ```
 
-Case sets and fixtures are in the workspace linked above. The run records
-themselves stay local (`.assay/runs/`, not committed); happy to attach the JSON.
+Case sets, fixtures and both reports: <https://github.com/ktlesr/skill-trigger-measurements>
+Run records stay local (`.assay/runs/`, not committed); happy to attach the JSON.
 Needs `CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`; each attempt runs in an
 isolated config directory.
 
