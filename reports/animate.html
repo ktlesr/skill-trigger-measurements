@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assay — run-2026-09-03T11-10-04-411Z-57205e2b</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fbfbfa; --fg: #1b1b19; --muted: #6b6b66; --line: #e3e2de;
+    --pass: #2f7d4f; --fail: #b3261e; --unknown: #8a6a2f; --card: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131311; --fg: #ecebe7; --muted: #96958e; --line: #2b2b28;
+      --pass: #6fc08d; --fail: #e8776d; --unknown: #d9b56a; --card: #191917;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  }
+  main { max-width: 56rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  h1 { margin: 0 0 .25rem; font-size: 1.6rem; letter-spacing: -.02em; }
+  h2 { margin: 2.5rem 0 .75rem; font-size: 1.05rem; }
+  .sub { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+  .note { color: var(--muted); font-size: .85rem; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: .55rem .5rem; border-bottom: 1px solid var(--line); }
+  th { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+  td.num, th.num { text-align: right; width: 4rem; }
+  td.rate { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .warn { color: var(--unknown); font-weight: 600; }
+  .callout {
+    border: 1px solid var(--line); border-left: 3px solid var(--unknown);
+    border-radius: 8px; padding: .25rem 1rem 1rem; margin-top: 2rem;
+  }
+  .callout h2 { margin-bottom: .4rem; }
+  .callout p { font-size: .85rem; margin: .4rem 0 0; }
+  .pill {
+    display: inline-block; padding: .1rem .5rem; border-radius: 999px;
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; font-weight: 600;
+    border: 1px solid currentColor;
+  }
+  .pill.pass { color: var(--pass); }
+  .pill.fail { color: var(--fail); }
+  .pill.unknown { color: var(--unknown); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .75rem; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+  .card .label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .card .value { font-size: .95rem; margin-top: .3rem; font-variant-numeric: tabular-nums; }
+  .count { font-size: .8rem; padding: .05rem .45rem; border: 1px solid currentColor; border-radius: 999px; }
+  .reasons { list-style: none; padding: 0; margin: 0; }
+  .reasons li { padding: .5rem 0; border-bottom: 1px solid var(--line); }
+  footer { margin-top: 3rem; color: var(--muted); font-size: .8rem; }
+  .pins { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem; }
+  .pins dt { color: var(--muted); font-size: .8rem; }
+  .pins dd { margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Assay <span class="pill fail">fail</span></h1>
+  <p class="sub mono">run-2026-09-03T11-10-04-411Z-57205e2b</p>
+
+  <div class="grid">
+    <div class="card"><div class="label">Trigger precision</div><div class="value">100% (N=36, 95% CI 90%–100%)</div></div>
+    <div class="card"><div class="label">Trigger recall</div><div class="value">92% (N=39, 95% CI 80%–97%)</div></div>
+    <div class="card"><div class="label">F1</div><div class="value">0.96</div></div>
+    <div class="card"><div class="label">Attempts</div><div class="value">100 · none unknown</div></div>
+  </div>
+
+  <h2>Cases</h2>
+  <table>
+    <thead>
+      <tr><th>Verdict</th><th>Case</th><th>Pass rate</th><th class="num">Pass</th><th class="num">Fail</th><th class="num">Unknown</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.positive.build_toast_entrance</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill fail">fail</span></td>
+          <td class="mono">trigger.positive.sidebar_collapse</td>
+          <td class="rate">90% (N=10, 95% CI 60%–98%)</td>
+          <td class="num">9</td>
+          <td class="num">1</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill fail">fail</span></td>
+          <td class="mono">trigger.positive.hover_card_lift</td>
+          <td class="rate">90% (N=10, 95% CI 60%–98%)</td>
+          <td class="num">9</td>
+          <td class="num">1</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.critique_modal_feel</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.critique_drawer_diff</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.codebase_audit</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.opportunity_scan</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.unrelated.ci_workflow</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.unrelated.slow_query</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill fail">fail</span></td>
+          <td class="mono">complete.writes_toast_motion</td>
+          <td class="rate">80% (N=10, 95% CI 49%–94%)</td>
+          <td class="num">8</td>
+          <td class="num">2</td>
+          <td class="num ">0</td>
+        </tr>
+    </tbody>
+  </table>
+  <p class="note">Every rate carries its observation count and 95% Wilson confidence
+  interval. A rate without them would hide how little three runs can tell you.</p>
+
+    <section class="callout">
+      <h2>No negative case broke</h2>
+      <p>6 negative case(s), 60
+      measured attempt(s), 0 false positives. That bounds the false-positive rate, not this
+      set's discriminating power: the negatives may differ from the positives on some axis
+      other than the one under test, which makes any skill look perfect. Tighten the near
+      neighbours before reading this as a clean bill.</p>
+      <p class="note">A note, not a verdict — it does not change the run result.</p>
+    </section>
+
+
+  <h2>Pins</h2>
+  <p class="note">Two runs are comparable only when all four are identical.</p>
+  <dl class="pins">
+    <dt>Skill version</dt><dd class="mono">emilkowalski/skills@d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7</dd>
+    <dt>Skill hash</dt><dd class="mono">sha256:45ba81da9f54aa1d53cb7a5a9cddb141222cad7b11e1c1545175479fd2577d69</dd>
+    <dt>Model</dt><dd class="mono">claude-haiku-4-5-20251001</dd>
+    <dt>System prompt hash</dt><dd class="mono">not-provided-by-host</dd>
+    <dt>Case set version</dt><dd class="mono">1</dd>
+    <dt>Case set hash</dt><dd class="mono">sha256:789aa7faedba46d0adea3c8d1971f39c52a616eb3623ebe466f9fcb88973fbf1</dd>
+  </dl>
+
+  <h2>Cost and latency</h2>
+  <div class="grid">
+    <div class="card"><div class="label">Tokens in / out</div><div class="value">4759 / 204458</div></div>
+    <div class="card"><div class="label">Cost</div><div class="value">$4.9009</div></div>
+    <div class="card"><div class="label">Duration</div><div class="value">2919.3 s</div></div>
+    <div class="card"><div class="label">Tool calls</div><div class="value">567</div></div>
+  </div>
+
+  <footer>
+    Host claude-code · 2026-09-03T10:18:54.344Z → 2026-09-03T11:10:04.411Z ·
+    10 runs per case
+  </footer>
+</main>
+</body>
+</html>

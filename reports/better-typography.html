@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assay — run-2026-09-03T11-10-19-914Z-ac10d159</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fbfbfa; --fg: #1b1b19; --muted: #6b6b66; --line: #e3e2de;
+    --pass: #2f7d4f; --fail: #b3261e; --unknown: #8a6a2f; --card: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131311; --fg: #ecebe7; --muted: #96958e; --line: #2b2b28;
+      --pass: #6fc08d; --fail: #e8776d; --unknown: #d9b56a; --card: #191917;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  }
+  main { max-width: 56rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  h1 { margin: 0 0 .25rem; font-size: 1.6rem; letter-spacing: -.02em; }
+  h2 { margin: 2.5rem 0 .75rem; font-size: 1.05rem; }
+  .sub { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+  .note { color: var(--muted); font-size: .85rem; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: .55rem .5rem; border-bottom: 1px solid var(--line); }
+  th { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+  td.num, th.num { text-align: right; width: 4rem; }
+  td.rate { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .warn { color: var(--unknown); font-weight: 600; }
+  .callout {
+    border: 1px solid var(--line); border-left: 3px solid var(--unknown);
+    border-radius: 8px; padding: .25rem 1rem 1rem; margin-top: 2rem;
+  }
+  .callout h2 { margin-bottom: .4rem; }
+  .callout p { font-size: .85rem; margin: .4rem 0 0; }
+  .pill {
+    display: inline-block; padding: .1rem .5rem; border-radius: 999px;
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; font-weight: 600;
+    border: 1px solid currentColor;
+  }
+  .pill.pass { color: var(--pass); }
+  .pill.fail { color: var(--fail); }
+  .pill.unknown { color: var(--unknown); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .75rem; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+  .card .label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .card .value { font-size: .95rem; margin-top: .3rem; font-variant-numeric: tabular-nums; }
+  .count { font-size: .8rem; padding: .05rem .45rem; border: 1px solid currentColor; border-radius: 999px; }
+  .reasons { list-style: none; padding: 0; margin: 0; }
+  .reasons li { padding: .5rem 0; border-bottom: 1px solid var(--line); }
+  footer { margin-top: 3rem; color: var(--muted); font-size: .8rem; }
+  .pins { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem; }
+  .pins dt { color: var(--muted); font-size: .8rem; }
+  .pins dd { margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Assay <span class="pill fail">fail</span></h1>
+  <p class="sub mono">run-2026-09-03T11-10-19-914Z-ac10d159</p>
+
+  <div class="grid">
+    <div class="card"><div class="label">Trigger precision</div><div class="value">100% (N=34, 95% CI 90%–100%)</div></div>
+    <div class="card"><div class="label">Trigger recall</div><div class="value">89% (N=38, 95% CI 76%–96%)</div></div>
+    <div class="card"><div class="label">F1</div><div class="value">0.94</div></div>
+    <div class="card"><div class="label">Attempts</div><div class="value">100 · <span class="warn">1 unknown</span></div></div>
+  </div>
+
+  <h2>Cases</h2>
+  <table>
+    <thead>
+      <tr><th>Verdict</th><th>Case</th><th>Pass rate</th><th class="num">Pass</th><th class="num">Fail</th><th class="num">Unknown</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.positive.ad_hoc_sizes</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.positive.measure_and_widows</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.positive.variable_font_numerals</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.signed_off_value</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.copy_rewrite</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.font_file_plumbing</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.near_neighbor.server_side_truncate</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.unrelated.rate_limit</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill pass">pass</span></td>
+          <td class="mono">trigger.negative.unrelated.docker_build</td>
+          <td class="rate">100% (N=10, 95% CI 72%–100%)</td>
+          <td class="num">10</td>
+          <td class="num">0</td>
+          <td class="num ">0</td>
+        </tr>
+        <tr>
+          <td><span class="pill fail">fail</span></td>
+          <td class="mono">complete.writes_scale_tokens</td>
+          <td class="rate">44% (N=9, 95% CI 19%–73%)</td>
+          <td class="num">4</td>
+          <td class="num">5</td>
+          <td class="num warn">1</td>
+        </tr>
+    </tbody>
+  </table>
+  <p class="note">Every rate carries its observation count and 95% Wilson confidence
+  interval. A rate without them would hide how little three runs can tell you.</p>
+
+    <section class="callout">
+      <h2>No negative case broke</h2>
+      <p>6 negative case(s), 60
+      measured attempt(s), 0 false positives. That bounds the false-positive rate, not this
+      set's discriminating power: the negatives may differ from the positives on some axis
+      other than the one under test, which makes any skill look perfect. Tighten the near
+      neighbours before reading this as a clean bill.</p>
+      <p class="note">A note, not a verdict — it does not change the run result.</p>
+    </section>
+    <section>
+      <h2>Not measured <span class="count warn">1</span></h2>
+      <p class="note">These attempts produced no verdict. They are excluded from every
+      rate above and counted here instead — an unmeasured attempt is not a passing one.</p>
+      <ul class="reasons">
+        <li><span class="mono">complete.writes_scale_tokens</span><br><span class="note">the trigger signal could not be read: the host reported an error: Failed to authenticate. API Error: 401 OAuth access token has been revoked.</span></li>
+      </ul>
+    </section>
+
+  <h2>Pins</h2>
+  <p class="note">Two runs are comparable only when all four are identical.</p>
+  <dl class="pins">
+    <dt>Skill version</dt><dd class="mono">jakubkrehel/skills@267330e1adfc66a718fb65fa6918c1f06d0a689e</dd>
+    <dt>Skill hash</dt><dd class="mono">sha256:1223227c97759e0ad81133e34026c58b0d6c78e1829d5056346c23fb6c28f4c5</dd>
+    <dt>Model</dt><dd class="mono">claude-haiku-4-5-20251001</dd>
+    <dt>System prompt hash</dt><dd class="mono">not-provided-by-host</dd>
+    <dt>Case set version</dt><dd class="mono">1</dd>
+    <dt>Case set hash</dt><dd class="mono">sha256:b3efb3213f3128f784b68baad52b345200fcc82875bfc8cec6a3ae530ef28b18</dd>
+  </dl>
+
+  <h2>Cost and latency</h2>
+  <div class="grid">
+    <div class="card"><div class="label">Tokens in / out</div><div class="value">4463 / 224690</div></div>
+    <div class="card"><div class="label">Cost</div><div class="value">$4.9337</div></div>
+    <div class="card"><div class="label">Duration</div><div class="value">2834.3 s</div></div>
+    <div class="card"><div class="label">Tool calls</div><div class="value">531</div></div>
+  </div>
+
+  <footer>
+    Host claude-code · 2026-09-03T10:19:49.715Z → 2026-09-03T11:10:19.914Z ·
+    10 runs per case
+  </footer>
+</main>
+</body>
+</html>
