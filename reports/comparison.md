@@ -4,7 +4,8 @@ Both skills were measured the same way: installed alone, no sibling skills
 present, no prompt containing the skill's name, 10 cases × 10 attempts per round,
 two rounds each (the second with deliberately tighter near neighbours because
 round 1's negatives never broke). 400 attempts total, `claude-haiku-4-5-20251001`,
-`npx @ktlsr/assay@0.1.2`, ~$18.8 and ~2.8 hours of wall time.
+`npx @ktlsr/assay@0.1.2`, $18.84 and 3.0 hours of measured attempt time
+(about 1.5 hours on the clock, with the two suites running in parallel).
 
 | | `animate` | `better-typography` |
 | --- | --- | --- |
