@@ -145,7 +145,8 @@ npx @ktlsr/assay@0.1.2 run suites/better-typography.tight.suite.yaml \
   --skill ./skills/better-typography
 ```
 
-Case sets, fixtures and stored run records are in the workspace linked above.
+Case sets and fixtures are in the workspace linked above. The run records
+themselves stay local (`.assay/runs/`, not committed); happy to attach the JSON.
 Needs `CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`; each attempt runs in an
 isolated config directory.
 
