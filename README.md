@@ -13,12 +13,16 @@ it, re-run the suites and get their own numbers.
 | --- | --- | --- | --- | --- |
 | [`animate`](skills/animate) | [emilkowalski/skills](https://github.com/emilkowalski/skills) `@d23d7f8` | 100% (N=71, 95% CI 95%–100%) | 90% (N=79, 95% CI 81%–95%) | 0 / 120 |
 | [`better-typography`](skills/better-typography) | [jakubkrehel/skills](https://github.com/jakubkrehel/skills) `@267330e` | 100% (N=68, 95% CI 95%–100%) | 87% (N=78, 95% CI 78%–93%) | 0 / 120 |
+| [`ui-ux-pro-max`](skills/ui-ux-pro-max) | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) `@f3ac195` | 100% (N=40, 95% CI 91%–100%) | 50% (N=80, 95% CI 39%–61%) | 0 / 120 |
 
-400 attempts, two rounds each, `claude-haiku-4-5-20251001`.
+600 attempts, two rounds each, `claude-haiku-4-5-20251001`. **Zero false
+positives in 360 negative attempts across all three** — every failure measured
+here is a skill that did not fire, never one that fired when it should not have.
 
-- **[Comparison across both skills](reports/comparison.md)** — start here
+- **[Comparison across all three](reports/comparison.md)** — start here
 - [`animate` report](reports/animate.md) · [issue draft](issues/animate.md)
 - [`better-typography` report](reports/better-typography.md) · [issue draft](issues/better-typography.md)
+- [`ui-ux-pro-max` report](reports/ui-ux-pro-max.md) · [coverage](reports/ui-ux-pro-max.coverage.md) · [issue draft](issues/ui-ux-pro-max.md)
 
 ## How the case sets are built
 
@@ -34,14 +38,24 @@ counts:
   ten attempts each. The near neighbours are the whole point: requests that sit
   just outside the skill's job while sharing its subject matter. An unrelated
   negative is easy to pass and proves little.
-- **Two rounds.** When no negative broke in round 1 — which happened for both
-  skills — a second, deliberately tighter set was written and run, because an
+- **Two rounds.** When no negative broke in round 1 — which happened for all
+  three — a second, deliberately tighter set was written and run, because an
   unbroken negative set bounds the false-positive rate without showing where the
   set's discriminating power ends.
 - **Fixtures for every file-referencing prompt**, copied fresh into a temp
   workspace per attempt.
 - **Completion cases assert an artefact**, not just a trigger: `file_exists` on
   the file the prompt names, plus a no-swallowed-errors trace rule.
+
+### Reference-file coverage
+
+For skills that ship more than a `SKILL.md`, a second measurement asks which of
+those files a run actually opens. `tools/refcoverage.py` reads the stored traces
+for files the agent opened directly, and — for a skill whose own script opens
+data files that no tool call ever names — replays the queries that occurred under
+a Python `open()` audit hook. It separates calls that *ran* from calls the host
+*refused*, because a refused command opens nothing, and it excludes files the
+host loads on trigger rather than counting them as unread.
 
 ## Layout
 
@@ -51,9 +65,10 @@ suites/<skill>.suite.yaml        round 1 case set
 suites/<skill>.tight.suite.yaml  round 2, tighter near neighbours
 fixtures/<app>/            mini projects the prompts refer to
 reports/<skill>.md         the measurement report
-reports/comparison.md      both skills side by side
+reports/comparison.md      all three side by side
 issues/<skill>.md          issue text prepared for the skill's author
-tools/                     three small scripts that build the report tables
+tools/                     small scripts: report tables, trace inspection,
+                           reference-file coverage
 ```
 
 ## Reproduce
@@ -63,13 +78,14 @@ Needs Node 22 and either `CLAUDE_CODE_OAUTH_TOKEN` (from `claude setup-token`) o
 not inherit an interactive session.
 
 ```
-npx @ktlsr/assay@0.1.2 validate suites/animate.suite.yaml
-npx @ktlsr/assay@0.1.2 run suites/animate.suite.yaml       --skill ./skills/animate
-npx @ktlsr/assay@0.1.2 run suites/animate.tight.suite.yaml --skill ./skills/animate
+npx @ktlsr/assay@0.1.3 validate suites/animate.suite.yaml
+npx @ktlsr/assay@0.1.3 run suites/animate.suite.yaml       --skill ./skills/animate
+npx @ktlsr/assay@0.1.3 run suites/animate.tight.suite.yaml --skill ./skills/animate
 ```
 
-Same two commands for `better-typography`. A full suite is 100 attempts and cost
-about $4.70 at the pinned model; all four runs came to $18.84.
+Same two commands for `better-typography` and `ui-ux-pro-max` (the latter needs
+Python 3 for the skill's own search tool). A full suite is 100 attempts and cost
+$4.30–$6.90 at the pinned model; everything here came to $32.18.
 
 **Run records are not committed.** They land in `.assay/runs/` locally and are
 gitignored, along with the raw run logs. The reports carry every number the
@@ -89,14 +105,18 @@ Three conventions from the runner, worth knowing before reading a report:
 - **Rates are pinned to a model.** Everything here is
   `claude-haiku-4-5-20251001`. Trigger routing is a model behaviour, so the
   recall figures are floors, not universal results.
+- **Isolation is from the user's skills, not the host's.** The runner gives each
+  attempt a fresh `CLAUDE_CONFIG_DIR`, which removes the user's own skills,
+  plugins and CLAUDE.md — but Claude Code's bundled skills stay available and can
+  win a request. Every report states what was observed on this axis.
 
 Method: <https://assayctl.dev/methodology>
 
 ## Licensing and provenance
 
 The skills under `skills/` are **unmodified copies of other people's work**,
-vendored at a pinned commit so the measurement is reproducible. Both are MIT
-licensed and each copy keeps its upstream `LICENSE`:
+vendored at a pinned commit so the measurement is reproducible. All three are
+MIT licensed and each copy keeps its upstream `LICENSE`:
 
 - `skills/animate/` — © Emil Kowalski, from
   [emilkowalski/skills](https://github.com/emilkowalski/skills) at
@@ -104,10 +124,15 @@ licensed and each copy keeps its upstream `LICENSE`:
 - `skills/better-typography/` — © Jakub Krehel, from
   [jakubkrehel/skills](https://github.com/jakubkrehel/skills) at
   `267330e1adfc66a718fb65fa6918c1f06d0a689e`
+- `skills/ui-ux-pro-max/` — © Next Level Builder, from
+  [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+  at `f3ac195224eac1eb0dfe1a3059c2a6add78ffbe3`. Repackaged as a minimal plugin
+  directory holding this one skill, so its `${CLAUDE_PLUGIN_ROOT}` script path
+  resolves; the skill's own files are unmodified.
 
 The case sets, fixtures, reports and tooling in this repository are MIT licensed
 (see [LICENSE](LICENSE)).
 
-A measurement is not a verdict on a skill. Both skills measured here kept every
-boundary their authors declared; the findings are about where a request stops
-reaching them.
+A measurement is not a verdict on a skill. All three measured here kept every
+boundary their authors declared, across 360 negative attempts; the findings are
+about where a request stops reaching them.
