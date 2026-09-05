@@ -1,0 +1,67 @@
+# PILOT for `impeccable` — an observability probe, not a measurement.
+#
+# The three skills measured before this one were plain skill directories: one
+# SKILL.md, some reference files, at most one script. `impeccable` is a
+# different shape:
+#
+#   - it ships as a plugin (marketplace `pbakaus/impeccable`), not a bare skill
+#   - it registers PostToolUse and Stop hooks in `hooks/hooks.json`
+#   - its documented Setup step is not a tool call the model makes on its own
+#     judgement but a launcher it must shell out to
+#   - it bundles four subagents alongside the skill
+#
+# Every one of those is a layer Assay has never had to observe. This suite is
+# four cases at three attempts — 12 attempts, deliberately small — asked only
+# to find out which of those layers leave a readable trace. The pass/fail
+# column here bounds nothing; N=3 per case is not a rate.
+#
+# No prompt contains the skill's name, the word "design", or the name of any
+# of its 23 sub-commands.
+
+version: 1
+
+target:
+  skill: impeccable
+  source: pbakaus/impeccable@8dac6ae7e020c43ab10ce9b41939f6fd42627b96
+
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills: [impeccable]
+
+runs: 3
+
+cases:
+  # ---- positives: work the skill's description claims outright ------------
+  - id: trigger.positive.hero_direction
+    prompt: >-
+      src/routes/landing.tsx is our hero and it reads like a wireframe - system
+      font, one blue button, no hierarchy. Give it a real visual direction and
+      build it: type, colour, spacing, the lot. Decide the direction yourself.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.settings_rework
+    prompt: >-
+      Go through src/routes/settings.tsx and tell me where it falls down on
+      hierarchy, grouping and the destructive action sitting next to Save, then
+      rework it.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: true }
+
+  # ---- near neighbour: frontend, but no visual decision in it -------------
+  - id: trigger.negative.near_neighbor.undefined_email
+    prompt: >-
+      src/components/InviteForm.tsx throws "Cannot read properties of undefined
+      (reading 'toLowerCase')" when a member row arrives with no email. Fix the
+      crash. Nothing on screen changes.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: false }
+
+  # ---- unrelated: the same control the earlier measurements used ----------
+  - id: trigger.negative.unrelated.slow_query
+    prompt: >-
+      This Postgres query for monthly revenue takes 12 seconds on 4M rows.
+      Work out which index it is missing.
+    expect: { triggered: false }
