@@ -26,7 +26,7 @@ negatives built into the first set.
 - **[Comparison across the first three](reports/comparison.md)** — start here
 - [`animate` report](reports/animate.md) · [issue draft](issues/animate.md)
 - [`better-typography` report](reports/better-typography.md) · [issue draft](issues/better-typography.md)
-- [`ui-ux-pro-max` report](reports/ui-ux-pro-max.md) · [coverage](reports/ui-ux-pro-max.coverage.md) · [issue draft](issues/ui-ux-pro-max.md)
+- [`ui-ux-pro-max` report](reports/ui-ux-pro-max.md) · [coverage](reports/ui-ux-pro-max.coverage.md) · [issue draft](issues/ui-ux-pro-max.md) · [follow-up](reports/ui-ux-pro-max.followup.md) — finding 1 fixed upstream and re-verified; the rest still open
 - [`impeccable` report](reports/impeccable.md) · [coverage](reports/impeccable.coverage.md) · [issue draft](issues/impeccable.draft.md) · [as filed](issues/impeccable-4.2.1.issue.md) — preceded by a [feasibility pilot](reports/impeccable.pilot.md) that found the skill could not activate at all under `claude -p`, and the [issue](issues/impeccable.md) · [as filed](issues/impeccable.issue.md) that came out of it
 
 ## How the case sets are built
@@ -86,6 +86,7 @@ suites/<skill>.tight.suite.yaml  round 2, tighter near neighbours
 fixtures/<app>/            mini projects the prompts refer to
 reports/<skill>.md         the measurement report
 reports/<skill>.coverage.md      which of the skill's own files a run opened
+reports/<skill>.followup.md      re-check of a single finding after an upstream fix
 reports/comparison.md      the first three side by side
 issues/<skill>.md          issue text prepared for the skill's author
 issues/<skill>.issue.md          the same text in the project's own bug template
