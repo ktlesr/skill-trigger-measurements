@@ -17,8 +17,13 @@ const bashCommands = new Map()
 const refs = new Map()
 const otherSkills = new Map()
 const hookEchoes = []
+// 0.2.0 parses system/hook_started and system/hook_response into the trace.
+// An empty set here is a claim about the stream, so it is counted explicitly.
+const hookEvents = new Map()
+const refusals = new Map()
 let attempts = 0
 let triggeredCount = 0
+let unreadable = 0
 
 for (const c of run.cases) {
   for (const a of c.attempts) {
@@ -27,6 +32,7 @@ for (const c of run.cases) {
       otherSkills.set(s, (otherSkills.get(s) ?? 0) + 1)
     }
     if (a.trigger?.triggered) triggeredCount += 1
+    if (a.trigger && a.trigger.available === false) unreadable += 1
 
     const errById = new Map()
     for (const e of a.trace ?? []) {
@@ -57,6 +63,15 @@ for (const c of run.cases) {
         if (m) refs.set(m[1], (refs.get(m[1]) ?? 0) + 1)
       }
 
+      if (e.kind === 'hook') {
+        const key = `${e.event ?? '?'} · ${e.name ?? '?'} · exit ${e.exitCode ?? '?'} · ${e.outcome ?? '?'}`
+        hookEvents.set(key, (hookEvents.get(key) ?? 0) + 1)
+      }
+      if (e.refusal) {
+        const key = `${e.tool ?? e.kind}: ${String(e.refusal).replace(/\s+/g, ' ').slice(0, 120)}`
+        refusals.set(key, (refusals.get(key) ?? 0) + 1)
+      }
+
       const text =
         e.kind === 'assistant_message' ? e.text : e.kind === 'tool_result' ? e.error : undefined
       if (text && HOOK.test(text)) hookEchoes.push(text.replace(/\s+/g, ' ').slice(0, 200))
@@ -69,14 +84,23 @@ const pct = (n, d) => (d === 0 ? 'n/a' : `${Math.round((n / d) * 100)}%`)
 console.log(`run ${run.id} · ${attempts} attempts · skill ${run.skill}`)
 console.log(`\n1. trigger signal`)
 console.log(`   triggered in ${triggeredCount}/${attempts} attempts`)
+console.log(`   unreadable trigger signal (refused activation) in ${unreadable}/${attempts}`)
 console.log(`   skills observed via Skill tool call:`)
 for (const [s, n] of [...otherSkills].sort((a, b) => b[1] - a[1])) {
   console.log(`     ${s}  ${n}`)
 }
 
 console.log(`\n2. hook output reaching the trace`)
+console.log(`   ${hookEvents.size} distinct hook events parsed from the stream`)
+for (const [h, n] of hookEvents) console.log(`     ${n}x ${h}`)
 console.log(`   ${hookEchoes.length} trace events carry hook-shaped text`)
 for (const h of hookEchoes.slice(0, 5)) console.log(`     > ${h}`)
+
+console.log(`\n2b. host permission denials recorded on trace events`)
+console.log(`   ${refusals.size} distinct`)
+for (const [r, n] of [...refusals].sort((a, b) => b[1] - a[1]).slice(0, 8)) {
+  console.log(`     ${n}x ${r}`)
+}
 
 console.log(`\n3. Bash through the host permission layer`)
 console.log(`   attempted ${bash.attempted} · denied ${bash.denied} (${pct(bash.denied, bash.attempted)}) · ran ${bash.ok}`)

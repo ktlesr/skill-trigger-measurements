@@ -1,0 +1,156 @@
+# Trigger discrimination for the `impeccable` skill.
+#
+# This is the full measurement the pilot (`suites/impeccable.pilot.suite.yaml`,
+# `reports/impeccable.pilot.md`) could not run. The pilot found that skill
+# 4.2.0 declared `allowed-tools` in its frontmatter, which turns activation into
+# a permission prompt that nobody answers under `claude -p`; every activation
+# was denied and the pilot measured the base model instead. Skill 4.2.1 removes
+# those lines, so the skill actually loads.
+#
+# The skill's description is the broadest of the four measured in this
+# repository: it claims essentially every verb that can be applied to a frontend
+# interface, plus accessibility, performance, responsive behaviour, i18n, copy
+# and design systems. That leaves a narrow strip of genuine near neighbours, and
+# the near neighbours here are built to sit in it:
+#
+#   A. frontend work with no visual decision in it - a crash, an instrumentation
+#      event, a mechanical token substitution, a double-submit bug. Four of
+#      them, because this is the boundary the skill's description makes hardest
+#      to hold. Two of the four sit in files a positive case also targets, so
+#      the only difference between them is whether a visual decision is asked
+#      for.
+#   B. a real visual decision that is not a frontend interface - a wordmark, a
+#      printed booklet. The skill's own last line is "Not for backend-only or
+#      non-UI tasks".
+#
+# Requests that the skill's description does claim - accessibility, UI
+# performance, responsive behaviour, i18n, UX copy - are deliberately NOT used
+# as negatives. They would be unfair: firing on them is the skill doing its job.
+#
+# No prompt contains the skill's name, the word "design", or any of the 23
+# sub-command names in its Commands table (craft, shape, init, document,
+# extract, critique, audit, polish, bolder, quieter, distill, harden, onboard,
+# animate, colorize, typeset, layout, delight, overdrive, clarify, adapt,
+# optimize, live).
+
+version: 1
+
+target:
+  skill: impeccable
+  source: pbakaus/impeccable@831cabee8b4bc1a2b66e5ae22003e9a19b57d464
+
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills: [impeccable]
+
+runs: 10
+
+cases:
+  # ---- positives: work the skill's description claims outright ------------
+  - id: trigger.positive.hero_direction
+    prompt: >-
+      src/routes/landing.tsx is our hero and it reads like a wireframe - system
+      font, one blue button, no hierarchy. Give it a real visual direction and
+      build it: type, colour, spacing, the lot. Decide the direction yourself.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.settings_rework
+    prompt: >-
+      Go through src/routes/settings.tsx and tell me where it falls down on
+      hierarchy, grouping and the destructive action sitting next to Save, then
+      rework it.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.forgettable_usage
+    prompt: >-
+      src/routes/usage.tsx is the screen our customers stare at every day and it
+      is competent and completely forgettable - three grey boxes and a bare
+      table. Make it something they would remember, and build it.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: true }
+
+  - id: trigger.positive.empty_state
+    prompt: >-
+      A brand new workspace lands on src/routes/usage.tsx with no rows at all,
+      so it just shows three zeroes and an empty table. Work out what someone
+      arriving for the first time should see there instead, and build it.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: true }
+
+  # ---- near neighbours A: frontend, no visual decision --------------------
+  - id: trigger.negative.near_neighbor.undefined_email
+    prompt: >-
+      src/components/InviteForm.tsx throws "Cannot read properties of undefined
+      (reading 'toLowerCase')" when a member row arrives with no email. Fix the
+      crash. Nothing on screen changes.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.cta_instrumentation
+    prompt: >-
+      When the "Start free" button in src/routes/landing.tsx first scrolls into
+      view, send a cta_seen event to our analytics with the visitor's plan tier.
+      Use an IntersectionObserver and fire it once per session. Nothing on
+      screen changes.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.token_substitution
+    prompt: >-
+      Every literal in src/components/Badge.tsx already exists as a custom
+      property in src/tokens.css. Swap the literals for the variables. This is a
+      find-and-replace - do not add, remove or change a single value, and the
+      rendered pixels must be identical afterwards.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.double_submit
+    prompt: >-
+      The button in src/components/PlanPicker.tsx fires onChoose twice if you
+      click it quickly, and the workspace ends up on whichever PATCH resolves
+      last. Guard the handler so a second click while one is in flight does
+      nothing. Nothing on screen changes.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: false }
+
+  # ---- near neighbours B: a visual decision, but not an interface ---------
+  - id: trigger.negative.near_neighbor.wordmark
+    prompt: >-
+      Read brand/brief.md and give me three directions for the wordmark itself -
+      the letterforms and the mark. Not where it sits on a page, the mark.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: false }
+
+  - id: trigger.negative.near_neighbor.print_booklet
+    prompt: >-
+      Read print/investor-brief.md. For the printed pages, decide which chart
+      types carry those four figures and what colour palette survives CMYK on
+      uncoated stock at that dot gain. Print only - there is no screen version
+      and there never will be.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect: { triggered: false }
+
+  # ---- unrelated: the same control the earlier measurements used ----------
+  - id: trigger.negative.unrelated.slow_query
+    prompt: >-
+      This Postgres query for monthly revenue takes 12 seconds on 4M rows.
+      Work out which index it is missing.
+    expect: { triggered: false }
+
+  # ---- completion: the artefact the skill documents -----------------------
+  - id: complete.persists_design_system
+    prompt: >-
+      Work out the visual system this codebase is already using - type scale,
+      colour, spacing, component patterns - and write it down at the project
+      root, in the file a later session would look for, so a new contributor can
+      pick it up without asking.
+    setup: { fixtures: ../fixtures/impeccable-app }
+    expect:
+      triggered: true
+      assertions:
+        - { type: file_exists, path: 'DESIGN.md' }
+        - { type: trace, rule: no_swallowed_errors }

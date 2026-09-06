@@ -1,14 +1,14 @@
 # Reference-file coverage
 
-skill directory : D:\assay-example\skills\ui-ux-pro-max\.claude\skills\ui-ux-pro-max
+skill directory : skills/ui-ux-pro-max/.claude/skills/ui-ux-pro-max
 records         : 2
 attempts traced : 200
 search.py calls : 83 attempted, 0 executed (51 distinct, replayed)
 
 > **The host's permission layer refused every `search.py` invocation**, so
-> the skill's search tool never actually ran in this configuration. The
-> coverage below is what the *attempted* queries would have opened had they
-> been allowed - an upper bound on reach, not an observation of it.
+> the skill's helper never actually ran in this configuration.
+> The coverage below is what the *attempted* queries would have opened had
+> they been allowed - an upper bound on reach, not an observation of it.
 
 | | Files | Bytes |
 | --- | --- | --- |
@@ -36,11 +36,11 @@ Never opened: 58/72 files, 2,911,028 bytes (82% of the skill directory).
 | `scripts/reasoning_contract.py` | 5,824 | 51 |
 | `scripts/design_system.py` | 70,937 | 51 |
 | `data/products.csv` | 75,623 | 50 |
-| `data/styles.csv` | 149,478 | 35 |
-| `data/typography.csv` | 49,997 | 35 |
-| `data/colors.csv` | 37,940 | 35 |
 | `data/ui-reasoning.csv` | 77,360 | 35 |
 | `data/landing.csv` | 25,449 | 35 |
+| `data/typography.csv` | 49,997 | 35 |
+| `data/styles.csv` | 149,478 | 35 |
+| `data/colors.csv` | 37,940 | 35 |
 | `data/motion.csv` | 14,679 | 21 |
 | `data/ux-guidelines.csv` | 27,516 | 13 |
 | `data/icons.csv` | 57,945 | 2 |

@@ -13,8 +13,19 @@ Two sources of truth, because a file can be reached two ways:
      under a Python audit hook that records every `open()`. Same script, same
      arguments, same data files, so the read set is the real one.
 
+Source 2 needs a Python script to replay. A skill whose helper is a compiled
+binary (impeccable's `scripts/impeccable` launcher and the engine it execs) has
+no equivalent: an audit hook cannot see inside another process. For those,
+`--exec <name>` still counts the invocations — attempted, executed, refused —
+and the files behind that binary are reported as *not observable*, never as
+never-opened. A file the instrument cannot see is not a file the run did not
+read.
+
 Usage:
-  python tools/refcoverage.py <skill-dir> <run-record.json> [<run-record.json> ...]
+  python tools/refcoverage.py [--exec <name>] <skill-dir> <run-record.json> ...
+
+  --exec search.py   (default) replay the skill's Python helper
+  --exec impeccable  count launcher invocations; no replay is possible
 """
 
 from __future__ import annotations
@@ -83,8 +94,8 @@ def direct_hits(events, names: set[str]) -> dict[str, int]:
     return hits
 
 
-def search_commands(events, executed_only: bool) -> list[list[str]]:
-    """search.py invocations, as argv lists.
+def search_commands(events, executed_only: bool, needle: str = "search.py") -> list[list[str]]:
+    """Helper-script invocations, as argv lists.
 
     A tool call is not proof the command ran: the host's permission layer can
     refuse it, and a refused command opens nothing. `executed_only` keeps just
@@ -97,6 +108,10 @@ def search_commands(events, executed_only: bool) -> list[list[str]]:
         if e.get("kind") == "tool_result" and e.get("callId"):
             (refused if e.get("isError") else ran).add(e["callId"])
 
+    def names(a: str) -> bool:
+        tail = a.rstrip('"').replace("\\", "/").rsplit("/", 1)[-1]
+        return tail == needle or tail == f"{needle}.cmd"
+
     cmds = []
     for _case, _idx, e in events:
         if e.get("kind") != "tool_call" or e.get("tool") not in ("Bash", "PowerShell"):
@@ -104,16 +119,16 @@ def search_commands(events, executed_only: bool) -> list[list[str]]:
         if executed_only and e.get("id") not in ran:
             continue
         raw = str((e.get("args") or {}).get("command") or "")
-        if "search.py" not in raw:
+        if needle not in raw:
             continue
         for part in re.split(r"&&|\|\||;|\n", raw):
-            if "search.py" not in part:
+            if needle not in part:
                 continue
             try:
                 argv = shlex.split(part, posix=True)
             except ValueError:
                 continue
-            i = next((k for k, a in enumerate(argv) if a.endswith("search.py")), None)
+            i = next((k for k, a in enumerate(argv) if names(a)), None)
             if i is None:
                 continue
             cmds.append(argv[i + 1 :])
@@ -186,6 +201,21 @@ def group_of(path: str) -> str:
         return "documented on-demand reference"
     if path.startswith("data/"):
         return "domain data"
+    # --- plugin-shaped skills (impeccable) -------------------------------
+    if "/reference/degraded/" in path:
+        return "sub-agent fallback reference"
+    if "/reference/" in path:
+        return "documented on-demand reference"
+    if "/scripts/data/" in path:
+        return "engine data (behind the binary)"
+    if "/scripts/" in path:
+        return "launcher / browser runtime"
+    if path.startswith("agents/"):
+        return "sub-agent definition"
+    if path.startswith("hooks/") or path.startswith(".claude-plugin/"):
+        return "plugin manifest"
+    if path == "LICENSE":
+        return "licence"
     return "runtime code"
 
 
@@ -203,22 +233,26 @@ def search_modes(cmds: list[list[str]]) -> dict[str, int]:
 
 
 def main() -> int:
-    if len(sys.argv) < 3:
+    argv = sys.argv[1:]
+    exec_name = "search.py"
+    if argv and argv[0] == "--exec":
+        if len(argv) < 2:
+            print(__doc__)
+            return 2
+        exec_name, argv = argv[1], argv[2:]
+    if len(argv) < 2:
         print(__doc__)
         return 2
-    skill_dir = Path(sys.argv[1]).resolve()
-    records = [Path(p) for p in sys.argv[2:]]
+    skill_dir = Path(argv[0]).resolve()
+    records = [Path(p) for p in argv[1:]]
 
     files = skill_files(skill_dir)
     events = list(load_traces(records))
 
     direct = direct_hits(events, set(files))
-    attempted = search_commands(events, executed_only=False)
-    cmds = search_commands(events, executed_only=True)
+    attempted = search_commands(events, executed_only=False, needle=exec_name)
+    cmds = search_commands(events, executed_only=True, needle=exec_name)
 
-    # Replay each distinct command once; the read set is deterministic.
-    script = skill_dir / "scripts" / "search.py"
-    indirect: dict[str, int] = {}
     distinct = []
     seen = set()
     for c in (cmds or attempted):
@@ -228,48 +262,114 @@ def main() -> int:
         seen.add(key)
         distinct.append(list(key))
 
-    cwd = os.getcwd()
-    with tempfile.TemporaryDirectory() as tmp:
-        os.chdir(tmp)
-        try:
-            for argv in distinct:
-                for name in replay(script, argv, skill_dir):
-                    indirect[name] = indirect.get(name, 0) + 1
-        finally:
-            os.chdir(cwd)
+    # Replay each distinct command once; the read set is deterministic. Only a
+    # Python helper can be replayed this way — a compiled launcher runs in
+    # another process, where an audit hook sees nothing.
+    script = skill_dir / "scripts" / exec_name
+    replayable = script.suffix == ".py" and script.is_file()
+    indirect: dict[str, int] = {}
+    if replayable:
+        cwd = os.getcwd()
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            try:
+                for args in distinct:
+                    for name in replay(script, args, skill_dir):
+                        indirect[name] = indirect.get(name, 0) + 1
+            finally:
+                os.chdir(cwd)
 
     # SKILL.md is not read through a tool call: the host loads it when the
     # skill triggers. Counting it as "never opened" would be false.
-    always_loaded = {"SKILL.md"} & set(files)
+    always_loaded = {f for f in files if f == "SKILL.md" or f.endswith("/SKILL.md")}
+    # Files only a compiled helper could open. The instrument cannot see into
+    # it, so these are reported separately rather than counted as unread.
+    opaque = (
+        {f for f in files if group_of(f) == "engine data (behind the binary)"}
+        if not replayable and attempted
+        else set()
+    )
     touched = set(direct) | set(indirect) | always_loaded
-    never = [f for f in files if f not in touched]
+    never = [f for f in files if f not in touched and f not in opaque]
 
     total_bytes = sum(files.values())
     never_bytes = sum(files[f] for f in never)
 
+    # Relative when it sits under the working directory: the report is
+    # committed, and an absolute path carries a machine and a username with it.
+    try:
+        shown = skill_dir.relative_to(Path.cwd()).as_posix()
+    except ValueError:
+        shown = skill_dir.name
+
     print("# Reference-file coverage\n")
-    print(f"skill directory : {skill_dir}")
+    print(f"skill directory : {shown}")
     print(f"records         : {len(records)}")
     print(f"attempts traced : {len({(c, i) for c, i, _ in events})}")
-    print(f"search.py calls : {len(attempted)} attempted, {len(cmds)} executed "
-          f"({len(distinct)} distinct, replayed)\n")
+    kind = "replayed" if replayable else "not replayable (compiled helper)"
+    print(f"{exec_name} calls : {len(attempted)} attempted, {len(cmds)} executed "
+          f"({len(distinct)} distinct, {kind})\n")
     if attempted and not cmds:
-        print("> **The host's permission layer refused every `search.py` invocation**, so\n"
-              "> the skill's search tool never actually ran in this configuration. The\n"
-              "> coverage below is what the *attempted* queries would have opened had they\n"
-              "> been allowed - an upper bound on reach, not an observation of it.\n")
+        print(f"> **The host's permission layer refused every `{exec_name}` invocation**, so\n"
+              "> the skill's helper never actually ran in this configuration.")
+        if replayable:
+            print("> The coverage below is what the *attempted* queries would have opened had\n"
+                  "> they been allowed - an upper bound on reach, not an observation of it.")
+        print()
+    if not replayable and attempted:
+        print(f"> `{exec_name}` is a compiled launcher, not a Python script. Its own reads\n"
+              "> cannot be observed with an audit hook, so the files that only it could\n"
+              "> open are listed as **not observable** below rather than as never-opened.\n")
 
     print(f"| | Files | Bytes |")
     print(f"| --- | --- | --- |")
     print(f"| ships in the skill | {len(files)} | {total_bytes:,} |")
     print(f"| opened by the agent | {len(direct)} | {sum(files.get(f, 0) for f in direct):,} |")
-    print(f"| opened by search.py | {len(indirect)} | {sum(files.get(f, 0) for f in indirect):,} |")
+    if replayable or indirect:
+        print(f"| opened by {exec_name} | {len(indirect)} | "
+              f"{sum(files.get(f, 0) for f in indirect):,} |")
     print(f"| loaded by the host on trigger | {len(always_loaded)} | "
           f"{sum(files.get(f, 0) for f in always_loaded):,} |")
+    if opaque:
+        print(f"| not observable (behind the binary) | {len(opaque)} | "
+              f"{sum(files.get(f, 0) for f in opaque):,} |")
     print(f"| **never opened** | **{len(never)}** | **{never_bytes:,}** |")
     pct = 100 * never_bytes / total_bytes if total_bytes else 0
     print(f"\nNever opened: {len(never)}/{len(files)} files, {never_bytes:,} bytes "
           f"({pct:.0f}% of the skill directory).\n")
+
+    # Only meaningful for a launcher taking a sub-command as its first word.
+    if attempted and not replayable:
+        ran_ids, refused_ids = set(), set()
+        for _c, _i, e in events:
+            if e.get("kind") == "tool_result" and e.get("callId"):
+                (refused_ids if e.get("isError") else ran_ids).add(e["callId"])
+        rows: dict[str, dict[str, int]] = {}
+        for _case, _idx, e in events:
+            if e.get("kind") != "tool_call" or e.get("tool") not in ("Bash", "PowerShell"):
+                continue
+            raw = str((e.get("args") or {}).get("command") or "")
+            if exec_name not in raw:
+                continue
+            # The sub-command is the first argument after the launcher path, not
+            # the first word of the shell line: `cd X && impeccable context` is a
+            # `context` call.
+            head = raw.split(exec_name, 1)[1]
+            head = head[4:] if head.startswith(".cmd") else head
+            verb = next(
+                (a for a in head.replace('"', " ").split() if a.isalpha()),
+                "(no verb)",
+            )
+            row = rows.setdefault(verb, {"n": 0, "refused": 0})
+            row["n"] += 1
+            if e.get("id") in refused_ids:
+                row["refused"] += 1
+        print(f"## `{exec_name}` invocations through the permission layer\n")
+        print("| Verb | Attempted | Refused | Ran |")
+        print("| --- | --- | --- | --- |")
+        for verb, r in sorted(rows.items(), key=lambda kv: -kv[1]["n"]):
+            print(f"| `{verb}` | {r['n']} | {r['refused']} | {r['n'] - r['refused']} |")
+        print()
 
     if direct:
         print("## Opened by the agent\n")
@@ -279,7 +379,7 @@ def main() -> int:
             print(f"| `{f}` | {files.get(f, 0):,} | {n} |")
         print()
     if indirect:
-        print("## Opened by search.py\n")
+        print(f"## Opened by {exec_name}\n")
         print("| File | Bytes | Distinct queries |")
         print("| --- | --- | --- |")
         for f, n in sorted(indirect.items(), key=lambda kv: -kv[1]):
@@ -289,7 +389,7 @@ def main() -> int:
     # When nothing executed, the modes the runs *reached for* are still the
     # interesting number: it says which parts of the data the skill aimed at,
     # and which it never aimed at even once.
-    modes = search_modes(cmds or attempted)
+    modes = search_modes(cmds or attempted) if replayable else {}
     if modes:
         label = "actually used" if cmds else "attempted (none executed)"
         print(f"## Search modes {label}\n")
@@ -314,6 +414,15 @@ def main() -> int:
     print("| --- | --- | --- |")
     for f in sorted(never, key=lambda x: -files[x]):
         print(f"| `{f}` | {files[f]:,} | {group_of(f)} |")
+
+    if opaque:
+        print("\n## Not observable\n")
+        print("Only the compiled launcher could open these, and it runs in another\n"
+              "process. Neither read nor unread — outside the instrument.\n")
+        print("| File | Bytes |")
+        print("| --- | --- |")
+        for f in sorted(opaque, key=lambda x: -files[x]):
+            print(f"| `{f}` | {files[f]:,} |")
     return 0
 
 
