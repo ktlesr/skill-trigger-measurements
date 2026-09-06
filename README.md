@@ -27,7 +27,7 @@ negatives built into the first set.
 - [`animate` report](reports/animate.md) · [issue draft](issues/animate.md)
 - [`better-typography` report](reports/better-typography.md) · [issue draft](issues/better-typography.md)
 - [`ui-ux-pro-max` report](reports/ui-ux-pro-max.md) · [coverage](reports/ui-ux-pro-max.coverage.md) · [issue draft](issues/ui-ux-pro-max.md)
-- [`impeccable` report](reports/impeccable.md) · [coverage](reports/impeccable.coverage.md) · [issue draft](issues/impeccable.draft.md) — preceded by a [feasibility pilot](reports/impeccable.pilot.md) that found the skill could not activate at all under `claude -p`, and the [issue](issues/impeccable.md) that came out of it
+- [`impeccable` report](reports/impeccable.md) · [coverage](reports/impeccable.coverage.md) · [issue draft](issues/impeccable.draft.md) · [as filed](issues/impeccable-4.2.1.issue.md) — preceded by a [feasibility pilot](reports/impeccable.pilot.md) that found the skill could not activate at all under `claude -p`, and the [issue](issues/impeccable.md) · [as filed](issues/impeccable.issue.md) that came out of it
 
 ## How the case sets are built
 
@@ -88,6 +88,7 @@ reports/<skill>.md         the measurement report
 reports/<skill>.coverage.md      which of the skill's own files a run opened
 reports/comparison.md      the first three side by side
 issues/<skill>.md          issue text prepared for the skill's author
+issues/<skill>.issue.md          the same text in the project's own bug template
 tools/                     small scripts: report tables, trace inspection,
                            reference-file coverage
 ```
