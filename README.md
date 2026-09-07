@@ -28,6 +28,7 @@ negatives built into the first set.
 - [`better-typography` report](reports/better-typography.md) · [issue draft](issues/better-typography.md)
 - [`ui-ux-pro-max` report](reports/ui-ux-pro-max.md) · [coverage](reports/ui-ux-pro-max.coverage.md) · [issue draft](issues/ui-ux-pro-max.md) · [follow-up](reports/ui-ux-pro-max.followup.md) — finding 1 fixed upstream and re-verified; the rest still open
 - [`impeccable` report](reports/impeccable.md) · [coverage](reports/impeccable.coverage.md) · [issue draft](issues/impeccable.draft.md) · [as filed](issues/impeccable-4.2.1.issue.md) — preceded by a [feasibility pilot](reports/impeccable.pilot.md) that found the skill could not activate at all under `claude -p`, and the [issue](issues/impeccable.md) · [as filed](issues/impeccable.issue.md) that came out of it
+  - [launcher-approved run](reports/impeccable.launcher-approved.md) · [coverage](reports/impeccable.launcher-approved.coverage.md) — the same case set with the skill's shell access granted, to separate what the skill does from what the permission layer stopped
 
 ## How the case sets are built
 

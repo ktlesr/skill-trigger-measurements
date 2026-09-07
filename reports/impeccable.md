@@ -205,7 +205,13 @@ The two are not independent, and the report cannot separate them: steps 2 and 3
 of Setup follow step 1, and step 1 was refused 55 times out of 55. Whether the
 model would load the playbook and the craft floor in a session where `impeccable
 context` succeeds is exactly the question a run with the launcher pre-approved
-would answer, and that run has not been made.
+would answer. **That run has since been made** —
+[`impeccable.launcher-approved.md`](impeccable.launcher-approved.md) — and the
+answer is "mostly, but not the craft floor": reference reads go from 0 to 29
+across 7 of the 35 files, while `craft-floor.md` is still loaded before only 6
+of 29 UI-editing activations. The 0-of-35 figure below is the `acceptEdits`
+result and stands as such; it is not the skill's behaviour when its launcher
+works.
 
 Largest never-opened files: `reference/new-work.md` (52,849 B),
 `reference/critique.md` (43,488 B), `reference/live.md` (36,145 B),
@@ -256,9 +262,20 @@ Two further observations on the invocation itself:
 
 `--permission-mode dontAsk` was tried as an alternative and is worse: it refuses
 `Bash`, `PowerShell` **and** `Edit`, so the launcher is refused 4/4 and no file
-can be written either. `bypassPermissions` is the only mode that would let these
-calls through; it was not run, so **no configuration in which the launcher
-executes has been measured here.**
+can be written either. `bypassPermissions` is the only mode that lets these calls
+through.
+
+> **Correction, 2026-09-07.** This paragraph originally ended "it was not run, so
+> no configuration in which the launcher executes has been measured here." That
+> run has since been made: the same suite at the same case-set hash under
+> `--permission-mode bypassPermissions`, reported in
+> [`impeccable.launcher-approved.md`](impeccable.launcher-approved.md). There,
+> **0 of 57 launcher calls are refused and 42 execute.** It also settles the
+> question this report leaves open two sections above: the completion-case result
+> is independent of the launcher (still 0/10 activations), while the
+> reference-file result is largely caused by it (0 → 7 of 35 files read). The
+> numbers in *this* report are unchanged and remain the `acceptEdits`
+> measurement.
 
 ### The hook runs outside all of this
 
@@ -328,7 +345,16 @@ activated attempts produced is the base model plus an 11 KB `SKILL.md`, which is
 a real thing to measure but is not Suite B.
 
 This is a narrower failure than the pilot's. The pilot could not measure Suite B
-because the skill never loaded. It now loads; what it cannot do is act.
+because the skill never loaded. It now loads; what it cannot do — in *this*
+configuration — is act.
+
+> **Correction, 2026-09-07.** "In this configuration" now carries real weight:
+> under `--permission-mode bypassPermissions` the skill does act. 42 launcher
+> calls execute, 7 reference files are read, and Suite B becomes partly
+> measurable — see
+> [`impeccable.launcher-approved.md`](impeccable.launcher-approved.md). Suite B
+> is still not *reported* here or there, because neither run was designed to
+> assert on behaviour; what changed is that it is no longer impossible.
 
 ---
 

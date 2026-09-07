@@ -120,14 +120,12 @@ edit, and `document.md` before something writes a `DESIGN.md`. Today the model
 loads `SKILL.md`, finds Setup step 1 refused, and proceeds on `SKILL.md` alone,
 which is a strong enough prompt to produce plausible output.
 
-I want to be careful here, because the measurement cannot separate two
-explanations: steps 2 and 3 of Setup follow step 1, and step 1 was refused 55
-times out of 55. Whether the model would load the playbook and the craft floor
-in a session where `impeccable context` succeeds is exactly the question a run
-with the launcher pre-approved would answer, and I have not made that run. If
-the answer is "it would", then finding 3 is the whole cause and 1 and 2 are
-symptoms — which would still leave the completion case, where nothing was
-refused at all because the skill was never reached.
+I was careful here originally, because the first measurement could not separate
+two explanations: steps 2 and 3 of Setup follow step 1, and step 1 was refused 55
+times out of 55. **I have since made the run that separates them** — see *What
+the launcher-approved run settled* below. Short version: finding 2 is
+substantially caused by finding 3 and should be read as downgraded, finding 1 is
+not caused by it at all.
 
 **3.** Setup step 1 should either be executable without consent in a
 non-interactive session, or `SKILL.md` should carry a documented degraded path:
@@ -230,9 +228,13 @@ The blocker is entirely the permission layer.
 
 I also tried `--permission-mode dontAsk` as an alternative and it is worse: it
 refuses `Bash`, `PowerShell` **and** `Edit`, so nothing can be written either.
-`bypassPermissions` is the only mode that would let these calls through, and I
-did not run it — so no configuration in which your launcher actually executes
-has been measured here.
+`bypassPermissions` is the only mode that lets these calls through.
+
+**Update:** I have since made that run — same suite, same case-set hash, only the
+permission mode changed. **0 of 57 launcher calls refused, 42 executed.** Two
+things it changes in this issue, both stated in full at the end under *What the
+launcher-approved run settled*: finding 1 is unaffected, and finding 2 is
+substantially caused by this one and should be read as downgraded.
 
 ### The base-directory ambiguity, finding 4
 
@@ -307,8 +309,9 @@ exactly the boundary your last line declares.
 Everything is pinned to `claude-haiku-4-5-20251001` and Claude Code 2.1.263;
 trigger routing is model behaviour, so 56% is a floor for this model rather than
 a universal result. The permission mode (`acceptEdits`) is part of the
-measurement — a run with your launcher pre-approved would produce different
-numbers for findings 1, 2 and 3, and I have not made one. The Windows specifics
+measurement — a run with your launcher pre-approved produces different numbers
+for findings 2 and 3, and the same numbers for finding 1; both runs are reported.
+The Windows specifics
 — the `&` operator and the `.cmd` launcher — do not apply on other platforms;
 findings 1, 2, 4 and 5 do. This is one round of negatives, not two: 0 false
 positives in 70 attempts bounds the false-positive rate at a 95% lower bound of
@@ -339,8 +342,62 @@ degrade, and how hard the reference-loading steps should be worded so they
 survive a refused step 1, are decisions about your instruction design, and the
 right shape depends on context I do not have from outside the project.
 
-What I can offer is the measurement. The case set is written and pinned, so I
-can re-run all 120 attempts against a candidate fix and report the same numbers
-back before it ships — including the run I am missing, with the launcher
-pre-approved, which is the one that would settle whether findings 1 and 2 are
-consequences of finding 3 or independent of it.
+What I can offer is the measurement. The case set is written and pinned, so I can
+re-run all 120 attempts against a candidate fix and report the same numbers back
+before it ships — in both permission modes, since they now have a baseline each.
+
+---
+
+## What the launcher-approved run settled
+
+Same suite, same case-set hash, same skill hash, same model. Only
+`--permission-mode` changed, from `acceptEdits` to `bypassPermissions`. 120
+attempts each.
+
+| | launcher refused | launcher ran |
+| --- | --- | --- |
+| `acceptEdits` | 55 / 55 | 0 |
+| `bypassPermissions` | **0 / 57** | **42** |
+
+**Finding 1 stands, unchanged, and is not a consequence of finding 3.** The
+completion case fired **0/10 in both modes** and wrote `DESIGN.md` anyway 10/10
+and 9/10. `document.md` was never opened in either. The skill is not reached, so
+whether its launcher works is beside the point.
+
+**Finding 2 is downgraded.** With the launcher working, reference reads go from
+0 to 29, across 7 of the 35 files — `new-work.md` (12), `craft-floor.md` (6),
+`init.md` (3), `layout.md` (3), `bolder.md` (2), `onboard.md` (2), `operate.md`
+(1). The routing works when it runs; `layout.md` and `operate.md` for a settings
+rework, `onboard.md` for an empty state, each the reference your command table
+names. My "none of them are read" framing does not survive that, and I would
+retract it. What survives is narrower: 28 of 35 files still never opened, and
+`craft-floor.md` loaded before only **6 of the 29** UI-editing activations,
+against a `SKILL.md` step that says to load it immediately before editing UI.
+
+**Finding 4 gets worse, not better.** I wrote that the 8 mis-resolved
+`<skill-base-dir>` paths "cost nothing in this run" because everything was
+refused anyway. With the calls permitted, they cost exactly what you would
+expect. Of the 57 launcher calls:
+
+| Outcome | Count |
+| --- | --- |
+| ran | 42 |
+| failed — path does not exist (`<plugin-root>/scripts/…`) | **9** |
+| failed — `ParserError: Unexpected token 'context'` (quoted `.cmd` without `&`) | **6** |
+| refused by the permission layer | 0 |
+
+**26% of launcher calls fail for reasons that belong to the skill, not the
+host** — and that number was invisible while the permission layer refused
+everything.
+
+Routing did not move: precision 100% in both modes (N=28 and N=30), 0 false
+positives in 70 negative attempts each, and no per-case difference clears its
+confidence interval.
+
+One operational note, in case you ever measure this way yourselves: a
+`bypassPermissions` run of this skill destroys its own runner. The agent starts
+dev servers to verify its work and then kills processes *by port*; the servers
+outlive the attempt and pile up on Vite's port ladder (I caught 13 orphans
+holding 5173–5178), and the test runner is a `node` process in the same space.
+Two attempts at a single 120-attempt run died at exit 255 with no output. The run
+had to be split into five records of 24 with the orphans cleared between them.
