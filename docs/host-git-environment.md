@@ -141,3 +141,68 @@ $bak = Get-Content "D:\assay-example\.gitconfig-backups\PATH-User-20260908-20081
 
 Rolling back restores the original failure mode; it is only worth doing if one
 of these changes is shown to cause a new problem.
+
+---
+
+# Follow-up, 2026-09-08 evening — Machine PATH fixed
+
+The administrator fix was applied and terminals were refreshed. The Machine PATH
+now carries all four Windows system directories.
+
+## Verification after the Machine fix
+
+| Check | Result |
+| --- | --- |
+| `where.exe`, `curl.exe` from Machine PATH alone | resolve to `C:\Windows\System32\` |
+| `git-credential-manager.exe` | resolves via the User PATH entry |
+| 5 push+delete cycles, before trimming User PATH | **5/5**, all ~4 s |
+| 5 push+delete cycles, after trimming User PATH | **5/5**, all ~4 s |
+| Git bash x20, via the Claude Code Bash tool | **20/20** clean |
+| Claude Code Bash tool itself | **working** — broken all of the previous session |
+
+The 25-37 s slow pushes seen in the earlier rounds are gone; every cycle is now
+~4 s. The `add_item` fault did not appear once across these runs.
+
+## User PATH trimmed
+
+Now redundant and removed from the User PATH:
+
+```
+C:\Windows\System32
+C:\Windows
+C:\Windows\System32\Wbem
+C:\Windows\System32\WindowsPowerShell\v1.0
+```
+
+**Kept:** `C:\Program Files\Git\mingw64\bin`. It is *not* in the Machine PATH,
+and without it git cannot resolve the `manager` credential helper — verified by
+removing it and watching the lookup fail. Do not drop this entry unless it is
+added at machine scope first.
+
+Backup before trimming: `.gitconfig-backups/PATH-User-20260908-203020-before-trim.bak`.
+
+## One side effect worth knowing
+
+With `C:\Windows\System32` restored at the front of the Machine PATH, a bare
+`bash` typed in cmd or PowerShell now resolves to **WSL's** `bash.exe` rather
+than Git bash:
+
+```
+C:\Windows\System32\bash.exe   ->  WSL (10 - Relay) ERROR:
+                                   execvpe(/bin/bash) failed: No such file or directory
+```
+
+The only WSL distro registered here is `docker-desktop`, which has no
+`/bin/bash`, so bare `bash` from a Windows shell now always fails.
+
+This is standard Windows behaviour rather than a fault — Git for Windows
+deliberately puts only `Git\cmd` on the PATH, and `C:\Program Files\Git\bin`
+being there is a non-default addition to this machine. Nothing measured here is
+affected: the Claude Code Bash tool invokes Git bash by absolute path, and
+inside MSYS `bash` correctly resolves to `/usr/bin/bash`.
+
+It only matters for scripts that call bare `bash` from cmd/PowerShell. If any
+do, the options are: call Git bash by full path, install a real WSL distro, or
+have an administrator move `C:\Program Files\Git\bin` ahead of `System32` in the
+Machine PATH — the last of which also shadows `find.exe`, `sort.exe` and others
+with their MSYS versions and is not recommended.
