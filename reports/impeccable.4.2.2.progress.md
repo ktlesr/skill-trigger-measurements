@@ -104,7 +104,7 @@ Record `run-2026-09-08T09-30-20-440Z-13fc9390`.
    the agent inside the sandbox too, and it bit `claude plugin marketplace add`
    once (succeeded on retry). Present in the 4.2.1 runs as well, so it is a
    constant across the comparison, not a new variable.
-2. **`C:\Windows\System32` is not on this shell PATH**, so the launcher''s
+2. **`C:\Windows\System32` is not on this shell PATH**, so the launcher's
    `where curl.exe` self-download probe fails. Worked around by priming the
    engine by hand. Host property; recorded in Limitations.
 3. **The runner needs credentials from `.env`.** A first smoke run scored

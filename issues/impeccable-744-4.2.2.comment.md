@@ -10,8 +10,8 @@ skill version changed, so anything that moves is #750.
 
 240 attempts: 120 under `acceptEdits`, 120 under `bypassPermissions`. As before,
 **`bypassPermissions` is an instrument, not a recommendation** — it is the only
-way to hold the permission layer constant so the skill''s own behaviour can be
-separated from the host''s refusals. Nobody should ship it.
+way to hold the permission layer constant so the skill's own behaviour can be
+separated from the host's refusals. Nobody should ship it.
 
 Short version: **#750 fixed the path half of finding 4 and moved finding 2 a long
 way. It did not touch the quoting half of finding 4, finding 1 is exactly where
@@ -22,7 +22,7 @@ it was, and reference breadth got slightly worse.**
 | | 4.2.1 | 4.2.2 |
 | --- | --- | --- |
 | launcher resolved the wrong base dir | **11 / 57** | **1 / 56** |
-| launcher failed for the skill''s own reasons | **26%** | **10%** |
+| launcher failed for the skill's own reasons | **26%** | **10%** |
 | `craft-floor.md` read before a UI edit | **6 / 29 (21%)** | **16 / 30 (53%)** |
 | told the user when the launcher failed | 3 / 27 (11%) | 16 / 27 (59%) |
 | launcher calls per activation (`acceptEdits`) | 1.96 | 1.12 |
@@ -33,7 +33,7 @@ as many words that it is *not* the plugin root two levels up took mis-resolved
 
 **Finding 2 moved more than I expected.** `craft-floor.md` went from the
 sixth-most-read reference to the most-read one, and from 21% to 53% of UI-editing
-activations. The intervals barely touch, so this is real. Step 3''s rewording did
+activations. The intervals barely touch, so this is real. Step 3's rewording did
 what it was meant to do.
 
 **The new "Launcher unavailable" paragraph works on both halves.** The model
@@ -88,9 +88,9 @@ per-case difference clears its interval.
 
 ## Two caveats against myself
 
-**This host''s Git bash is intermittently broken** (`fatal error - add_item …`)
+**This host's Git bash is intermittently broken** (`fatal error - add_item …`)
 and it was not during the 4.2.1 `bypassPermissions` run — 11 of 390 Bash calls
-today against 0 of 403 then. That inflates 4.2.2''s raw failure column for a
+today against 0 of 403 then. That inflates 4.2.2's raw failure column for a
 reason that is nothing to do with the skill, so the "26% → 10%" row above
 excludes it from both sides. The raw counts are in the report.
 
@@ -98,7 +98,7 @@ excludes it from both sides. The raw counts are in the report.
 separable — they ship together. I primed the host with 0.1.3 by hand
 (sha256-verified against your release sidecar) so this is primed-host against
 primed-host, matching the 4.2.1 condition. Worth knowing separately: the
-launcher''s self-download path fails closed and silently if `System32` is off the
+launcher's self-download path fails closed and silently if `System32` is off the
 shell PATH, because `where curl.exe` is its gate.
 
 ## Operational note, again

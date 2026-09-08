@@ -24,7 +24,7 @@ at the same time as the subject would have made the comparison worthless.
 > **`bypassPermissions` is a measurement instrument, not a configuration
 > recommendation.** It removes every boundary the sandbox observes. It is used
 > here for one reason: it is the only way to hold the permission layer constant
-> so that the skill''s own behaviour can be separated from the host''s refusals.
+> so that the skill's own behaviour can be separated from the host's refusals.
 > Nobody should ship it.
 
 ---
@@ -126,16 +126,16 @@ calls per activation instead of 1.96. That is the new fallback paragraph working
 | total | 57 | 56 |
 | base dir resolved wrongly | **11 (19%)** | **1 (2%)** |
 
-**Caveat, and it matters.** This host''s Git bash is intermittently broken
+**Caveat, and it matters.** This host's Git bash is intermittently broken
 (`bash.exe: *** fatal error - add_item …`). It hit 11 of 390 Bash calls today
 against 0 of 403 during the 4.2.1 `bypassPermissions` run, so it inflates
-4.2.2''s failure column for a reason that has nothing to do with the skill.
+4.2.2's failure column for a reason that has nothing to do with the skill.
 Excluding it from both sides:
 
 | | 4.2.1 | 4.2.2 |
 | --- | --- | --- |
 | skill-attributable launcher calls | 57 | 51 |
-| of those, failed for the skill''s own reasons | **15 (26%)** | **5 (10%)** |
+| of those, failed for the skill's own reasons | **15 (26%)** | **5 (10%)** |
 
 **Finding 4a is essentially fixed.** The mis-resolved `<plugin-root>/scripts/…`
 path went from 11 of 57 calls to 1 of 56. Naming `${CLAUDE_SKILL_DIR}` and
@@ -307,7 +307,7 @@ budget for it and chunk in twelves, not twenty-fours.
   mode, each attempt an independent session in a fresh workspace, so pooling is
   arithmetically the same measurement — but no single record holds it. The
   analysis tool refuses to pool records whose pins differ.
-- **The host''s Git bash is intermittently broken** and was not during the 4.2.1
+- **The host's Git bash is intermittently broken** and was not during the 4.2.1
   `bypassPermissions` run. Quantified above and excluded from the headline
   launcher comparison; it is a genuine confounder on the raw counts.
 - **The engine pin moved 0.1.2 -> 0.1.3 with the skill version.** These are not
@@ -315,13 +315,13 @@ budget for it and chunk in twelves, not twenty-fours.
   hand (sha256-verified against the release sidecar) so that the comparison is
   primed-host against primed-host, as the 4.2.1 runs were.
 - **The launcher cannot self-download on this host.** `C:\Windows\System32` is
-  not on this shell''s PATH, so its `where curl.exe` probe fails and it goes to
+  not on this shell's PATH, so its `where curl.exe` probe fails and it goes to
   `:fail` with exit 127. Host property, worked around by the priming above, but
   worth knowing: the download path fails closed and silently on a PATH like this.
 - **Rates are pinned to `claude-haiku-4-5-20251001`.** Recall in the low 60s is a
   floor for this model, not a universal result.
 - **One round of negatives.** 0 false positives in 70 attempts per measurement
-  bounds the false-positive rate; it does not show where the set''s
+  bounds the false-positive rate; it does not show where the set's
   discriminating power ends.
 - **The disclosure metric is a text classifier**, described in its own section.
 - **`bypassPermissions` is not a configuration anyone should ship.**
