@@ -1,0 +1,66 @@
+
+========================================================================
+4.2.2-acceptEdits  —  mode acceptEdits  —  5 record(s)
+========================================================================
+skillHash       sha256:5c5260774d0095b797526ecb6f43b01000caf5b70346d07bb89168dcd148cdcb
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:3abcf17d1ef9845506852d41cfa86d509e4cd02c6d7347a69ca58456e672a2d7
+model           claude-haiku-4-5-20251001
+records         run-2026-09-08T09-54-07-766Z-631543d1, run-2026-09-08T10-15-55-401Z-c4c1faa3, run-2026-09-08T10-40-28-846Z-06e91f2d, run-2026-09-08T11-00-59-419Z-38eff4b3, run-2026-09-08T11-22-26-246Z-a3590f30
+attempts 120 · tool calls 1013 · $8.19 · 106.8 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           5/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                    10/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                       10/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       7/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=32 FN=18 FP=0 TN=70 unknown=0
+  precision 100% (N=32, 89%-100%)
+  recall    64% (N=50, 50%-76%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 36
+    refused by the permission layer        36
+  base directory resolved:
+    correct (skill dir)                    33
+    wrong (plugin root)                    3
+  by tool:
+    Bash                                   27
+    PowerShell                             9
+  verbs:
+    context                                36
+  distinct error texts:
+    [refused by the permission layer] This command requires approval
+    [refused by the permission layer] This PowerShell command contains multiple operations. The following part requires approval: &"C:/Users/<user>/AppData/Local/Temp/assay-skill-41qHvP/skills/impeccable/scripts/impeccable.cmd" context
+    [refused by the permission layer] This PowerShell command contains multiple operations. The following part requires approval: & "C:/Users/<user>/AppData/Local/Temp/assay-skill-NqrxQs/skills/impeccable/scripts/impeccable.cmd" context
+    [refused by the permission layer] Command contains malformed syntax that cannot be parsed: Unexpected token 'context' in expression or statement.
+    [refused by the permission layer] Parse error
+    [refused by the permission layer] This Bash command contains multiple operations. The following part requires approval: "C:/Users/<user>/AppData/Local/Temp/assay-skill-WQIG3r/skills/impeccable/scripts/impeccable.cmd" context
+    [refused by the permission layer] Compound command changes working directory (Set-Location/Push-Location/Pop-Location/New-PSDrive) — relative paths cannot be validated against the original cwd and require manual approval
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 0 · total reads: 0
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        32
+  of those, read craft-floor first:  0  (0% (N=32, 0%-11%))
+  read it only after the first edit: 0
+    trigger.positive.empty_state                         0/5
+    trigger.positive.forgettable_usage                   0/10
+    trigger.positive.hero_direction                      0/10
+    trigger.positive.settings_rework                     0/7
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        10
+  document_md      0
+  any_reference    0

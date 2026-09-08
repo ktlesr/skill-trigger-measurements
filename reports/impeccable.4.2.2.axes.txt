@@ -1,0 +1,439 @@
+
+========================================================================
+4.2.1-acceptEdits  —  mode acceptEdits  —  1 record(s)
+========================================================================
+skillHash       sha256:c3185df7833a43644cc5756c802358f9345d41e353fb6166381026b6c5ca8cfd
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:1491f2d9ecd4af98acc2458de055f52b172eafcc5c119edd08d93c69bec4baf0
+model           claude-haiku-4-5-20251001
+records         run-2026-09-06T09-53-14-345Z-c3d2b624
+attempts 120 · tool calls 964 · $8.11 · 90.9 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           2/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                    10/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                       10/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       6/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=28 FN=22 FP=0 TN=70 unknown=0
+  precision 100% (N=28, 88%-100%)
+  recall    56% (N=50, 42%-69%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 55
+    refused by the permission layer        55
+  base directory resolved:
+    correct (skill dir)                    47
+    wrong (plugin root)                    8
+  by tool:
+    Bash                                   29
+    PowerShell                             26
+  verbs:
+    context                                55
+  distinct error texts:
+    [refused by the permission layer] This PowerShell command contains multiple operations. The following part requires approval: & "C:\Users\<user>\AppData\Local\Temp\assay-skill-sboeLx\skills\impeccable\scripts\impeccable.cmd" context
+    [refused by the permission layer] This command requires approval
+    [refused by the permission layer] This Bash command contains multiple operations. The following part requires approval: "C:\Users\<user>\AppData\Local\Temp\assay-skill-sboeLx\skills\impeccable\scripts\impeccable.cmd" context
+    [refused by the permission layer] Compound command changes working directory (Set-Location/Push-Location/Pop-Location/New-PSDrive) — relative paths cannot be validated against the original cwd and require manual approval
+    [refused by the permission layer] Command contains malformed syntax that cannot be parsed: Unexpected token 'context' in expression or statement.
+    [refused by the permission layer] This PowerShell command contains multiple operations. The following part requires approval: &"C:\Users\<user>\AppData\Local\Temp\assay-skill-sboeLx\skills\impeccable\scripts\impeccable.cmd" context
+    [refused by the permission layer] Parse error
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            28
+    attempted the launcher                 27
+    launcher calls                         55
+    calls per activation                   1.96
+    activations where every call failed    27
+    of those, told the user                3
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 0 · total reads: 0
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        28
+  of those, read craft-floor first:  0  (0% (N=28, 0%-12%))
+  read it only after the first edit: 0
+    trigger.positive.empty_state                         0/2
+    trigger.positive.forgettable_usage                   0/10
+    trigger.positive.hero_direction                      0/10
+    trigger.positive.settings_rework                     0/6
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        10
+  document_md      0
+  any_reference    0
+
+========================================================================
+4.2.2-acceptEdits  —  mode acceptEdits  —  5 record(s)
+========================================================================
+skillHash       sha256:5c5260774d0095b797526ecb6f43b01000caf5b70346d07bb89168dcd148cdcb
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:3abcf17d1ef9845506852d41cfa86d509e4cd02c6d7347a69ca58456e672a2d7
+model           claude-haiku-4-5-20251001
+records         run-2026-09-08T09-54-07-766Z-631543d1, run-2026-09-08T10-15-55-401Z-c4c1faa3, run-2026-09-08T10-40-28-846Z-06e91f2d, run-2026-09-08T11-00-59-419Z-38eff4b3, run-2026-09-08T11-22-26-246Z-a3590f30
+attempts 120 · tool calls 1013 · $8.19 · 106.8 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           5/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                    10/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                       10/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       7/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=32 FN=18 FP=0 TN=70 unknown=0
+  precision 100% (N=32, 89%-100%)
+  recall    64% (N=50, 50%-76%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 36
+    refused by the permission layer        36
+  base directory resolved:
+    correct (skill dir)                    33
+    wrong (plugin root)                    3
+  by tool:
+    Bash                                   27
+    PowerShell                             9
+  verbs:
+    context                                36
+  distinct error texts:
+    [refused by the permission layer] This command requires approval
+    [refused by the permission layer] This PowerShell command contains multiple operations. The following part requires approval: &"C:/Users/<user>/AppData/Local/Temp/assay-skill-41qHvP/skills/impeccable/scripts/impeccable.cmd" context
+    [refused by the permission layer] This PowerShell command contains multiple operations. The following part requires approval: & "C:/Users/<user>/AppData/Local/Temp/assay-skill-NqrxQs/skills/impeccable/scripts/impeccable.cmd" context
+    [refused by the permission layer] Command contains malformed syntax that cannot be parsed: Unexpected token 'context' in expression or statement.
+    [refused by the permission layer] Parse error
+    [refused by the permission layer] This Bash command contains multiple operations. The following part requires approval: "C:/Users/<user>/AppData/Local/Temp/assay-skill-WQIG3r/skills/impeccable/scripts/impeccable.cmd" context
+    [refused by the permission layer] Compound command changes working directory (Set-Location/Push-Location/Pop-Location/New-PSDrive) — relative paths cannot be validated against the original cwd and require manual approval
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            32
+    attempted the launcher                 27
+    launcher calls                         36
+    calls per activation                   1.12
+    activations where every call failed    27
+    of those, told the user                16
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 0 · total reads: 0
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        32
+  of those, read craft-floor first:  0  (0% (N=32, 0%-11%))
+  read it only after the first edit: 0
+    trigger.positive.empty_state                         0/5
+    trigger.positive.forgettable_usage                   0/10
+    trigger.positive.hero_direction                      0/10
+    trigger.positive.settings_rework                     0/7
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        10
+  document_md      0
+  any_reference    0
+
+========================================================================
+4.2.1-bypassPermissions  —  mode bypassPermissions  —  5 record(s)
+========================================================================
+skillHash       sha256:c3185df7833a43644cc5756c802358f9345d41e353fb6166381026b6c5ca8cfd
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:c8038f22a8f9f98b4deb7cd97855ed4a4d9aec556699cc8cc6d8e9adef498ee1
+model           claude-haiku-4-5-20251001
+records         run-2026-09-07T09-36-27-600Z-ec1b08b1, run-2026-09-07T09-58-22-867Z-eea3fe04, run-2026-09-07T10-30-58-540Z-174c6a6e, run-2026-09-07T10-57-37-629Z-528f72bb, run-2026-09-07T11-34-02-101Z-0cb0d9c7
+attempts 120 · tool calls 1402 · $12.86 · 124.1 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           3/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                    10/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                        9/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       8/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=30 FN=20 FP=0 TN=70 unknown=0
+  precision 100% (N=30, 89%-100%)
+  recall    60% (N=50, 46%-72%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 57
+    ran                                    42
+    failed: path does not exist            9
+    failed: parser / quoting               6
+  base directory resolved:
+    correct (skill dir)                    46
+    wrong (plugin root)                    11
+  by tool:
+    Bash                                   39
+    PowerShell                             18
+  verbs:
+    context                                43
+    detect                                 9
+    init                                   1
+    hooks                                  1
+    surface-brief                          1
+    critique                               1
+    --help                                 1
+  distinct error texts:
+    [failed: path does not exist] Exit code 127
+/usr/bin/bash: line 1: C:\Users\<user>\AppData\Local\Temp\assay-skill-IWkden\scripts\impeccable.cmd: No such file or directory
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … Local\Temp\assay-skill-IWkden\scripts\impeccable.cmd" context --targe …
+
+     |                                                          ~~~~~~~
+
+     | Unexpected token 'cont
+    [failed: path does not exist] Exit code 1
+&: The term 'C:\Users\<user>\AppData\Local\Temp\assay-skill-IWkden\scripts\impeccable.cmd' is not recognized as a name of a cmdlet, function, script file, or executable program.
+
+Check the spelling of the nam
+    [failed: parser / quoting] Exit code 2
+/usr/bin/bash: eval: line 1: syntax error near unexpected token `&'
+/usr/bin/bash: eval: line 1: `& "C:\Users\<user>\AppData\Local\Temp\assay-skill-DvWPcA\scripts\impeccable.cmd" context'
+    [failed: path does not exist] Exit code 1
+&: The term 'C:\Users\<user>\AppData\Local\Temp\assay-skill-DvWPcA\scripts\impeccable.cmd' is not recognized as a name of a cmdlet, function, script file, or executable program.
+
+Check the spelling of the nam
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … \assay-skill-IWkden\skills\impeccable\scripts\impeccable.cmd" context
+
+     |                                                                  ~~~~~~~
+
+     | Unexpected token
+    [failed: path does not exist] Exit code 127
+/usr/bin/bash: line 1: C:\Users\<user>\AppData\Local\Temp\assay-skill-yL71Xo\scripts\impeccable.cmd: No such file or directory
+    [failed: path does not exist] Exit code 1
+&: The term 'C:\Users\<user>\AppData\Local\Temp\assay-skill-yL71Xo\scripts\impeccable.cmd' is not recognized as a name of a cmdlet, function, script file, or executable program.
+
+Check the spelling of the nam
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … \assay-skill-p6etph\skills\impeccable\scripts\impeccable.cmd" context
+
+     |                                                                  ~~~~~~~
+
+     | Unexpected token
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … kill-IWkden\skills\impeccable\scripts\impeccable.cmd" context --targe …
+
+     |                                                          ~~~~~~~
+
+     | Unexpected token 'cont
+    [failed: path does not exist] Exit code 127
+/usr/bin/bash: line 1: C:\Users\<user>\AppData\Local\Temp\assay-skill-kmhAPg\scripts\impeccable.cmd: No such file or directory
+    [failed: path does not exist] Exit code 1
+&: The term 'C:\Users\<user>\AppData\Local\Temp\assay-skill-kmhAPg\scripts\impeccable.cmd' is not recognized as a name of a cmdlet, function, script file, or executable program.
+
+Check the spelling of the nam
+    [failed: path does not exist] Exit code 127
+/usr/bin/bash: line 1: C:\Users\<user>\AppData\Local\Temp\assay-skill-DvWPcA\scripts\impeccable.cmd: No such file or directory
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            30
+    attempted the launcher                 30
+    launcher calls                         57
+    calls per activation                   1.9
+    activations where every call failed    2
+    of those, told the user                0
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 7 · total reads: 29
+    new-work.md                   12   hero_direction×8, forgettable_usage×4
+    craft-floor.md                 6   hero_direction×4, forgettable_usage×1, empty_state×1
+    init.md                        3   hero_direction×2, forgettable_usage×1
+    layout.md                      3   settings_rework×3
+    bolder.md                      2   hero_direction×1, forgettable_usage×1
+    onboard.md                     2   empty_state×2
+    operate.md                     1   settings_rework×1
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        29
+  of those, read craft-floor first:  6  (21% (N=29, 10%-38%))
+  read it only after the first edit: 0
+    trigger.positive.empty_state                         1/3
+    trigger.positive.forgettable_usage                   1/9
+    trigger.positive.hero_direction                      4/9
+    trigger.positive.settings_rework                     0/8
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        9
+  document_md      0
+  any_reference    0
+
+========================================================================
+4.2.2-bypassPermissions  —  mode bypassPermissions  —  6 record(s)
+========================================================================
+skillHash       sha256:5c5260774d0095b797526ecb6f43b01000caf5b70346d07bb89168dcd148cdcb
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:66baa6f048b72c06d9887f162713c4fcc8c734d18ce319b40907869e50f53bbf
+model           claude-haiku-4-5-20251001
+records         run-2026-09-08T11-59-15-098Z-147c71ed, run-2026-09-08T12-38-29-070Z-0c434e1e, run-2026-09-08T13-17-11-967Z-2b58f036, run-2026-09-08T13-56-09-772Z-bc105e7a, run-2026-09-08T14-43-31-131Z-be061f24, run-2026-09-08T15-01-42-733Z-c472c9b7
+attempts 120 · tool calls 1430 · $12.96 · 179.0 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           7/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                    10/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                        9/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       6/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=32 FN=18 FP=0 TN=70 unknown=0
+  precision 100% (N=32, 89%-100%)
+  recall    64% (N=50, 50%-76%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 56
+    ran                                    46
+    host shell broken (Git bash)           5
+    failed: parser / quoting               4
+    failed: path does not exist            1
+  base directory resolved:
+    correct (skill dir)                    55
+    wrong (plugin root)                    1
+  by tool:
+    Bash                                   39
+    PowerShell                             17
+  verbs:
+    context                                40
+    detect                                 12
+    surface-brief                          3
+    concept-seed                           1
+  distinct error texts:
+    [host shell broken (Git bash)] Exit code 5
+      0 [main] bash (52380) C:\Program Files\Git\bin\..\usr\bin\bash.exe: *** fatal error - add_item ("\??\C:\Program Files\Git", "/", ...) failed, errno 1
+    [host shell broken (Git bash)] Exit code 5
+      0 [main] bash (51384) C:\Program Files\Git\bin\..\usr\bin\bash.exe: *** fatal error - add_item ("\??\C:\Program Files\Git", "/", ...) failed, errno 1
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … kill-CVyCTM/skills/impeccable/scripts/impeccable.cmd" context --targe …
+
+     |                                                          ~~~~~~~
+
+     | Unexpected token 'cont
+    [failed: path does not exist] Exit code 127
+/usr/bin/bash: line 1: C:/Users/<user>/AppData/Local/Temp/assay-skill-yFljEI/scripts/impeccable.cmd: No such file or directory
+    [host shell broken (Git bash)] Exit code 5
+      0 [main] bash (41924) C:\Program Files\Git\bin\..\usr\bin\bash.exe: *** fatal error - add_item ("\??\C:\Program Files\Git", "/", ...) failed, errno 1
+    [host shell broken (Git bash)] Exit code 5
+      0 [main] bash (34828) C:\Program Files\Git\bin\..\usr\bin\bash.exe: *** fatal error - add_item ("\??\C:\Program Files\Git", "/", ...) failed, errno 1
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … /assay-skill-yFljEI/skills/impeccable/scripts/impeccable.cmd" context
+
+     |                                                                  ~~~~~~~
+
+     | Unexpected token
+    [host shell broken (Git bash)] Exit code 5
+      0 [main] bash (61784) C:\Program Files\Git\bin\..\usr\bin\bash.exe: *** fatal error - add_item ("\??\C:\Program Files\Git", "/", ...) failed, errno 1
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … /assay-skill-0bPScx/skills/impeccable/scripts/impeccable.cmd" context
+
+     |                                                                  ~~~~~~~
+
+     | Unexpected token
+    [failed: parser / quoting] Exit code 1
+ParserError: 
+
+Line |
+
+   1 |  … kill-yFljEI/skills/impeccable/scripts/impeccable.cmd" context --targe …
+
+     |                                                          ~~~~~~~
+
+     | Unexpected token 'cont
+    [ran] Exit code 2
+[
+  {
+    "antipattern": "layout-transition",
+    "name": "Layout property animation",
+    "description": "Animating width, height, padding, or margin causes layout thrash and janky performance. Use transform
+    [ran] Exit code 2
+[
+  {
+    "antipattern": "bounce-easing",
+    "name": "Bounce or elastic easing",
+    "description": "Bounce and elastic easing feel dated and tacky. Real objects decelerate smoothly — use exponential easing 
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            32
+    attempted the launcher                 31
+    launcher calls                         56
+    calls per activation                   1.75
+    activations where every call failed    0
+    of those, told the user                0
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 5 · total reads: 42
+    craft-floor.md                16   hero_direction×6, forgettable_usage×4, settings_rework×3, empty_state×3
+    new-work.md                   14   hero_direction×7, forgettable_usage×7
+    onboard.md                     7   empty_state×7
+    init.md                        4   hero_direction×2, forgettable_usage×2
+    bolder.md                      1   forgettable_usage×1
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        30
+  of those, read craft-floor first:  16  (53% (N=30, 36%-70%))
+  read it only after the first edit: 0
+    trigger.positive.empty_state                         3/7
+    trigger.positive.forgettable_usage                   4/9
+    trigger.positive.hero_direction                      6/8
+    trigger.positive.settings_rework                     3/6
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        6
+  document_md      0
+  any_reference    0
