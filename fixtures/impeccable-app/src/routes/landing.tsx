@@ -12,7 +12,7 @@ export default function Landing() {
         <h2 style={{ fontSize: 18 }}>Why teams switch</h2>
         <ul>
           <li>Per-second aggregation</li>
-          <li>Stripe and Chargebee sync</li>
+          <li>ExamplePay and ExampleSubscriptions sync</li>
           <li>Usage alerts before the invoice</li>
         </ul>
       </section>

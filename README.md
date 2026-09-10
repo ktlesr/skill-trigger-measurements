@@ -29,13 +29,23 @@ negatives built into the first set.
 - [`ui-ux-pro-max` report](reports/ui-ux-pro-max.md) · [coverage](reports/ui-ux-pro-max.coverage.md) · [issue draft](issues/ui-ux-pro-max.md) · [follow-up](reports/ui-ux-pro-max.followup.md) — finding 1 fixed upstream and re-verified; the rest still open
 - [`impeccable` report](reports/impeccable.md) · [coverage](reports/impeccable.coverage.md) · [issue draft](issues/impeccable.draft.md) · [as filed](issues/impeccable-4.2.1.issue.md) — preceded by a [feasibility pilot](reports/impeccable.pilot.md) that found the skill could not activate at all under `claude -p`, and the [issue](issues/impeccable.md) · [as filed](issues/impeccable.issue.md) that came out of it
   - [launcher-approved run](reports/impeccable.launcher-approved.md) · [coverage](reports/impeccable.launcher-approved.coverage.md) — the same case set with the skill's shell access granted, to separate what the skill does from what the permission layer stopped
+  - [4.2.2 run](reports/impeccable.4.2.2.md) · [coverage](reports/impeccable.4.2.2.coverage.md) · [comment as posted](issues/impeccable-744-4.2.2.comment.md) — the same case set against 4.2.2, both permission modes, to read off what upstream #750 fixed
+
+## Collision measurements
+
+Several skills installed together, and the question is which one a request
+reaches. Precision and recall per skill do not describe that, so these are
+reported as a winner matrix instead of a row in the table above.
+
+- [`marketingskills` — 14 co-installed skills](reports/marketingskills.collide.md) · [matrix](reports/marketingskills.collide.matrix.md) · [issue draft](issues/marketingskills.collide.issue.md) — 49 of 50 activations reached the skill the descriptions route to; 7 of 13 skills never activated on their own cases; `product-marketing` fired 0 times in 200
 
 ## How the case sets are built
 
 Every suite follows the same shape, and the constraints matter more than the
 counts:
 
-- **One skill active per run.** Sibling skills are not installed, so a boundary
+- **One skill active per run** — except in the collision measurements, where the
+  siblings are the point. Otherwise sibling skills are not installed, so a boundary
   that holds, holds on the skill's own description rather than because something
   else caught the request.
 - **No prompt contains the skill's name** — or, for `animate`, even the word
@@ -154,7 +164,7 @@ Method: <https://assayctl.dev/methodology>
 
 The skills under `skills/` are **unmodified copies of other people's work**,
 vendored at a pinned commit so the measurement is reproducible. Each copy keeps
-its upstream `LICENSE` — the first three are MIT, `impeccable` is Apache 2.0:
+its upstream `LICENSE` — `impeccable` is Apache 2.0, the rest are MIT:
 
 - `skills/animate/` — © Emil Kowalski, from
   [emilkowalski/skills](https://github.com/emilkowalski/skills) at
@@ -169,11 +179,40 @@ its upstream `LICENSE` — the first three are MIT, `impeccable` is Apache 2.0:
   resolves; the skill's own files are unmodified.
 - `skills/impeccable/` — Apache 2.0, from
   [pbakaus/impeccable](https://github.com/pbakaus/impeccable) at
-  `831cabee8b4bc1a2b66e5ae22003e9a19b57d464`. This is the plugin cache produced
-  by `claude plugin install impeccable@impeccable`, vendored verbatim.
+  `2bc2879276c1f321a53c4ca99d3371e411329b52` (4.2.2). This is the plugin cache
+  produced by `claude plugin install impeccable@impeccable`, vendored verbatim.
+  The 4.2.2 plugin package ships no licence file, so `LICENSE` and `NOTICE.md`
+  are copied byte-for-byte from the repository root at the same commit, as
+  Apache 2.0 section 4 requires. The 4.2.1 copy
+  (`831cabee8b4bc1a2b66e5ae22003e9a19b57d464`), which the earlier reports
+  measured, is in this repository's history before commit `22b8530`.
+- `skills/marketing-skills-collide/` — MIT, © Corey Haines, from
+  [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills)
+  at `5b2c0007766c6a1cf1d53fd8fc73e979e0821022` (2.11.1), installed with
+  `claude plugin install marketing-skills@marketingskills`. **14 of the 50
+  skills**, copied unmodified with their upstream `LICENSE` and `plugin.json`,
+  so the other 36 are not loaded during the collision measurement.
 
 The case sets, fixtures, reports and tooling in this repository are MIT licensed
 (see [LICENSE](LICENSE)).
+**Fixture data is fictional.** Every name, company, address and product in
+`fixtures/` is invented for these measurements. On 2026-09-10 a check found
+invented values that could coincide with real people or companies, and real
+product names, and replaced them with plainly fictional ones — after some
+measurements had already run against them:
+
+| Fixture file | Replaced | Measured before the change |
+| --- | --- | --- |
+| `marketing-site/outreach/prospects.csv` | 3 person and 3 company names | `marketingskills` `cold_email.outreach` |
+| `marketing-site/content/integrations.csv` | 5 real integration products | `marketingskills` `programmatic_seo.integration_pages` |
+| `marketing-site/.agents/product-marketing.md` | 2 real product names | every `marketingskills` case that reads it |
+| `impeccable-app/src/routes/settings.tsx` | one address on a real-looking domain, now `ops@example.com` | `impeccable` `settings_rework`, all three runs |
+| `impeccable-app/src/routes/landing.tsx` | 2 real product names in a feature bullet | `impeccable` `hero_direction`, `cta_instrumentation`, all three runs |
+
+The file structure and everything a case asks about are unchanged, and none of
+the replaced strings is what a case turns on — but a re-run now reads different
+bytes than the published runs did, and that is stated here rather than assumed
+away.
 
 A measurement is not a verdict on a skill. All four measured here kept every
 boundary their authors declared, across 430 negative attempts; the findings are

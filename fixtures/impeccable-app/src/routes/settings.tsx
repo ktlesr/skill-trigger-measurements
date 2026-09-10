@@ -5,7 +5,7 @@ export default function Settings() {
       <label style={{ fontSize: 11, color: '#999' }}>Workspace name</label>
       <input defaultValue="Acme" style={{ border: '1px solid #ddd', padding: 4 }} />
       <label style={{ fontSize: 11, color: '#999' }}>Billing email</label>
-      <input defaultValue="ops@acme.io" style={{ border: '1px solid #ddd', padding: 4 }} />
+      <input defaultValue="ops@example.com" style={{ border: '1px solid #ddd', padding: 4 }} />
       <label style={{ fontSize: 11, color: '#999' }}>Data region</label>
       <select><option>eu-west-1</option><option>us-east-1</option></select>
       <button style={{ background: '#eee', padding: 4 }}>Save</button>

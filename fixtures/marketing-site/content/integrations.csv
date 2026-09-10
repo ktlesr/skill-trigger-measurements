@@ -1,0 +1,6 @@
+tool,category,setup_minutes
+ExamplePay,billing,5
+ExampleSubscriptions,billing,10
+ExampleAnalytics,analytics,8
+ExampleGateway,gateway,15
+ExampleCloud Gateway,gateway,20

@@ -1,0 +1,4 @@
+name,title,company,api_product,notes
+Avery Example,Head of Platform,ExampleShip,Shipping rates API,bills by hand from logs
+Blake Sample,Staff Engineer,ExampleLingo,Translation API,moving to usage pricing this quarter
+Casey Placeholder,VP Engineering,ExampleGeo,Geocoding API,in-memory counters keep drifting
