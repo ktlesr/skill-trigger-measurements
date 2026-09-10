@@ -45,7 +45,7 @@ The same tasks run with the skill installed and with it absent, and the output o
 each arm scored by deterministic checks — no LLM judge. The question is whether
 what gets built is different because the skill was there.
 
-- [`hallmark` — does an anti-slop design skill change the page?](reports/hallmark.ablation.md) · [analysis](reports/hallmark.ablation.explicit.analysis.md) — invoked by name, pages using pure `#fff`/`#000` fall from 100% to 50%, which holds under a worst-case bound; `transition: all` rises from 35% to 57%; 12 of 40 invocations stop at a question gate without building; on organic requests the skill activates 0 of 12
+- [`hallmark` — does an anti-slop design skill change the page?](reports/hallmark.ablation.md) · [analysis](reports/hallmark.ablation.explicit.analysis.md) · [issue draft](issues/hallmark.ablation.issue.md) — invoked by name, pages using pure `#fff`/`#000` fall from 100% to 50%, which holds under a worst-case bound; `transition: all` rises from 35% to 57%; 12 of 40 invocations stop at a question gate without building; on organic requests the skill activates 0 of 12
 
 ## How the case sets are built
 
