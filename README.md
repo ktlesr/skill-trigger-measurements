@@ -39,6 +39,14 @@ reported as a winner matrix instead of a row in the table above.
 
 - [`marketingskills` — 14 co-installed skills](reports/marketingskills.collide.md) · [matrix](reports/marketingskills.collide.matrix.md) · [issue draft](issues/marketingskills.collide.issue.md) — 49 of 50 activations reached the skill the descriptions route to; 7 of 13 skills never activated on their own cases; `product-marketing` fired 0 times in 200
 
+## Ablation measurements
+
+The same tasks run with the skill installed and with it absent, and the output of
+each arm scored by deterministic checks — no LLM judge. The question is whether
+what gets built is different because the skill was there.
+
+- [`hallmark` — does an anti-slop design skill change the page?](reports/hallmark.ablation.md) · [analysis](reports/hallmark.ablation.explicit.analysis.md) — invoked by name, pages using pure `#fff`/`#000` fall from 100% to 50%, which holds under a worst-case bound; `transition: all` rises from 35% to 57%; 12 of 40 invocations stop at a question gate without building; on organic requests the skill activates 0 of 12
+
 ## How the case sets are built
 
 Every suite follows the same shape, and the constraints matter more than the
@@ -49,7 +57,9 @@ counts:
   that holds, holds on the skill's own description rather than because something
   else caught the request.
 - **No prompt contains the skill's name** — or, for `animate`, even the word
-  *animation*. Triggering has to come from the request, not a string match.
+  *animation*. Triggering has to come from the request, not a string match. The
+  one exception is round 2 of the `hallmark` ablation, where naming the skill in
+  every prompt is the design — see its report.
 - **3 positives, 4 near neighbours, 2 unrelated negatives, 1 completion case**,
   ten attempts each. The near neighbours are the whole point: requests that sit
   just outside the skill's job while sharing its subject matter. An unrelated
@@ -192,6 +202,15 @@ its upstream `LICENSE` — `impeccable` is Apache 2.0, the rest are MIT:
   `claude plugin install marketing-skills@marketingskills`. **14 of the 50
   skills**, copied unmodified with their upstream `LICENSE` and `plugin.json`,
   so the other 36 are not loaded during the collision measurement.
+- `skills/hallmark/` — MIT, © Hallmark contributors, from
+  [Nutlope/hallmark](https://github.com/Nutlope/hallmark) at
+  `13ac0ec7e148655948100b6396439e481361d690` (1.1.0). Upstream ships a plain
+  skill directory (installed with `npx skills add nutlope/hallmark`), not a
+  plugin, so `skills/hallmark/skills/hallmark/` is that directory unmodified,
+  under a one-file `plugin.json` wrapper so that `--plugin-dir` can load it.
+  The upstream repository's `LICENSE` is at `skills/hallmark/LICENSE`.
+- `skills/hallmark-absent/` — not third-party work: an empty plugin with the same
+  name and no skills, the "skill absent" arm of the hallmark ablation.
 
 The case sets, fixtures, reports and tooling in this repository are MIT licensed
 (see [LICENSE](LICENSE)).

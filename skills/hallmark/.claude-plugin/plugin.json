@@ -1,0 +1,1 @@
+{ "name": "hallmark", "description": "Minimal plugin wrapper so assay can load the hallmark skill; skill files are unmodified.", "version": "1.1.0", "skills": "./skills/" }
