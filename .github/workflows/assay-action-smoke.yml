@@ -1,0 +1,39 @@
+# Checks what `ktlesr/assay@v1` actually installs and runs, from outside the
+# action's own repository.
+#
+# Manual only: every run is a real measurement against the host and costs
+# money (fast mode, 4 cases x 3 attempts, about $1).
+name: Assay action smoke
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # The skill's own result is not what this job checks, so a failing or
+      # unmeasurable case does not turn the job red; the next step reports it.
+      - id: assay
+        uses: ktlesr/assay@v1
+        continue-on-error: true
+        with:
+          suite: suites/impeccable.pilot.suite.yaml
+          skill: ./skills/impeccable
+          fast: 'true'
+          comment: 'false'
+          baseline: 'false'
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+      - name: Report which CLI the action installed
+        run: |
+          echo "action step outcome: ${{ steps.assay.outcome }}"
+          echo "verdict: ${{ steps.assay.outputs.verdict }}"
+          npm ls -g @ktlsr/assay --depth=0
+          version=$(npm ls -g @ktlsr/assay --depth=0 --json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).dependencies["@ktlsr/assay"].version))')
+          echo "installed @ktlsr/assay $version"
+          record=$(ls .assay/runs/*.json | head -1)
+          node -e 'const r=require(process.argv[1]).run; console.log("record layers:", JSON.stringify(r.layers), "| runs per case:", r.runs, "| attempts:", r.cases.reduce((n,c)=>n+c.attempts.length,0))' "$PWD/$record"
+          test "$version" = "0.3.0"
