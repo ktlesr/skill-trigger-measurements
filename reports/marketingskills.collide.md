@@ -1,5 +1,15 @@
 # `marketingskills` — collision between co-installed skills
 
+> **Two runs, one picture.** This report is the full run: **200 attempts** on
+> suite **v2**, `run-2026-09-10T11-01-34-914Z-0bec859e` (assay 0.3.2, 10 attempts
+> per case). The matrix published on
+> [assayctl.dev](https://assayctl.dev/suites/marketing-skills%3Aproduct-marketing)
+> is a fast run: **60 attempts** on suite **v3** (the same cases with expected
+> winners declared), `run-2026-09-11T14-54-16-671Z-912ad216` (assay 0.4.3,
+> `--fast`, 3 attempts per case, trigger layer only). Same picture, different
+> resolution: the fast run is an early warning with wide intervals, this one is
+> the measurement.
+
 The first measurement in this repository with more than one skill loaded. The
 question is not "does this skill fire" but **"when fourteen related skills are
 installed together, which one wins each request?"** — and whether the README's
