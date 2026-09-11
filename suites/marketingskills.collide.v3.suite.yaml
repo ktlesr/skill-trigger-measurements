@@ -1,0 +1,246 @@
+# marketingskills collision suite, version 3 — for RUNNING (Assay >= 0.4.0).
+#
+# Version 2 (skill-trigger-measurements, suites/marketingskills.collide.suite.yaml)
+# could only say which skills must NOT fire, so a run where nothing fired
+# passed. Version 3 carries the expected winner in `expect.winner`; its cases,
+# prompts, fixtures and ids are those of the derived re-scoring suite
+# (marketingskills.collide.winner.suite.yaml, 0.4.0-f), unchanged. Only this
+# header and the version differ: the cases changed meaning, so the version moves.
+#
+# The fixtures path is relative to the measurement repository: run it from that
+# repository's suites/ directory, or from a directory laid out the same way.
+#
+#   assay run suites/marketingskills.collide.v3.suite.yaml --skill ./skills/marketing-skills-collide --fast --concurrency 4
+
+version: 3
+target:
+  skill: marketing-skills:product-marketing
+  source: coreyhaines31/marketingskills@5b2c0007766c6a1cf1d53fd8fc73e979e0821022
+environment:
+  host: claude-code
+  model: claude-haiku-4-5-20251001
+  system_prompt_hash: not-provided-by-host
+  active_skills:
+  - marketing-skills:cro
+  - marketing-skills:signup
+  - marketing-skills:onboarding
+  - marketing-skills:popups
+  - marketing-skills:paywalls
+  - marketing-skills:copywriting
+  - marketing-skills:copy-editing
+  - marketing-skills:emails
+  - marketing-skills:cold-email
+  - marketing-skills:seo-audit
+  - marketing-skills:ai-seo
+  - marketing-skills:programmatic-seo
+  - marketing-skills:schema
+  - marketing-skills:product-marketing
+runs: 10
+cases:
+- id: collide.signup.registration_form
+  prompt: Half the people who open register.html never finish creating their account. Figure
+    out why and fix the form.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:signup
+    not_triggered:
+    - marketing-skills:cro
+    - marketing-skills:onboarding
+    - marketing-skills:popups
+- id: collide.cro.lead_form
+  prompt: The newsletter form in the footer of index.html barely gets any submissions. Get
+    more people to fill it in.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:cro
+    not_triggered:
+    - marketing-skills:signup
+    - marketing-skills:popups
+    - marketing-skills:emails
+- id: collide.popups.exit_modal_wording
+  prompt: Rewrite the words in components/exit-modal.html - it is the thing that appears when
+    someone moves to close the tab. Nobody engages with it.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:popups
+    not_triggered:
+    - marketing-skills:copywriting
+    - marketing-skills:copy-editing
+    - marketing-skills:cro
+- id: collide.popups.exit_modal_timing
+  prompt: components/exit-modal.html shows up three seconds after page load for every visitor.
+    Work out when and to whom it should appear instead.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:popups
+    not_triggered:
+    - marketing-skills:cro
+- id: collide.cro.pricing_page
+  prompt: pricing.html gets plenty of visits but almost nobody clicks through to buy. What
+    is wrong with the page and what should change?
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:cro
+    not_triggered:
+    - marketing-skills:paywalls
+    - marketing-skills:copywriting
+- id: collide.paywalls.limit_screen
+  prompt: app/limit-reached.html is what a free user sees after their 1,000th metered call.
+    Very few of them upgrade from it. Rework it.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:paywalls
+    not_triggered:
+    - marketing-skills:cro
+    - marketing-skills:popups
+- id: collide.onboarding.first_session
+  prompt: People create an account, land on app/welcome.html, look at an empty dashboard and
+    never come back. Fix what they see in that first session.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:onboarding
+    not_triggered:
+    - marketing-skills:signup
+    - marketing-skills:emails
+- id: contested.copywriting.headline_better
+  prompt: Write a better headline for the hero in index.html.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner:
+    - marketing-skills:copywriting
+    - marketing-skills:copy-editing
+- id: collide.copy_editing.tighten_paragraph
+  prompt: The About paragraph in index.html is wordy and has two typos. Tighten it up without
+    changing what it says.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:copy-editing
+    not_triggered:
+    - marketing-skills:copywriting
+- id: collide.emails.welcome_sequence
+  prompt: messages/welcome-sequence.md is the draft of what we send in the first week after
+    someone creates an account. Plan it properly - how many messages, when, and what each
+    one does.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:emails
+    not_triggered:
+    - marketing-skills:onboarding
+    - marketing-skills:cold-email
+    - marketing-skills:copywriting
+- id: collide.cold_email.outreach
+  prompt: outreach/prospects.csv lists platform leads at API companies who have never heard
+    of us. Write the first message we send them and two follow-ups.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:cold-email
+    not_triggered:
+    - marketing-skills:emails
+    - marketing-skills:copywriting
+- id: collide.seo_audit.not_found
+  prompt: Nobody finds blog/how-to-meter-api-usage.html when they search for the topic, even
+    though it answers it well. Figure out why.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:seo-audit
+    not_triggered:
+    - marketing-skills:ai-seo
+    - marketing-skills:schema
+    - marketing-skills:programmatic-seo
+- id: collide.ai_seo.cited
+  prompt: When someone asks ChatGPT or Perplexity how to meter API usage, we never come up
+    in the answer. Change that.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:ai-seo
+    not_triggered:
+    - marketing-skills:seo-audit
+    - marketing-skills:schema
+- id: collide.programmatic_seo.integration_pages
+  prompt: content/integrations.csv lists the tools we integrate with. Build one page per integration
+    so each can be found by people searching for that tool plus "usage billing".
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:programmatic-seo
+    not_triggered:
+    - marketing-skills:seo-audit
+    - marketing-skills:copywriting
+- id: collide.schema.star_ratings
+  prompt: Our pricing page should show its star rating and its FAQ answers directly in Google
+    results. Make that happen.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    winner: marketing-skills:schema
+    not_triggered:
+    - marketing-skills:seo-audit
+    - marketing-skills:ai-seo
+- id: collide.product_marketing.positioning
+  prompt: Our positioning notes are stale - we now sell to platform teams at API companies,
+    not indie developers. Update the shared context that every later session reads first.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    triggered: true
+    winner: marketing-skills:product-marketing
+    not_triggered:
+    - marketing-skills:copywriting
+    - marketing-skills:copy-editing
+- id: collide.product_marketing.icp
+  prompt: We moved from selling to indie developers to selling to platform teams at API companies.
+    Work out who our ideal customer is now and how we should position against hand-rolled
+    metering, and write it up.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    triggered: true
+    winner: marketing-skills:product-marketing
+    not_triggered:
+    - marketing-skills:copywriting
+    - marketing-skills:cro
+- id: trigger.negative.near_neighbor.pricing_decision
+  prompt: Should our Pro plan be $49 or $79 a month? Decide from what is in pricing.html and
+    tell me the number.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    triggered: false
+    winner: none
+    not_triggered:
+    - marketing-skills:cro
+    - marketing-skills:paywalls
+- id: trigger.negative.near_neighbor.form_crash
+  prompt: register.html throws "Cannot read properties of null (reading 'value')" as soon
+    as the page loads. Fix the crash. Nothing visible changes.
+  setup:
+    fixtures: ../fixtures/marketing-site
+  expect:
+    triggered: false
+    winner: none
+    not_triggered:
+    - marketing-skills:signup
+    - marketing-skills:cro
+- id: trigger.negative.unrelated.slow_query
+  prompt: This Postgres query for monthly revenue takes 12 seconds on 4M rows. Work out which
+    index it is missing.
+  expect:
+    triggered: false
+    winner: none
+    not_triggered:
+    - marketing-skills:cro
+    - marketing-skills:seo-audit
+    - marketing-skills:copywriting
