@@ -1,3 +1,7 @@
+> **Host note, added 2026-09-13.** The runs behind this file loaded the host's
+> `~/.claude/CLAUDE.md`, a single unrelated instruction. See the note at the top
+> of [hallmark.ablation.md](hallmark.ablation.md). Not re-scored.
+
 ## Trigger and output
 
 | arm | attempts | hallmark fired | produced a page |

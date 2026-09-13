@@ -206,7 +206,7 @@ is what happened in 18 of 20 attempts without the table.
 | B, activations | 5/50 (10%) | all 5 |
 | B, attempts where nothing fired | 14/150 | — |
 
-The v2 collision run measured 17/50 for arm B's condition, on Claude Code 2.1.263.
+The v2 collision run measured 17/50 for arm B's condition, on Claude Code 2.1.267.
 The host has moved since, so this report compares only its own two arms.
 
 ## 6. Guard rails

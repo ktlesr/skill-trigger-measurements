@@ -1,5 +1,17 @@
 # `impeccable` 4.2.2 — what #750 fixed, and what it did not
 
+> **Host note, added 2026-09-13.** These runs loaded a file they should not
+> have. The runner gives every attempt a fresh `CLAUDE_CONFIG_DIR`, but on this
+> Windows host the working directory sits under the home directory, and Claude
+> Code loaded the host user's `~/.claude/CLAUDE.md` while walking up from it.
+> That file is a single instruction about an unrelated tool: "When the user
+> types `/graphify`, use the installed graphify skill or instructions before
+> doing anything else." It names no skill and no task measured here.
+>
+> The eleven records of 2026-09-08 (`631543d1` … `c472c9b7`, listed in the
+> progress record): the name surfaces in 0 of 240 attempts.
+> Not re-scored. How it was found and ruled out: [phrase-binding report, *Instrument*](marketingskills.phrase-binding.md#instrument).
+
 Requested on [pbakaus/impeccable#744](https://github.com/pbakaus/impeccable/issues/744):
 the same 120 attempts that produced the 4.2.1 numbers, re-run against 4.2.2, so
 the effect of #750 can be read off directly. Standing offer from the previous

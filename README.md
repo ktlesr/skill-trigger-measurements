@@ -37,8 +37,8 @@ Several skills installed together, and the question is which one a request
 reaches. Precision and recall per skill do not describe that, so these are
 reported as a winner matrix instead of a row in the table above.
 
-- [`marketingskills` — 14 co-installed skills](reports/marketingskills.collide.md) · [matrix](reports/marketingskills.collide.matrix.md) · [issue draft](issues/marketingskills.collide.issue.md) — 49 of 50 activations reached the skill the descriptions route to; 7 of 13 skills never activated on their own cases; `product-marketing` fired 0 times in 200
-  - [phrase-binding table](reports/marketingskills.phrase-binding.md) · [analysis](reports/marketingskills.phrase-binding.analysis.md) — the same 14 skills with and without a `CLAUDE.md` that binds phrases to skills, as suggested in [discussion #584](https://github.com/coreyhaines31/marketingskills/discussions/584): the seven that never fire go from 0/90 to 90/90 and the edit-shaped bypass from 84/160 to 0/160, but the activated skills stop to ask, and change requests are carried out in 40/100 attempts instead of 81/100
+- [`marketingskills` — 14 co-installed skills](reports/marketingskills.collide.md) · [matrix](reports/marketingskills.collide.matrix.md) · [as posted, discussion #584](issues/marketingskills.collide.issue.md) — 49 of 50 activations reached the skill the descriptions route to; 7 of 13 skills never activated on their own cases; `product-marketing` fired 0 times in 200
+  - [phrase-binding table](reports/marketingskills.phrase-binding.md) · [analysis](reports/marketingskills.phrase-binding.analysis.md) · [reply draft](issues/marketingskills-584-phrase-binding.reply.md) — the same 14 skills with and without a `CLAUDE.md` that binds phrases to skills, as suggested in [discussion #584](https://github.com/coreyhaines31/marketingskills/discussions/584): the seven that never fire go from 0/90 to 90/90 and the edit-shaped bypass from 84/160 to 0/160, but the activated skills stop to ask, and change requests are carried out in 40/100 attempts instead of 81/100
 
 ## Ablation measurements
 

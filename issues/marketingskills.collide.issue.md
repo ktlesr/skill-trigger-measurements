@@ -1,6 +1,8 @@
 # Issue draft for coreyhaines31/marketingskills
 
-Not posted. Title and body below.
+Posted on 2026-09-10 as [discussion #584](https://github.com/coreyhaines31/marketingskills/discussions/584); title and body below as drafted.
+
+**Correction since posting:** the host was Claude Code **2.1.267** (the run record), not 2.1.263 as written below; and the runs loaded the host's own one-line `~/.claude/CLAUDE.md` (see the note at the top of `reports/marketingskills.collide.md`). Both are corrected in the reply draft `marketingskills-584-phrase-binding.reply.md`.
 
 ---
 

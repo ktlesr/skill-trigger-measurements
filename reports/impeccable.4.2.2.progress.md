@@ -1,5 +1,9 @@
 # 4.2.2 measurement — progress record
 
+> **Host note, added 2026-09-13.** The runs behind this file loaded the host's
+> `~/.claude/CLAUDE.md`, a single unrelated instruction. See the note at the top
+> of [impeccable.4.2.2.md](impeccable.4.2.2.md). Not re-scored.
+
 **Purpose:** resumable state for the impeccable 4.2.2 run requested in
 pbakaus/impeccable#744. If the session resets, continue from here; do not
 restart from zero.

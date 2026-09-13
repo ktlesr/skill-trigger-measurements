@@ -1,5 +1,22 @@
 # `marketingskills` — collision between co-installed skills
 
+> **Host note, added 2026-09-13.** These runs loaded a file they should not
+> have. The runner gives every attempt a fresh `CLAUDE_CONFIG_DIR`, but on this
+> Windows host the working directory sits under the home directory, and Claude
+> Code loaded the host user's `~/.claude/CLAUDE.md` while walking up from it.
+> That file is a single instruction about an unrelated tool: "When the user
+> types `/graphify`, use the installed graphify skill or instructions before
+> doing anything else." It names no skill and no task measured here.
+>
+> Runs `ca6f250f`, `0bec859e`, `912ad216`: the name surfaces in 4 of 57, 10 of
+> 200 and 4 of 60 attempts — as the product's name in generated schema, copy
+> and a positioning note, or in questions like "what is graphify?" in cold-email
+> and ai-seo replies. Every activation was of a skill under test. The finding
+> it could most plausibly touch — the positioning case going to host memory in
+> 10 of 10 — was measured again without the file on 2026-09-13 (phrase-binding
+> arm B): 8 of 10 went to host memory.
+> Not re-scored. How it was found and ruled out: [phrase-binding report, *Instrument*](marketingskills.phrase-binding.md#instrument).
+
 > **Two runs, one picture.** This report is the full run: **200 attempts** on
 > suite **v2**, `run-2026-09-10T11-01-34-914Z-0bec859e` (assay 0.3.2, 10 attempts
 > per case). The matrix published on
@@ -22,7 +39,7 @@ claim that every skill reads `product-marketing` first holds.
 | Skill hash | `sha256:aff03848…` |
 | Suite | `suites/marketingskills.collide.suite.yaml` v2, `sha256:1d73ceae…` |
 | Model | `claude-haiku-4-5-20251001` |
-| Host | `claude-code` 2.1.263, Windows 11 Pro |
+| Host | `claude-code` 2.1.267, Windows 11 Pro |
 | Runner | `@ktlsr/assay@0.3.2`, `acceptEdits`, `--concurrency 4` |
 | Run | `run-2026-09-10T11-01-34-914Z-0bec859e` · 200 attempts · 0 unknown · $10.18 · 26 min wall |
 | Early warning | `--fast` run on v1, 57 attempts, $2.82 — same picture, see *Suite history* |

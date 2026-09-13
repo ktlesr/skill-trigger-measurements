@@ -1,5 +1,18 @@
 # Three skills, same measurement — comparison
 
+> **Host note, added 2026-09-13.** These runs loaded a file they should not
+> have. The runner gives every attempt a fresh `CLAUDE_CONFIG_DIR`, but on this
+> Windows host the working directory sits under the home directory, and Claude
+> Code loaded the host user's `~/.claude/CLAUDE.md` while walking up from it.
+> That file is a single instruction about an unrelated tool: "When the user
+> types `/graphify`, use the installed graphify skill or instructions before
+> doing anything else." It names no skill and no task measured here.
+>
+> The runs behind all three reports were affected; the name surfaces in 0, 0
+> and 2 of 200 attempts (`animate`, `better-typography`, `ui-ux-pro-max`). See
+> each report's note.
+> Not re-scored. How it was found and ruled out: [phrase-binding report, *Instrument*](marketingskills.phrase-binding.md#instrument).
+
 Each skill was measured the same way: installed in isolation, no prompt
 containing the skill's name, 10 cases × 10 attempts per round, two rounds each
 (the second with deliberately tighter near neighbours, because in all three cases

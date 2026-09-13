@@ -1,5 +1,16 @@
 # Measurement report — `animate`
 
+> **Host note, added 2026-09-13.** These runs loaded a file they should not
+> have. The runner gives every attempt a fresh `CLAUDE_CONFIG_DIR`, but on this
+> Windows host the working directory sits under the home directory, and Claude
+> Code loaded the host user's `~/.claude/CLAUDE.md` while walking up from it.
+> That file is a single instruction about an unrelated tool: "When the user
+> types `/graphify`, use the installed graphify skill or instructions before
+> doing anything else." It names no skill and no task measured here.
+>
+> Runs `57205e2b`, `0244e644`: the name surfaces in 0 of 200 attempts.
+> Not re-scored. How it was found and ruled out: [phrase-binding report, *Instrument*](marketingskills.phrase-binding.md#instrument).
+
 **Skill:** `emilkowalski/skills@d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7`, `skills/animate/`
 **Host:** Claude Code · **Model:** `claude-haiku-4-5-20251001` · **Runner:** `npx @ktlsr/assay@0.1.2`
 **Measured:** 2026-09-03 · **Attempts:** 200 across two rounds

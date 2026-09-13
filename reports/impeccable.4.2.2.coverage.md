@@ -1,5 +1,9 @@
 # Reference-file coverage
 
+> **Host note, added 2026-09-13.** The runs behind this file loaded the host's
+> `~/.claude/CLAUDE.md`, a single unrelated instruction. See the note at the top
+> of [impeccable.4.2.2.md](impeccable.4.2.2.md). Not re-scored.
+
 skill directory : skills/impeccable
 records         : 6
 attempts traced : 120

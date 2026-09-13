@@ -1,5 +1,9 @@
 # Reference-file coverage
 
+> **Host note, added 2026-09-13.** The runs behind this file loaded the host's
+> `~/.claude/CLAUDE.md`, a single unrelated instruction. See the note at the top
+> of [ui-ux-pro-max.md](ui-ux-pro-max.md). Not re-scored.
+
 skill directory : skills/ui-ux-pro-max/.claude/skills/ui-ux-pro-max
 records         : 2
 attempts traced : 200

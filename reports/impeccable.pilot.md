@@ -1,5 +1,16 @@
 # `impeccable` — pilot: what Assay can and cannot observe
 
+> **Host note, added 2026-09-13.** These runs loaded a file they should not
+> have. The runner gives every attempt a fresh `CLAUDE_CONFIG_DIR`, but on this
+> Windows host the working directory sits under the home directory, and Claude
+> Code loaded the host user's `~/.claude/CLAUDE.md` while walking up from it.
+> That file is a single instruction about an unrelated tool: "When the user
+> types `/graphify`, use the installed graphify skill or instructions before
+> doing anything else." It names no skill and no task measured here.
+>
+> Run `fd96eaae`: the name surfaces in 0 of 12 attempts.
+> Not re-scored. How it was found and ruled out: [phrase-binding report, *Instrument*](marketingskills.phrase-binding.md#instrument).
+
 **This is a feasibility report, not a finding report.** It asks whether Assay
 can see this skill at all, and answers no for most of it. The trigger numbers
 below are printed for completeness and should not be quoted: they were produced

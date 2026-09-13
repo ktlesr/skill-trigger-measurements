@@ -1,5 +1,19 @@
 # Measurement report — `ui-ux-pro-max`
 
+> **Host note, added 2026-09-13.** These runs loaded a file they should not
+> have. The runner gives every attempt a fresh `CLAUDE_CONFIG_DIR`, but on this
+> Windows host the working directory sits under the home directory, and Claude
+> Code loaded the host user's `~/.claude/CLAUDE.md` while walking up from it.
+> That file is a single instruction about an unrelated tool: "When the user
+> types `/graphify`, use the installed graphify skill or instructions before
+> doing anything else." It names no skill and no task measured here.
+>
+> Runs `2a900c03`, `0d68df24`: the name surfaces in 2 of 200 attempts, both in
+> `2a900c03` on the pricing-page positive, where the model passed "Graphify
+> Pricing" as the project name to the skill's own search script. The skill had
+> already activated in both; no verdict depends on it.
+> Not re-scored. How it was found and ruled out: [phrase-binding report, *Instrument*](marketingskills.phrase-binding.md#instrument).
+
 **Skill:** `nextlevelbuilder/ui-ux-pro-max-skill@f3ac195224eac1eb0dfe1a3059c2a6add78ffbe3`, `.claude/skills/ui-ux-pro-max/`
 **Host:** Claude Code · **Model:** `claude-haiku-4-5-20251001` · **Runner:** `npx @ktlsr/assay@0.1.3`
 **Measured:** 2026-09-03 · **Attempts:** 200 across two rounds

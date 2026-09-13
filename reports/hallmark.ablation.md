@@ -1,5 +1,17 @@
 # `hallmark` — ablation: does the skill change what gets built?
 
+> **Host note, added 2026-09-13.** These runs loaded a file they should not
+> have. The runner gives every attempt a fresh `CLAUDE_CONFIG_DIR`, but on this
+> Windows host the working directory sits under the home directory, and Claude
+> Code loaded the host user's `~/.claude/CLAUDE.md` while walking up from it.
+> That file is a single instruction about an unrelated tool: "When the user
+> types `/graphify`, use the installed graphify skill or instructions before
+> doing anything else." It names no skill and no task measured here.
+>
+> Runs `d7a30238`, `d62f8a15`, `116ca07f`, `2dc28f84`, `042ef1ed`: the name
+> surfaces in 0 of 136 attempts.
+> Not re-scored. How it was found and ruled out: [phrase-binding report, *Instrument*](marketingskills.phrase-binding.md#instrument).
+
 The first ablation in this repository. Not "does the skill fire" but **"is the
 output different because the skill was there?"** — the same tasks, run with the
 skill installed and with it absent, scored by deterministic rule checks.
@@ -26,7 +38,7 @@ does not activate at all, so it changes nothing.
 | Skill | `Nutlope/hallmark` 1.1.0 @ `13ac0ec7e148655948100b6396439e481361d690`, MIT |
 | Arm A | `skills/hallmark/` — the skill directory unmodified, in a one-skill plugin wrapper so `--plugin-dir` can load it · skill hash `sha256:bc95b2e5…` |
 | Arm B | `skills/hallmark-absent/` — same plugin name, no skills · skill hash `sha256:3c2f7449…` |
-| Model | `claude-haiku-4-5-20251001` · host `claude-code` 2.1.263 · `acceptEdits` |
+| Model | `claude-haiku-4-5-20251001` · host `claude-code` 2.1.267 · `acceptEdits` |
 | Runner | `@ktlsr/assay@0.3.2`, `--concurrency 4` |
 | Round 1, organic | `suites/hallmark.ablation.suite.yaml` `sha256:cab3da38…`, `--fast`, 15 attempts per arm, $1.33 |
 | Round 2, explicit | `suites/hallmark.ablation.explicit.suite.yaml` `sha256:fc75bd26…`, full, 50 attempts per arm, $7.63 |

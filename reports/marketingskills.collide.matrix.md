@@ -1,3 +1,7 @@
+> **Host note, added 2026-09-13.** The runs behind this file loaded the host's
+> `~/.claude/CLAUDE.md`, a single unrelated instruction. See the note at the top
+> of [marketingskills.collide.md](marketingskills.collide.md). Not re-scored.
+
 ## Per case
 
 | Case | Expected | Attempts | First to fire | All that fired | Verdict |
