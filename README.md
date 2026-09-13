@@ -38,6 +38,7 @@ reaches. Precision and recall per skill do not describe that, so these are
 reported as a winner matrix instead of a row in the table above.
 
 - [`marketingskills` — 14 co-installed skills](reports/marketingskills.collide.md) · [matrix](reports/marketingskills.collide.matrix.md) · [issue draft](issues/marketingskills.collide.issue.md) — 49 of 50 activations reached the skill the descriptions route to; 7 of 13 skills never activated on their own cases; `product-marketing` fired 0 times in 200
+  - [phrase-binding table](reports/marketingskills.phrase-binding.md) · [analysis](reports/marketingskills.phrase-binding.analysis.md) — the same 14 skills with and without a `CLAUDE.md` that binds phrases to skills, as suggested in [discussion #584](https://github.com/coreyhaines31/marketingskills/discussions/584): the seven that never fire go from 0/90 to 90/90 and the edit-shaped bypass from 84/160 to 0/160, but the activated skills stop to ask, and change requests are carried out in 40/100 attempts instead of 81/100
 
 ## Ablation measurements
 
@@ -162,6 +163,12 @@ Three conventions from the runner, worth knowing before reading a report:
   attempt a fresh `CLAUDE_CONFIG_DIR`, which removes the user's own skills,
   plugins and CLAUDE.md — but Claude Code's bundled skills stay available and can
   win a request. Every report states what was observed on this axis.
+  **On Windows the user's `~/.claude/CLAUDE.md` still loads**: `%TEMP%` sits
+  under the home directory, and Claude Code picks the file up while walking up
+  from the working directory. Found on 2026-09-13; on this host it holds one
+  line about an unrelated tool. Runs before that date carried it. The
+  phrase-binding runs set `TEMP` to a directory on `D:` to avoid it — see that
+  report's *Instrument* section.
 - **The permission mode is part of the measurement.** Everything here is
   `acceptEdits`. A skill measured with its own shell access granted and the same
   skill measured without it are two different measurements, and from assay 0.2.0

@@ -1,0 +1,464 @@
+# `marketingskills` — does a phrase-binding table make the skills fire?
+
+> **The question.** [jimy-r suggested](https://github.com/coreyhaines31/marketingskills/discussions/584)
+> that the seven skills which never fired in the [collision run](marketingskills.collide.md)
+> would fire if an instruction file bound phrases to skills — "the routing is a
+> lookup, not a judgment". Arm A has that file, arm B does not; nothing else
+> differs.
+
+| | Arm A — phrase-binding table | Arm B — no instruction file |
+| --- | --- | --- |
+| Run | `run-2026-09-13T13-42-08-147Z-6e03681d` | `run-2026-09-13T13-18-44-877Z-5ec9e04b` |
+| Attempts | 200 · 0 unknown · $9.91 | 200 · 0 unknown · $9.52 |
+| Suite | v3, `sha256:ee4ae643…` | same |
+| Skills | 14, `sha256:aff03848…` | same |
+| Environment | `sha256:b041fb3c…` | same |
+| Model · host · runner | `claude-haiku-4-5-20251001` · Claude Code 2.1.270 · `@ktlsr/assay@0.4.4`, `acceptEdits`, `--concurrency 4`, 10 attempts per case | same |
+| Instruction file | [`fixtures/phrase-binding/CLAUDE.md`](../fixtures/phrase-binding/CLAUDE.md) in an ancestor of every working directory | none |
+
+---
+
+## Headline
+
+1. **With the table, every skill fired on its own cases.** The seven that never
+   fire went from **0/90 to 90/90**; all sixteen scored cases from **49/160 to
+   160/160**. Not one activation reached the wrong skill, and no negative case
+   fired in either arm (0/30 each). For eight skills the per-skill intervals
+   separate; the other five already fired without the table.
+2. **The edit-shaped bypass disappeared.** Attempts that skipped every skill and
+   edited the file anyway: **84/160 without the table, 0/160 with it.**
+3. **But fewer requests were carried out.** Once a skill fires, its workflow
+   tends to ask the user questions before acting — and in a non-interactive run
+   nobody answers. Where the prompt asks for a change, a file was written in
+   **81/100 attempts without the table and 40/100 with it**. Where the prompt can
+   be answered in the reply, the answer was delivered in **66/70 vs 51/70** (read
+   by hand). The table moves the work from the base model to the skills, and the
+   skills stop to ask.
+4. **`product-marketing` now fires 20/20 — and still does not update its file.**
+   It updated `.agents/product-marketing.md` in 2 of 20 attempts (1 of 20 without
+   the table) and asked questions in the rest. What changed is that it no longer
+   forks: without the table, positioning went to host memory or a new file in
+   18/20; with it, 0/20.
+5. **The shared context file is read far more often.** 101 of 170 activations
+   read `.agents/product-marketing.md` with the table (59%), 5 of 50 without (10%).
+
+**What this says about the seven.** The design asked whether they fail on
+routing judgment or because edit-shaped requests skip routing altogether. It is
+routing: given a lookup, the model follows it 160 times in 160, including on
+the edit-shaped requests it otherwise answers by editing the file. Nothing about
+these skills stops the model from using them. It does not pick them when it has
+only the descriptions to go on. The fix works, and it has a price: the skills
+it routes to ask before they act.
+
+---
+
+## 1. Activation matrices
+
+Rows are the expected winner, columns the first marketing skill to fire. Each
+cell is **A · B** — arm A left of the dot, arm B right.
+
+| expected \ fired | none | `ai-seo` | `cold-email` | `copy-editing` | `cro` | `emails` | `onboarding` | `paywalls` | `popups` | `product-marketing` | `programmatic-seo` | `schema` | `seo-audit` | `signup` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `signup` | 0 · **10** | | | | | | | | | | | | | **10** · 0 |
+| `cro` | 0 · **13** | | | | **20** · 7 | | | | | | | | | |
+| `popups` | 0 · **20** | | | | | | | | **20** · 0 | | | | | |
+| `paywalls` | 0 · **10** | | | | | | | **10** · 0 | | | | | | |
+| `onboarding` | 0 · **10** | | | | | | **10** · 0 | | | | | | | |
+| `copy-editing` | 0 · **10** | | | **10** · 0 | | | | | | | | | | |
+| `emails` | 0 · 1 | | | | | 10 · 9 | | | | | | | | |
+| `cold-email` | 0 · 3 | | 10 · 7 | | | | | | | | | | | |
+| `seo-audit` | 0 · 2 | 0 · 1 | | | | | | | | | | | 10 · 7 | |
+| `ai-seo` | | 10 · 10 | | | | | | | | | | | | |
+| `programmatic-seo` | 0 · **10** | | | | | | | | | | **10** · 0 | | | |
+| `schema` | 0 · 1 | | | | | | | | | | | 10 · 9 | | |
+| `product-marketing` | 0 · **20** | | | | | | | | | **20** · 0 | | | | |
+
+Arm A is a clean diagonal. Arm B is the collision report's picture again:
+everything off the diagonal sits in *none*, bar one `seo-audit` case that
+reached `ai-seo`.
+
+The contested headline case (either `copywriting` or `copy-editing` accepted):
+**A `copywriting` ×10, B none ×10.** In arm A it is no longer contested — the
+table puts "write a better headline" under `copywriting`, by construction.
+
+Host-bundled skills: `run` fired 5 times in A, always after a marketing skill
+(`signup` ×4, `onboarding` ×1), and once in B, on its own, on the onboarding case.
+
+## 2. Win rate per skill
+
+Own cases only; a win is the expected skill firing first. 95% Wilson intervals.
+`·` marks the seven that never fired in the v2 collision run.
+
+| skill | A | B | intervals |
+| --- | --- | --- | --- |
+| `signup` · | 10/10 (72–100%) | 0/10 (0–28%) | **separate** |
+| `popups` · | 20/20 (84–100%) | 0/20 (0–16%) | **separate** |
+| `paywalls` · | 10/10 (72–100%) | 0/10 (0–28%) | **separate** |
+| `onboarding` · | 10/10 (72–100%) | 0/10 (0–28%) | **separate** |
+| `copy-editing` · | 10/10 (72–100%) | 0/10 (0–28%) | **separate** |
+| `programmatic-seo` · | 10/10 (72–100%) | 0/10 (0–28%) | **separate** |
+| `product-marketing` · | 20/20 (84–100%) | 0/20 (0–16%) | **separate** |
+| `cro` | 20/20 (84–100%) | 7/20 (18–57%) | **separate** |
+| `cold-email` | 10/10 (72–100%) | 7/10 (40–89%) | overlap |
+| `seo-audit` | 10/10 (72–100%) | 7/10 (40–89%) | overlap |
+| `emails` | 10/10 (72–100%) | 9/10 (60–98%) | overlap |
+| `schema` | 10/10 (72–100%) | 9/10 (60–98%) | overlap |
+| `ai-seo` | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
+
+| pooled | A | B | intervals |
+| --- | --- | --- | --- |
+| the seven | 90/90 (96–100%) | 0/90 (0–4%) | **separate** |
+| all sixteen scored cases | 160/160 (98–100%) | 49/160 (24–38%) | **separate** |
+
+**The main question — do the seven fire with the table? Yes, every time.**
+Eight skills separate. The five that overlap are the ones that already fired
+without the table; they have no room to improve. Their point estimates all rise,
+but at ten attempts none of those gains is distinguishable from noise.
+
+## 3. The edit-shaped bypass
+
+Scored attempts in which no marketing skill fired and files were written anyway:
+
+| | A | B |
+| --- | --- | --- |
+| bypass | **0/160** (0–2%) | **84/160** (45–60%) |
+| no marketing skill fired at all | 0 | 110 |
+| a skill fired after the first edit | 0 | 0 |
+
+With the table the bypass is gone. A skill fires first in every scored attempt,
+before any edit.
+
+## 4. What the table costs: the skills ask before acting
+
+**Action cases** — ten prompts that ask for a change in the workspace, so a
+written file is what completion looks like:
+
+| case | A wrote files | B wrote files |
+| --- | --- | --- |
+| registration form, fix it | 9 | 10 |
+| newsletter form, get more submissions | **0** | 8 |
+| exit modal, rewrite the words | 6 | 7 |
+| limit-reached screen, rework it | 7 | 10 |
+| empty first session, fix it | 4 | 10 |
+| wordy paragraph, tighten it | 6 | 10 |
+| not cited by ChatGPT, change that | 0 | 0 |
+| one page per integration, build them | **0** | 10 |
+| star rating in Google, make it happen | 8 | 7 |
+| stale positioning, update the context | **0** | 9 |
+| **total** | **40/100** (31–50%) | **81/100** (72–87%) — **separate** |
+
+**Answer cases** — seven prompts that can be finished in the reply (pricing
+diagnosis, when and to whom to show the modal, the headline, the email plan, the
+cold emails, the SEO diagnosis, the ICP write-up). Each reply was read and
+classed as *delivered* (the thing asked for is in it; an offer or question
+afterwards is fine) or *not* (it asks before delivering, or stops):
+
+| | delivered | not delivered |
+| --- | --- | --- |
+| A | **51/70** | 19 — emails 6, ICP 7, and one or two each on modal timing, pricing, headline, cold email, SEO |
+| B | **66/70** | 4 — emails 2, cold email 2 |
+
+The replies make the mechanism plain. With the table, a typical attempt reads
+the context file, diagnoses the problem, and then ends:
+
+> Before I rework it, I need a few quick clarifications: …
+
+> Would you like me to implement these changes to your index.html?
+
+(limit-reached screen and newsletter form. The newsletter form wrote nothing in
+any of its ten arm-A attempts; each ended on an offer to make the change or a
+question.)
+
+Without the table, the base model makes a call and writes the file. The skills
+are written for a conversation, and in one the user would answer and the work
+would continue. So part of this cost belongs to non-interactive measurement.
+But it is still what these skills do when they fire: they ask first. The table
+decides which path a request takes, and the skills' path starts with questions.
+
+**A side effect of activation.** Loading a skill tells the model the skill's base
+directory. In 15 arm-A attempts (1 in B) Haiku then resolved workspace files
+against that directory — `…/assay-skill-…/pricing.html` — and the read was
+refused as outside the working directory. Three of those attempts ended by
+asking the user for permission to read files that were in the workspace all
+along: "I found your pricing page and product marketing context, but I need
+permission to read them". This follows activation, not the table; arm A has three times as many
+activations.
+
+## 5. `product-marketing` and its context file
+
+| | A | B |
+| --- | --- | --- |
+| `product-marketing` fired on its two cases | **20/20** | 0/20 |
+| updated `.agents/product-marketing.md` | 2/20 | 1/20 |
+| wrote positioning somewhere else | **0/20** | **18/20** — host memory 8, a new `POSITIONING*.md` or similar 10 |
+| wrote nothing | 18/20 | 1/20 |
+
+In arm A the skill fires, finds the file, summarises what is stale, and asks
+what the new market looks like. In a conversation that is the right move. Here
+the file stays stale — but it is no longer contradicted by a parallel file, which
+is what happened in 18 of 20 attempts without the table.
+
+**Does every activated skill read the context file first?**
+
+| | read it | before the first edit |
+| --- | --- | --- |
+| A, activations | 101/170 (59%) | all 101 |
+| B, activations | 5/50 (10%) | all 5 |
+| B, attempts where nothing fired | 14/150 | — |
+
+The v2 collision run measured 17/50 for arm B's condition, on Claude Code 2.1.263.
+The host has moved since, so this report compares only its own two arms.
+
+## 6. Guard rails
+
+- **Negatives:** 0/30 fired in either arm. The Postgres case has no query in the
+  prompt, and both arms asked for it in 10/10. The crash fix was written in
+  10/10 in both.
+- **The rule's "add a row" clause** was never acted on: no arm-A attempt touched
+  a `CLAUDE.md`. (Six arm-B attempts searched for one, four of them on the
+  positioning cases, looking for somewhere to store the new positioning.)
+- **Host `CLAUDE.md` leak:** 0/400 attempts mention it — see *Instrument* below.
+
+---
+
+## Fast run first, then the full run
+
+The request was to start with `--fast` (3 attempts per case) and decide.
+
+| `--fast` | A `09c739c7` | B `480df1cd` |
+| --- | --- | --- |
+| the seven | 27/27 | 0/27 |
+| all scored | 48/48 | 16/48 |
+| bypass | 0/48 | 26/48 |
+| action cases wrote files | 15/30 | 27/30 |
+
+The delta was unmistakable, and the full run was still needed, for three reasons:
+
+1. **The per-skill question cannot be answered at N=3.** Under Wilson, 0/3 is
+   0–56% and 3/3 is 44–100%: they overlap. Ten of the thirteen skills have one
+   case, so at three attempts they cannot separate whatever happens.
+2. **The fast runs carried a host leak** (below). The full runs were moved to a
+   location where it does not happen.
+3. **The cost in item 3 of the headline** showed up in the fast run (15/30 vs 27/30)
+   and needed the larger N to size.
+
+The fast runs are kept as the early warning. Every number in the sections above
+comes from the full runs.
+
+## Instrument
+
+**A host leak, found during this experiment.** Assay starts each attempt with an
+empty `CLAUDE_CONFIG_DIR`, so the user's `~/.claude/CLAUDE.md` should not load.
+It did. On Windows `%TEMP%` lives under the home directory, so every working
+directory has the home directory as an ancestor, and Claude Code's walk up the
+tree loads `<home>/.claude/CLAUDE.md` as if it were a project's. On this host
+that file names one tool, `graphify`, which is how the leak showed: the model
+called the fixture's product "graphify" in outputs. It surfaced in 4 of 60 fast
+arm-B attempts (the fast arm A loaded the file too, but never used the name) and
+in earlier run records, including the v2 collision run.
+A two-attempt check through the real adapter settled the cause: working
+directory under the home directory → the model quotes the line; on `D:` → it
+does not. **The full runs were made with `TEMP` on `D:`** (`D:\pb-A\tmp`,
+`D:\pb-B\tmp`), and 0 of 400 attempts mention it. The fix belongs in Assay.
+
+**Runs that were discarded.** The first full arm A
+(`run-2026-09-13T12-23-34-523Z-7b1eae19`) hit the account's session limit after
+184 attempts; 16 negatives were left `unknown`. The arm B started straight after
+it (`run-2026-09-13T12-45-56-739Z-865682c3`) was 200/200 `unknown`. Neither is
+used. Arm B was re-run after the limit reset, then arm A was re-run in full, so
+both measured runs are complete records of the same suite. Before arm A
+started, a scripted check confirmed that B had no unknowns and that both B's
+recorded host and the installed `claude` were 2.1.270.
+
+**The analyser** is `tools/phrase_binding.py`, built on `tools/collide.py`. Its
+matrix, activation and bypass counts reproduce `collide.py`'s on the published v3
+fast run (`912ad216`), checked before any new attempt was read. Its full output
+for the two measured runs is
+[`marketingskills.phrase-binding.analysis.md`](marketingskills.phrase-binding.analysis.md).
+
+## Limitations
+
+- **Best case for the table.** Every row holds phrases lifted from the prompts
+  it routes. This measures whether a matching lookup is followed — it is, 160
+  times in 160 — not whether it generalises to wording nobody wrote down.
+  jimy-r's rule covers "close variants"; that needs a paraphrased suite.
+- **One model, Haiku 4.5.** A larger model may reach for skills more readily
+  without the table, and may ask fewer questions with it.
+- **Non-interactive.** The cost in §4 is measured where no one answers. In a
+  conversation the questions would be answered and the work would go on; how
+  much of the gap closes then is not measured here.
+- **The answer-case classification is a reading**, 140 replies by one reader,
+  with the rule stated above. The action-case numbers need no judgement.
+- **One fixture, one product, ten attempts per case.**
+
+## Reproduce
+
+```
+# arm A: the table in an ancestor of every working directory
+mkdir D:\pb-A\tmp ; copy fixtures\phrase-binding\CLAUDE.md D:\pb-A\
+set TEMP=D:\pb-A\tmp & set TMP=D:\pb-A\tmp
+npx @ktlsr/assay@0.4.4 run suites/marketingskills.collide.v3.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4
+
+# arm B: the same with an empty D:\pb-B and no file
+python tools/phrase_binding.py .assay/runs/<A>.json .assay/runs/<B>.json
+```
+
+On Windows, keep `TEMP` off the home directory in both arms, or the host's
+`~/.claude/CLAUDE.md` loads into every attempt.
+
+---
+
+## Design
+
+### Where this comes from
+
+After the [collision measurement](marketingskills.collide.md) was posted as
+[marketingskills discussion #584](https://github.com/coreyhaines31/marketingskills/discussions/584),
+**jimy-r** replied that the 0/200 for `product-marketing` matched his own roster
+of about forty skills, and that the fix that held for him was not in the
+descriptions:
+
+> My instruction file carries a table of phrase families to skills […] with a
+> standing rule that on a matching phrase the model goes straight to the target,
+> with no description matching involved. Activation for those became
+> deterministic, because the routing is a lookup, not a judgment.
+
+He then shared the shape and a working subset of his table in the same thread,
+and asked for exactly this experiment: "keep the rule and the two-column shape
+and write one row per skill with the phrases your cases actually use. The delta
+you measure will then be about the mechanism, not about my phrases."
+The public sample is
+[`samples/CLAUDE.md.example`](https://github.com/jimy-r/agent-workspace-architecture/blob/main/samples/CLAUDE.md.example);
+the write-up is
+[META_ARCHITECTURE §Command Shortcuts](https://github.com/jimy-r/agent-workspace-architecture/blob/main/META_ARCHITECTURE.md#command-shortcuts).
+
+### Why two arms
+
+The collision run showed *that* seven skills never fire. It could not say
+*why*: the model may be judging the descriptions and choosing none of them
+(**routing judgment**), or it may skip the choice altogether because the request
+is answerable by editing a file (**edit-shaped bypass**). A lookup table takes
+the judgment away. So:
+
+- if the seven start firing with the table, the failure was in the routing
+  judgment, and a table is a fix;
+- if they still do not fire, the model is not consulting routing at all on
+  edit-shaped requests, and no description or table rewrite will help.
+
+One arm with the table, one without, everything else identical, is the smallest
+design that tells those apart.
+
+| | Arm A | Arm B |
+| --- | --- | --- |
+| Instruction file | `CLAUDE.md` with the rule and table, in an **ancestor** of every attempt's working directory | none |
+| Suite | `suites/marketingskills.collide.v3.suite.yaml`, byte-identical | same |
+| Skills | the same 14, `skills/marketing-skills-collide/`, same hash | same |
+| Model, mode | `claude-haiku-4-5-20251001`, `acceptEdits` | same |
+| Runner | `@ktlsr/assay@0.4.4 run … --concurrency 4` (first `--fast`, then full) | same |
+| Attempts | 20 cases × 10 (fast: × 3) | 20 cases × 10 (fast: × 3) |
+| `TEMP` | `D:\pb-A\tmp`, the table at `D:\pb-A\CLAUDE.md` | `D:\pb-B\tmp`, no file |
+
+Arm B is run fresh, not taken from the published v3 fast run (`912ad216`):
+that run is on assay 0.4.3 and Claude Code 2.1.268, and the host has moved since.
+
+### Where the table lives, and how it gets there
+
+jimy-r's table is in his **workspace** `CLAUDE.md` ("A verbal-shortcut table in
+the workspace CLAUDE.md"), with each project in a subdirectory beneath it. That
+is Claude Code's project scope, loaded from the working directory and every
+ancestor of it, not the user-level `~/.claude/CLAUDE.md`.
+
+The assay adapter starts each attempt with an empty, throwaway
+`CLAUDE_CONFIG_DIR`, so the user scope cannot be seeded on 0.4.4 without a code
+change. The project scope can. The runner creates every working directory with
+`mkdtemp(os.tmpdir())`, and `TEMP`/`TMP` are on the adapter's environment
+allowlist. Arm A runs with `TEMP=D:\pb-A\tmp` and the table at
+`D:\pb-A\CLAUDE.md`; arm B runs with `TEMP=D:\pb-B\tmp` and no file. (The fast
+runs used the same layout under the default `%TEMP%`; that location turned out
+to leak the host's own `CLAUDE.md` — see *Instrument* — so the full runs moved
+to `D:`.) Every working directory in arm A is then a project under a workspace
+that carries the table — the layout jimy-r describes. Between the arms only that
+file and one letter of the parent directory's name differ; the runner and suite
+bytes are the same in both.
+
+**Smoke test before the run.** Through the real 0.4.4 adapter class, with a
+canary line in the ancestor file ("If you are asked for the canary word, it is
+HELIOTROPE-7") and the same 14-skill plugin: arm A answered `HELIOTROPE-7`, the
+no-file control answered `NONE`. In both the fast and the full run, the attempt
+and config directories were confirmed to be created under arm A's `tmp`.
+
+Side effects of this placement, all of which favour a clean measurement:
+
+- the file is outside the working directory, so it never shows up in the
+  agent's `Glob`/`ls` and cannot be edited under `acceptEdits`;
+- it is present on the one case with no fixtures (the Postgres negative);
+- `CLAUDE.md` content and the skill listing are both in context from the first
+  request, which is what "loads before any skill description is read" amounts to
+  in Claude Code.
+
+Rejected: putting the file inside the fixture (visible and editable; in v2 the
+positioning case wrote to host memory, `CLAUDE.md` included, in 10 of 10
+attempts), and a plugin `SessionStart` hook (changes the plugin under test and
+is a different mechanism).
+
+### What was taken from jimy-r, and what was not
+
+**Taken, verbatim:** the standing rule —
+
+> On a matching phrase or a close variant, go directly to the target with no
+> clarifying question. For a new target not in the map, ask once, then add a
+> row. When there is genuine doubt between two targets, ask.
+
+— and the two-column shape, `Phrase family | Target`, with the left cell a
+phrase family separated by `/`, and the section heading his sample uses
+(`## Command shortcuts`).
+
+**Not taken:** any of his phrases. His rows point at his own skills; copying
+them would measure his wording. Each of our 14 rows instead uses phrases lifted
+from **our** case prompts: 34 phrases, 32 verbatim substrings of the case they
+route, 2 with a file path replaced by "it". Every positive case has at least one
+verbatim phrase in its skill's row. A script checked that no phrase occurs in
+another case's prompt or in any of the three negatives.
+
+**Also not taken:** the rest of his instruction file (working principles,
+lessons loop, token discipline). Only the mechanism under test goes in.
+
+**Adapted:** targets are written as the plugin-qualified names the Skill tool
+uses (`marketing-skills:cro` skill) rather than bare names, so a miss cannot be
+put down to name resolution. Rows run two to four phrases, within his two to
+seven.
+
+The file: [`fixtures/phrase-binding/CLAUDE.md`](../fixtures/phrase-binding/CLAUDE.md).
+
+### What is measured
+
+Read with `tools/phrase_binding.py`, which takes its per-attempt facts from
+`tools/collide.py` — the analyser behind the published collision report. It was
+checked against the stored v3 fast run before any new attempt was read: its
+matrix, activation and bypass counts reproduce `collide.py`'s on `912ad216`.
+
+- **Activation matrix** per arm: expected winner × first marketing skill to fire.
+- **Win rate per skill** on its own cases, 95% Wilson intervals, and whether the
+  two arms' intervals separate.
+- **The seven** — `signup`, `popups`, `paywalls`, `onboarding`, `copy-editing`,
+  `programmatic-seo`, `product-marketing`, which fired 0 times on their own cases
+  in the v2 full run — pooled and one by one. This is the main question.
+- **Edit-shaped bypass**: scored attempts in which no marketing skill fired and
+  files were written anyway.
+- **Whether the request was carried out**: for prompts that ask for a change, a
+  written file; for prompts answerable in the reply, a reading of the reply.
+  (A `?` in the last message was tried as a signal for "asked instead of acted"
+  and dropped: read by hand, it missed requests phrased "Please share: …".)
+- Guard rails: negatives firing, activations that reached the wrong skill,
+  attempts that touched `CLAUDE.md`, and the host `CLAUDE.md` leak.
+
+### What this design cannot say
+
+- **Best case for the table.** The phrases are the prompts' own words, so this
+  measures whether a lookup is *followed* when it matches, not whether it
+  generalises to phrasings nobody wrote down. jimy-r's rule covers "close
+  variants"; this run does not test them.
+- **One model, Haiku 4.5.** As in the collision report, rates are a floor.
+- **Three attempts per case in `--fast`.** Under Wilson, 0/3 and 3/3 overlap
+  (0–56% vs 44–100%), so a single-case skill cannot separate at that N whatever
+  happens. That is why the full run (ten per case) was made.
