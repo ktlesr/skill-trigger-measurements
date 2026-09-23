@@ -5,16 +5,22 @@
 > would fire if an instruction file bound phrases to skills — "the routing is a
 > lookup, not a judgment". Arm A has that file, arm B does not; nothing else
 > differs.
+>
+> **Arm C, added later**, answers the follow-up: the table made the skills fire
+> and the skills then asked instead of acting (§4). Arm C keeps the table and
+> adds one standing default — act unless the step must block — to see whether
+> the delivery comes back. Sections 1–6 are the A/B measurement and are
+> unchanged; arm C is §7.
 
-| | Arm A — phrase-binding table | Arm B — no instruction file |
-| --- | --- | --- |
-| Run | `run-2026-09-13T13-42-08-147Z-6e03681d` | `run-2026-09-13T13-18-44-877Z-5ec9e04b` |
-| Attempts | 200 · 0 unknown · $9.91 | 200 · 0 unknown · $9.52 |
-| Suite | v3, `sha256:ee4ae643…` | same |
-| Skills | 14, `sha256:aff03848…` | same |
-| Environment | `sha256:b041fb3c…` | same |
-| Model · host · runner | `claude-haiku-4-5-20251001` · Claude Code 2.1.270 · `@ktlsr/assay@0.4.4`, `acceptEdits`, `--concurrency 4`, 10 attempts per case | same |
-| Instruction file | [`fixtures/phrase-binding/CLAUDE.md`](../fixtures/phrase-binding/CLAUDE.md) in an ancestor of every working directory | none |
+| | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default |
+| --- | --- | --- | --- |
+| Run | `run-2026-09-13T13-42-08-147Z-6e03681d` | `run-2026-09-13T13-18-44-877Z-5ec9e04b` | `run-2026-09-23T05-36-00-561Z-71c261de` |
+| Attempts | 200 · 0 unknown · $9.91 | 200 · 0 unknown · $9.52 | 200 · 0 unknown · $10.22 |
+| Suite | v3, `sha256:ee4ae643…` | same | same |
+| Skills | 14, `sha256:aff03848…` | same | same |
+| Environment | `sha256:b041fb3c…` | same | `sha256:7eabde5b…` — the host moved (below) |
+| Model · host · runner | `claude-haiku-4-5-20251001` · Claude Code 2.1.270 · `@ktlsr/assay@0.4.4`, `acceptEdits`, `--concurrency 4`, 10 attempts per case | same | same but Claude Code **2.1.271** |
+| Instruction file | [`fixtures/phrase-binding/CLAUDE.md`](../fixtures/phrase-binding/CLAUDE.md) in an ancestor of every working directory | none | [`fixtures/phrase-binding-stop/CLAUDE.md`](../fixtures/phrase-binding-stop/CLAUDE.md) — arm A's file byte for byte, plus one line |
 
 ---
 
@@ -41,6 +47,11 @@
    18/20; with it, 0/20.
 5. **The shared context file is read far more often.** 101 of 170 activations
    read `.agents/product-marketing.md` with the table (59%), 5 of 50 without (10%).
+6. **Arm C (§7): a standing "act unless it must block" rule keeps the routing
+   and does not buy the work back.** Activation stays at arm A's 160/160;
+   change requests written rise 40 → 52 of 100 and answers delivered 51 → 56 of
+   70, both still overlapping arm A. The rule's own marker — one line naming
+   the fork taken — appears in 5 of 170 attempts.
 
 **What this says about the seven.** The design asked whether they fail on
 routing judgment or because edit-shaped requests skip routing altogether. It is
@@ -55,7 +66,8 @@ it routes to ask before they act.
 ## 1. Activation matrices
 
 Rows are the expected winner, columns the first marketing skill to fire. Each
-cell is **A · B** — arm A left of the dot, arm B right.
+cell is **A · B** — arm A left of the dot, arm B right. (Arm C's matrix, which
+is arm A's, is in §7.1.)
 
 | expected \ fired | none | `ai-seo` | `cold-email` | `copy-editing` | `cro` | `emails` | `onboarding` | `paywalls` | `popups` | `product-marketing` | `programmatic-seo` | `schema` | `seo-audit` | `signup` |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -221,6 +233,201 @@ The host has moved since, so this report compares only its own two arms.
 
 ---
 
+## 7. Arm C — the table plus a standing default
+
+§4 measured what the table costs: the skills it routes ask before they act.
+Shown that, [jimy-r replied](https://github.com/coreyhaines31/marketingskills/discussions/584)
+with the rule he runs next to the table, and asked for it as a third arm:
+
+> The fires-and-waits result is the one to act on first. A skill that asks
+> before it acts is right in a conversation and fatal headless, and the table
+> only exposed it. What I run is a declared posture per skill. A step that must
+> block carries an explicit gate marker. Everything else takes a reasoned
+> default and prepends one line to its output naming the fork it took and why,
+> so a headless run finishes and a human redirects it afterwards. […] I would
+> expect most of the gap on change requests to close under that rule.
+
+Asked where the posture lives, he split it:
+
+> The default lives once in the instruction file, as the rule from my last
+> reply. The exceptions live in the skill body, as a gate marker on the specific
+> step that has to block […]. For your arm, that makes it one row in the
+> instruction file. It measures the rule, not how many skill authors adopted a
+> field.
+
+So arm C is arm A plus that one rule, and **no skill was edited**: the gate
+markers are the skill author's half and these fourteen skills are not ours.
+The question is whether the default alone brings the delivery back **without**
+disturbing the routing.
+
+The file is arm A's, byte for byte, with one block appended:
+
+> ## Default
+>
+> Default: if a step does not clearly require blocking, take a reasonable default
+> and continue. Add one line at the top of your output: which fork you took and
+> why. Stop and ask only on steps that are destructive, irreversible, or that
+> need input only the user can give.
+
+Everything else matches arm A: same suite
+bytes, same skills and hash, same model, same permission mode, same layout one
+letter apart (`TEMP=D:\pb-C\tmp`, the file at `D:\pb-C\CLAUDE.md`).
+
+**Two deviations from the request, both measured before the run.**
+
+1. **Runner 0.4.4, not 0.4.5.** 0.4.5 closes the host `CLAUDE.md` leak by
+   excluding every instruction file in every **ancestor** of the working
+   directory — which is exactly where this experiment's table lives. Through the
+   published adapters, in arm C's layout, with a canary line in the file:
+
+   | adapter | canary in the request the host sends | table row in it | record |
+   | --- | --- | --- | --- |
+   | 0.4.4 | 1 | 1 | not measured |
+   | 0.4.5 | 0 | 0 | `environment.memory: []` |
+
+   On 0.4.5 arm C would have been arm B with extra steps. Arms A and B are on
+   0.4.4, so 0.4.4 is also what "everything else the same" requires.
+2. **Host 2.1.271, not 2.1.270.** The machine's Claude Code moved on between the
+   arms. The old binary is still on disk but the version files are launchers:
+   staged first on `PATH`, the run record still says 2.1.271. Pinning it back
+   means changing the installed version on the user's machine, which was not
+   done. So arm C's environment hash differs from arm A's by design of the host,
+   not of the experiment — and a patch-level host change is the one confound
+   this arm cannot rule out.
+
+### 7.1 Activation: arm A's numbers, unchanged
+
+| | A | B | C |
+| --- | --- | --- | --- |
+| the seven that never fired | 90/90 | 0/90 | **90/90** |
+| all 16 scored cases | 160/160 | 49/160 | **160/160** |
+| activations that reached another skill | 0 | 1 | **0** |
+| contested headline case | `copywriting` ×10 | none ×10 | `copywriting` ×10 |
+| edit-shaped bypass | 0/160 | 84/160 | **0/160** |
+| negatives that fired | 0/30 | 0/30 | **0/30** |
+
+Arm C's matrix is arm A's: every scored case's expected skill fires first in
+every attempt, nothing lands off the diagonal, and the *none* column is empty.
+Per skill, all thirteen rows are 10/10 or 20/20, as in arm A.
+
+**The rule does not touch routing.** That was the thing to check first: a
+standing default that tells the model to act could have pulled it back to the
+edit-shaped bypass of arm B. It did not, in 160 of 160.
+
+### 7.2 Delivery: the estimate rises, the interval does not separate
+
+**Action cases** — the ten prompts that ask for a change, where a written file is
+what completion looks like:
+
+| case | A | B | C |
+| --- | --- | --- | --- |
+| registration form, fix it | 9 | 10 | 10 |
+| newsletter form, get more submissions | 0 | 8 | 0 |
+| exit modal, rewrite the words | 6 | 7 | **10** |
+| limit-reached screen, rework it | 7 | 10 | **10** |
+| empty first session, fix it | 4 | 10 | 5 |
+| wordy paragraph, tighten it | 6 | 10 | 6 |
+| not cited by ChatGPT, change that | 0 | 0 | 0 |
+| one page per integration, build them | 0 | 10 | 2 |
+| star rating in Google, make it happen | 8 | 7 | 9 |
+| stale positioning, update the context | 0 | 9 | 0 |
+| **total** | **40/100** (31–50%) | **81/100** (72–87%) | **52/100** (42–62%) |
+
+A vs C **overlap**; B vs C separate. The gain is +12 attempts and it is
+concentrated in two cases (exit modal 6→10, limit screen 7→10). The three cases
+that wrote nothing in arm A write nothing in arm C either: the newsletter form,
+the integration pages (2/10), and the positioning file — the places where the
+skill's workflow wants an answer from the user before it will act.
+
+**Answer cases** — the seven prompts that can be finished in the reply, read by
+hand under §4's rule (delivered = the thing asked for is in the reply; a question
+or offer afterwards is fine):
+
+| case | A | B | C |
+| --- | --- | --- | --- |
+| pricing diagnosis | — | — | 9/10 |
+| when and to whom the modal should appear | — | — | 8/10 |
+| a better headline | — | — | 10/10 |
+| the welcome-email plan | — | — | 7/10 |
+| the cold emails | — | — | 10/10 |
+| the SEO diagnosis | — | — | 10/10 |
+| the ICP write-up | — | — | 2/10 |
+| **total** | **51/70** (61–82%) | **66/70** (86–98%) | **56/70** (69–88%) |
+
+(Arm A and B were not re-read; their totals and the not-delivered breakdown in §4
+stand as published. Arm C's per-case column is new.)
+
+Arm C overlaps both A and B here. The ICP case is where it stays stuck: 2 of 10
+replies contain a positioning write-up, the other 8 summarise the stale file and
+ask which sections to work through. `product-marketing` is the skill whose
+workflow asks the most, and one line of standing default does not overrule it.
+
+**Both kinds of work together:** A 91/170 (46–61%), B 147/170 (81–91%),
+C **108/170** (56–70%). A vs C overlap; B vs C separate.
+
+### 7.3 Was the rule actually taken?
+
+The rule asks for a visible marker: one line at the top of the output naming the
+fork taken. Counting attempts whose output declares a choice anywhere — the same
+detector on all three arms:
+
+| | A | B | C |
+| --- | --- | --- | --- |
+| a fork line at the top of the first output | 0/170 | 0/170 | 1/170 |
+| a choice declared anywhere in the output | 0/170 | 0/170 | **5/170** (1–7%) |
+
+Zero in the two arms without the rule, so the detector has no false positives on
+340 attempts. The five in arm C read like the rule asked:
+
+> **→ Fork taken: Minimal fields + proper UX.** 50% drop-off is form structure,
+> not marketing message.
+
+> **Taking the CRO fork:** analyzing your pricing page as a conversion blocker
+> for a technical product (Meterly) where cold traffic lands with no product
+> context.
+
+**In 165 of 170 attempts the model did not do what the line asked.** That is the
+honest reading of this arm: the instruction was in context (the table in the same
+file routed 160 of 160), and the half of it that is externally visible was
+ignored. So the small, non-separating delivery gain sits on top of a rule that
+was mostly not followed — not on a rule that was followed and did not help.
+
+### 7.4 Guard rails
+
+- Negatives: 0/30 fired, as in both other arms.
+- Host `CLAUDE.md` leak: 0/200 attempts mention `graphify`.
+- `CLAUDE.md` touched by the agent: 2 attempts, both a `Glob` that found nothing
+  (arm A 0, arm B 6).
+- Positioning written somewhere else: 0/20 (arm A 0/20, arm B 18/20). One attempt
+  updated `.agents/product-marketing.md`; the other 19 wrote nothing.
+- Reads refused because the path was resolved against the skill's own directory:
+  17 attempts (arm A 15, arm B 1) — a side effect of activation, not of the rule.
+
+### 7.5 What arm C says
+
+- **The routing and the asking are separable, and the rule only reached one of
+  them.** Activation stayed at arm A's 160/160 — adding a "just act" default did
+  not pull the model back to editing files without routing.
+- **Delivery did not measurably recover.** 40 → 52 of 100 action cases and
+  51 → 56 of 70 answers; both intervals still overlap arm A, and both remain
+  below arm B, which has no instruction file at all.
+- **The likeliest reason is that the rule was not followed.** Its own marker
+  appears in 5 of 170 attempts. A one-line default in the instruction file does
+  not outrank a skill body that says to ask; jimy-r's architecture marks those
+  exceptions inside the skills, and those skills are not ours to edit.
+- **Against the expectation.** jimy-r expected "most of the gap on change
+  requests to close under that rule". The gap between arm A and arm B on those
+  cases is 41 attempts; arm C closes 12 of them, and the interval still covers
+  arm A. On this suite, with this model, the rule alone does not do it.
+- **What this does not say.** It measures the default, not the posture. The
+  other half of jimy-r's design — a gate marker on the specific step that must
+  block, inside each skill body — is not in these skills and was not added; his
+  own split predicts that is where the asking would be overruled. Untested too:
+  whether a larger model follows the line more often than 5 of 170, and whether
+  the patch-level host change (2.1.270 → 2.1.271) accounts for part of the +12.
+
+---
+
 ## Fast run first, then the full run
 
 The request was to start with `--fast` (3 attempts per case) and decide.
@@ -273,8 +480,11 @@ recorded host and the installed `claude` were 2.1.270.
 **The analyser** is `tools/phrase_binding.py`, built on `tools/collide.py`. Its
 matrix, activation and bypass counts reproduce `collide.py`'s on the published v3
 fast run (`912ad216`), checked before any new attempt was read. Its full output
-for the two measured runs is
+for the measured runs is
 [`marketingskills.phrase-binding.analysis.md`](marketingskills.phrase-binding.analysis.md).
+It takes any number of arms; adding arm C left every arm A and arm B count in
+sections 1–6 identical, which was checked against the two-arm output before the
+file was regenerated.
 
 ## Limitations
 
@@ -290,6 +500,14 @@ for the two measured runs is
 - **The answer-case classification is a reading**, 140 replies by one reader,
   with the rule stated above. The action-case numbers need no judgement.
 - **One fixture, one product, ten attempts per case.**
+- **Arm C carries a host drift.** Arms A and B ran on Claude Code 2.1.270,
+  arm C on 2.1.271, because the machine updated between them and the installed
+  version could not be pinned back without changing it for the user. The
+  environment hashes differ accordingly; a patch-level host change is the one
+  confound §7 cannot rule out.
+- **Arm C had to stay on runner 0.4.4.** From 0.4.5 on, Assay excludes
+  instruction files in every ancestor of the working directory, which is where
+  this experiment's table lives; measured in §7.
 
 ## Reproduce
 
@@ -300,7 +518,13 @@ set TEMP=D:\pb-A\tmp & set TMP=D:\pb-A\tmp
 npx @ktlsr/assay@0.4.4 run suites/marketingskills.collide.v3.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4
 
 # arm B: the same with an empty D:\pb-B and no file
-python tools/phrase_binding.py .assay/runs/<A>.json .assay/runs/<B>.json
+
+# arm C: the table plus the standing default, same runner as A and B
+mkdir D:\pb-C\tmp ; copy fixtures\phrase-binding-stop\CLAUDE.md D:\pb-C\
+set TEMP=D:\pb-C\tmp & set TMP=D:\pb-C\tmp
+npx @ktlsr/assay@0.4.4 run suites/marketingskills.collide.v3.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4
+
+python tools/phrase_binding.py .assay/runs/<A>.json .assay/runs/<B>.json .assay/runs/<C>.json
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's

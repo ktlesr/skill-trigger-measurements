@@ -1,9 +1,11 @@
-"""Two-arm comparison of collision runs: arm A with a phrase-binding table in
-an ancestor CLAUDE.md, arm B without. Per-attempt facts come from collide.py.
+"""Arm-by-arm comparison of collision runs: arm A with a phrase-binding table
+in an ancestor CLAUDE.md, arm B without, arm C with the table plus a standing
+default (act unless the step must block). Per-attempt facts come from collide.py.
 
-Usage: python tools/phrase_binding.py <A.json> <B.json>
+Usage: python tools/phrase_binding.py <A.json> <B.json> [<C.json> ...]
+Arms are labelled A, B, C… by position; two arguments reproduce the two-arm run.
 """
-import json, sys
+import json, re, sys
 from collections import Counter, defaultdict
 from collide import NS, attempt_facts, expected
 from four_axes import wilson
@@ -51,6 +53,46 @@ def first_skill_seq(a):
                  if e.get("kind") == "skill_trigger" and e.get("skill") in confirmed and e["skill"].startswith(NS)), None)
 
 
+FORK = re.compile(r"\b(fork|defaults?|defaulted|defaulting|assum\w+|chose|choosing|chosen|proceed\w*|going with|opted|opting|took the|taking the)\b", re.I)
+
+
+# Skill aracının kendi önsözü modelin çıktısı değil; kuralın istediği satır onun
+# arkasında geliyor.
+PREAMBLE = "Base directory for this skill:"
+
+
+def opening_lines(a):
+    """Her asistan mesajının ilk dolu satırı, makine önsözü atlanarak."""
+    out = []
+    for e in a.get("trace") or []:
+        if e.get("kind") != "assistant_message":
+            continue
+        text = (e.get("text") or "").strip()
+        if not text or text.startswith(PREAMBLE):
+            continue
+        out.append(next(l.strip() for l in text.splitlines() if l.strip()))
+    return out
+
+
+def first_line(a):
+    """Modelin kendi çıktısının ilk satırı — kuralın tek satırı istediği yer."""
+    lines = opening_lines(a)
+    return lines[0] if lines else ""
+
+
+def fork_line(a):
+    """Açılış satırı bir seçim ilan ediyor mu. Temkinli: başlık uzunluğunda tek
+    satır ve bir seçimi adlandıran bir sözcük."""
+    line = first_line(a)
+    return bool(line) and len(line) <= 300 and bool(FORK.search(line))
+
+
+def fork_anywhere(a):
+    """Kural 'çıktının başına' diyor; model onu ilk mesaj yerine bir sonrakinin
+    başına koyabiliyor. İkinci, daha geniş ölçü."""
+    return any(len(l) <= 300 and FORK.search(l) for l in opening_lines(a))
+
+
 def final_text(a):
     msgs = [e.get("text", "") for e in a.get("trace") or [] if e.get("kind") == "assistant_message"]
     return (msgs[-1] if msgs else "").strip()
@@ -63,8 +105,9 @@ def claude_md_calls(a):
             if e.get("kind") == "tool_call" and "CLAUDE.md" in json.dumps(e.get("args") or {})]
 
 
-def main(pa, pb):
-    runs = {arm: json.load(open(p, encoding="utf-8"))["run"] for arm, p in (("A", pa), ("B", pb))}
+def main(*paths):
+    arms = [chr(ord("A") + i) for i in range(len(paths))]
+    runs = {arm: json.load(open(p, encoding="utf-8"))["run"] for arm, p in zip(arms, paths)}
     F = {arm: facts(r) for arm, r in runs.items()}
 
     print("## Runs\n")
@@ -83,25 +126,27 @@ def main(pa, pb):
                 mats[arm][exp][fired[0] if fired else "none"] += 1
     cols = ["none"] + sorted({k for m in mats.values() for r in m.values() for k in r} - {"none"})
     rows = sorted({e for m in mats.values() for e in m})
-    print("\n## Activation matrices (rows: expected, cols: first marketing skill to fire; cell = A · B)\n")
+    legend = " · ".join(arms)
+    print(f"\n## Activation matrices (rows: expected, cols: first marketing skill to fire; cell = {legend})\n")
     print("| expected \\ fired | " + " | ".join(f"`{c}`" if c != "none" else "none" for c in cols) + " |")
     print("| --- |" + " --- |" * len(cols))
     for e in rows:
         cells = []
         for c in cols:
-            a, b = mats["A"][e].get(c, 0), mats["B"][e].get(c, 0)
-            cells.append("" if a == b == 0 else f"{a} · {b}")
+            vals = [mats[arm][e].get(c, 0) for arm in arms]
+            cells.append("" if not any(vals) else " · ".join(str(v) for v in vals))
         print(f"| `{e}` | " + " | ".join(cells) + " |")
 
     # per-skill win rate
     print("\n## Win rate per skill (own cases; first marketing skill to fire = expected). 95% Wilson.\n")
-    print("| skill | A | B | intervals |")
-    print("| --- | --- | --- | --- |")
+    print("| skill | " + " | ".join(arms) + " | A vs B |")
+    print("| --- |" + " --- |" * (len(arms) + 1))
     win = {}
     for e in rows:
         win[e] = {arm: (mats[arm][e].get(e, 0), sum(mats[arm][e].values())) for arm in F}
         sep = "overlap" if overlap(win[e]["A"], win[e]["B"]) else "**separate**"
-        print(f"| `{e}`{' ·' if e in NEVER else ''} | {iv(*win[e]['A'])} | {iv(*win[e]['B'])} | {sep} |")
+        cells = " | ".join(iv(*win[e][arm]) for arm in arms)
+        print(f"| `{e}`{' ·' if e in NEVER else ''} | {cells} | {sep} |")
     cont = {arm: [(x[4][0] if x[4] else "none") for x in F[arm] if x[1] == "contested"] for arm in F}
     print(f"\n- contested headline case (copywriting or copy-editing accepted): "
           + " · ".join(f"{arm} {dict(Counter(v))}" for arm, v in cont.items()))
@@ -109,10 +154,12 @@ def main(pa, pb):
     pooled = {arm: (sum(win[e][arm][0] for e in NEVER), sum(win[e][arm][1] for e in NEVER)) for arm in F}
     allpos = {arm: (sum(w[arm][0] for w in win.values()), sum(w[arm][1] for w in win.values())) for arm in F}
     print("\n## Pooled\n")
-    print(f"- the 7 skills that never fired in the v2 full run: A {iv(*pooled['A'])} · B {iv(*pooled['B'])} · "
-          f"{'overlap' if overlap(pooled['A'], pooled['B']) else '**separate**'}")
-    print(f"- all 16 scored cases: A {iv(*allpos['A'])} · B {iv(*allpos['B'])} · "
-          f"{'overlap' if overlap(allpos['A'], allpos['B']) else '**separate**'}")
+    print("- the 7 skills that never fired in the v2 full run: "
+          + " · ".join(f"{arm} {iv(*pooled[arm])}" for arm in arms)
+          + f" · A vs B {'overlap' if overlap(pooled['A'], pooled['B']) else '**separate**'}")
+    print("- all 16 scored cases: "
+          + " · ".join(f"{arm} {iv(*allpos[arm])}" for arm in arms)
+          + f" · A vs B {'overlap' if overlap(allpos['A'], allpos['B']) else '**separate**'}")
     for arm in F:
         acts = [x for x in F[arm] if x[1] == "collide" and x[4]]
         wrong = [(x[0], x[4][0]) for x in acts if x[4][0] != x[2]]
@@ -142,7 +189,16 @@ def main(pa, pb):
     for arm in F:
         act = [x for x in F[arm] if x[0] in ACTION]
         print(f"- {arm}: {iv(sum(1 for x in act if x[6]), len(act))}")
-    print(f"- intervals: {'overlap' if overlap(*[(sum(1 for x in F[a] if x[0] in ACTION and x[6]), sum(1 for x in F[a] if x[0] in ACTION)) for a in F]) else '**separate**'}")
+    counts = {a: (sum(1 for x in F[a] if x[0] in ACTION and x[6]), sum(1 for x in F[a] if x[0] in ACTION)) for a in arms}
+    for i, a in enumerate(arms):
+        for b in arms[i + 1:]:
+            print(f"- {a} vs {b}: {'overlap' if overlap(counts[a], counts[b]) else '**separate**'}")
+    print("\n### Action cases, case by case: attempts that wrote files\n")
+    print("| case | " + " | ".join(arms) + " |")
+    print("| --- |" + " --- |" * len(arms))
+    for cid in sorted(ACTION):
+        row = [str(sum(1 for x in F[a] if x[0] == cid and x[6])) for a in arms]
+        print(f"| `{cid}` | " + " | ".join(row) + " |")
 
     print("\n## Reads refused because the path was resolved against the skill's own directory\n")
     for arm in F:
@@ -174,6 +230,17 @@ def main(pa, pb):
         n = sum(1 for x in F[arm] if "graphify" in json.dumps(x[3].get("trace") or []).lower())
         print(f"- {arm}: {n}/{len(F[arm])}")
 
+    print("\n## Opening line names the fork taken (arm C's standing default)\n")
+    for arm in arms:
+        scored = [x for x in F[arm] if x[1] != "negative"]
+        print(f"- {arm}: first line of the first output {iv(sum(1 for x in scored if fork_line(x[3])), len(scored))}"
+              f" · first line of any message {iv(sum(1 for x in scored if fork_anywhere(x[3])), len(scored))}")
+    print("\n### Opening lines, for reading by hand\n")
+    for arm in arms:
+        for x in F[arm]:
+            if x[1] != "negative":
+                print(f"- {arm} `{x[0]}` fork={'Y' if fork_line(x[3]) else 'n'}: {first_line(x[3])[:200]}")
+
     print("\n## Attempts that wrote nothing — final message, for reading by hand\n")
     for arm in F:
         for x in F[arm]:
@@ -191,4 +258,4 @@ def demo():
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
     demo()
-    main(*sys.argv[1:3])
+    main(*sys.argv[1:])
