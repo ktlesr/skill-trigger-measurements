@@ -1,6 +1,7 @@
 """Arm-by-arm comparison of collision runs: arm A with a phrase-binding table
 in an ancestor CLAUDE.md, arm B without, arm C with the table plus a standing
-default (act unless the step must block). Per-attempt facts come from collide.py.
+default (act unless the step must block), arms D and E with output-format rules
+(scored in slot.mjs). Per-attempt facts come from collide.py.
 
 Usage: python tools/phrase_binding.py <A.json> <B.json> [<C.json> ...]
 Arms are labelled A, B, C… by position; two arguments reproduce the two-arm run.

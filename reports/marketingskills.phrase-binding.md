@@ -11,16 +11,22 @@
 > adds one standing default — act unless the step must block — to see whether
 > the delivery comes back. Sections 1–6 are the A/B measurement and are
 > unchanged; arm C is §7.
+>
+> **Arms D and E, added after C**, ask why C's marker appeared in only 5 of 170
+> attempts: was the instruction too loose to follow? Arm D gives the fork line
+> as a literal template; arm E drops the default and makes a closing slot
+> mandatory on every reply. §8 is D, §9 is E, §10 puts all five arms side by
+> side. Sections 1–7 are unchanged.
 
-| | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default |
-| --- | --- | --- | --- |
-| Run | `run-2026-09-13T13-42-08-147Z-6e03681d` | `run-2026-09-13T13-18-44-877Z-5ec9e04b` | `run-2026-09-23T05-36-00-561Z-71c261de` |
-| Attempts | 200 · 0 unknown · $9.91 | 200 · 0 unknown · $9.52 | 200 · 0 unknown · $10.22 |
-| Suite | v3, `sha256:ee4ae643…` | same | same |
-| Skills | 14, `sha256:aff03848…` | same | same |
-| Environment | `sha256:b041fb3c…` | same | `sha256:7eabde5b…` — the host moved (below) |
-| Model · host · runner | `claude-haiku-4-5-20251001` · Claude Code 2.1.270 · `@ktlsr/assay@0.4.4`, `acceptEdits`, `--concurrency 4`, 10 attempts per case | same | same but Claude Code **2.1.271** |
-| Instruction file | [`fixtures/phrase-binding/CLAUDE.md`](../fixtures/phrase-binding/CLAUDE.md) in an ancestor of every working directory | none | [`fixtures/phrase-binding-stop/CLAUDE.md`](../fixtures/phrase-binding-stop/CLAUDE.md) — arm A's file byte for byte, plus one line |
+| | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
+| --- | --- | --- | --- | --- | --- |
+| Run | `run-2026-09-13T13-42-08-147Z-6e03681d` | `run-2026-09-13T13-18-44-877Z-5ec9e04b` | `run-2026-09-23T05-36-00-561Z-71c261de` | `run-2026-09-26T16-11-21-616Z-097d7682` | `run-2026-09-26T16-32-52-854Z-e4e274a9` |
+| Attempts | 200 · 0 unknown · $9.91 | 200 · 0 unknown · $9.52 | 200 · 0 unknown · $10.22 | 200 · 0 unknown · $9.74 | 200 · 0 unknown · $9.26 |
+| Suite | v3, `sha256:ee4ae643…` | same | same | same | same |
+| Skills | 14, `sha256:aff03848…` | same | same | same | same |
+| Environment | `sha256:b041fb3c…` | same | `sha256:7eabde5b…` — the host moved (below) | `sha256:7eabde5b…`, as C | `sha256:7eabde5b…`, as C |
+| Model · host · runner | `claude-haiku-4-5-20251001` · Claude Code 2.1.270 · `@ktlsr/assay@0.4.4`, `acceptEdits`, `--concurrency 4`, 10 attempts per case | same | same but Claude Code **2.1.271** | as C (2.1.271) | as C (2.1.271) |
+| Instruction file | [`fixtures/phrase-binding/CLAUDE.md`](../fixtures/phrase-binding/CLAUDE.md) in an ancestor of every working directory | none | [`fixtures/phrase-binding-stop/CLAUDE.md`](../fixtures/phrase-binding-stop/CLAUDE.md) — arm A's file byte for byte, plus one line | [`fixtures/phrase-binding-template/CLAUDE.md`](../fixtures/phrase-binding-template/CLAUDE.md) — arm C's, one sentence changed | [`fixtures/phrase-binding-slot/CLAUDE.md`](../fixtures/phrase-binding-slot/CLAUDE.md) — arm A's byte for byte, plus one line |
 
 ---
 
@@ -52,6 +58,15 @@
    change requests written rise 40 → 52 of 100 and answers delivered 51 → 56 of
    70, both still overlapping arm A. The rule's own marker — one line naming
    the fork taken — appears in 5 of 170 attempts.
+7. **Arms D and E (§8–§10): a mandatory slot gets followed, but it isn't
+   honest; a template barely moves the line, and neither buys the work back.**
+   Activation is 160/160 in every arm that has the table. Change requests
+   written: D **40/100**, E **32/100** (A 40, C 52, B 81). Arm E's slot closes
+   169 of 200 replies, and 162 of those say "none". That includes **34 of 40**
+   attempts on the four cases built around a choice, and all ten "$49 or $79"
+   replies, which answer "$49" and then write "Forks: none". Arm D's template
+   line, read by hand, appears in 15 of 170 attempts (C: 5), and 12 of the 15
+   name the table's skill routing as "the fork", not a choice in the work.
 
 **What this says about the seven.** The design asked whether they fail on
 routing judgment or because edit-shaped requests skip routing altogether. It is
@@ -428,6 +443,196 @@ was mostly not followed — not on a rule that was followed and did not help.
 
 ---
 
+## 8. Arm D — the fork line as a literal template
+
+Arm C's rule described the marker ("one line at the top of your output: which
+fork you took and why"), and the model produced it 5 times in 170. Arm D asks
+whether the wording was the problem. The file is arm C's, with one sentence
+changed from an instruction to the template itself:
+
+> Add one line at the top of your output, in exactly this form: "Picking X over
+> Y because R; redirect if wrong."
+
+Everything else is arm C's: the table, the default, the stop conditions, the
+runner (0.4.4), the host (2.1.271), and the layout (`D:\pb-D`).
+
+### 8.1 Is the line there?
+
+Scored with `file_content_matches` (§10.3) over each attempt's messages, then
+every hit read by hand:
+
+| | C | D |
+| --- | --- | --- |
+| the template, exactly (`Picking … over … because …; redirect if wrong`), first line of the first output | 0/170 | **1/170** |
+| `Picking … over … because` anywhere | 0/170 | 3/170 |
+| a line declaring the fork taken, any form, read by hand | 5/170 (1–7%) | **15/170** (5–14%) |
+
+The intervals overlap. And the fifteen are not what the template asks for. In
+**12** of them the "fork" is the routing the table has just made:
+
+> Picking `marketing-skills:signup` skill because the phrase "never finish
+> creating their account" / "fix the form" is in the command shortcuts table;
+> redirect if wrong.
+
+In **3** it is a choice in the work itself:
+
+> **Picking a value-focused rewrite over generic "Wait!" because the current
+> copy lacks any compelling reason to stay.** Redirect if this misses the mark.
+
+Most drop the "over Y" part. Once the model is given the template, the fork it
+most often reports is the one it did not make: the skill was chosen by a lookup.
+
+### 8.2 Delivery
+
+Change requests written: **D 40/100** (31–50%), the same as arm A. Against C
+(52/100), D overlaps; against B (81/100), it separates. The case-by-case table
+is in §10.2. The template did not keep C's point-estimate gain.
+
+## 9. Arm E — a mandatory closing slot
+
+Arm E drops the default altogether and asks for something every reply has to
+carry, whether or not there was a fork. The file is arm A's, byte for byte,
+with one block appended:
+
+> ## Forks
+>
+> End every reply with either "Forks: none" or "Forks: picked X over Y because R".
+
+So a missing slot is itself a measurement, and "none" is an answer that can be
+wrong.
+
+### 9.1 Is the slot there?
+
+Scored with `file_content_matches` on the attempt's last message — the reply —
+anchored at its end:
+
+| | E |
+| --- | --- |
+| reply ends with the slot in the given form | **169/200** (79–89%) |
+| — of which `Forks: none` | 162 |
+| — of which `Forks: picked X over Y because R` | 7 |
+| a `Forks:` line in the reply, any form | 188/200 (90–97%) |
+| no `Forks:` line at all | 12/200 |
+
+Arms A–D: 0/200 each, so the check has no false positives on 800 attempts.
+
+The 19 replies with a `Forks:` line in some other form, read by hand: 15 name a
+fork in their own words ("Forks: Chose exit-intent-only approach over always-on
+newsletter because …"), 3 say none and give a reason, and 1 is neither. The 12
+without a slot all stop short of the work: 4 ask for permission to read files
+already in the workspace (the skill-directory side effect of §4), and the other
+8 end by asking the user for input or by listing what they would do next.
+
+**The slot is followed where the fork line was not**: 188 of 200 replies carry
+it, against C's 5 of 170 and D's 15 of 170. A requirement at a fixed place in
+every reply is taken up; one that depends on whether there was a fork, and
+belongs at the top, mostly is not.
+
+### 9.2 Is it honest? "none" on the cases built around a choice
+
+Four cases ask the model to choose between alternatives. They were fixed before
+any arm E attempt was read:
+
+| case | the choice in the prompt | slot | `none` |
+| --- | --- | --- | --- |
+| Pro plan price (negative) | "$49 or $79" | 10/10 | **10** |
+| exit modal timing | "when and to whom" | 8/10 (+2 in another form, both naming a fork) | **8** |
+| stale positioning | update the shared file, or write elsewhere (§5) | 8/10 | **8** |
+| ICP write-up | which customer, which position | 8/10 (+1 in another form, neither) | **8** |
+| **total** | | 34/40 in the given form | **34/40** (71–93%) |
+
+**Every slot in the given form on these cases says "none".** The only forks
+declared on them are the two exit-modal replies that used their own wording.
+The pricing case shows the miss most clearly: all ten replies answer "$49", the
+price already in `pricing.html`, and end with "Forks: none". The model does not
+treat "$49 or $79" as a choice it made; it reports the current value and marks
+no fork. That is a scorable miss by the arm's own rule, in 10 of 10.
+
+Across the whole run, 22 of 188 slot lines name a fork (7 in the given form, 15
+in another). "None" is the default the model reaches for, not a report.
+
+### 9.3 Delivery
+
+Change requests written: **E 32/100** (24–42%). It overlaps A (40) and D (40)
+and separates from both C (52) and B (81). The drop is concentrated on the
+empty first session (A 4 → E 0) and the registration form (9 → 5; four of the
+five that wrote nothing asked for permission to read files, the side effect of
+§4 — 17 attempts in E hit it, 15 in A). The
+slot is appended at the end of a reply; it does not change whether the reply
+acts first.
+
+`product-marketing`: 20/20 activations, nothing written in 20/20 (A 18/20).
+
+## 10. All five arms side by side
+
+### 10.1 Activation — the rules do not disturb the table
+
+| | A | B | C | D | E |
+| --- | --- | --- | --- | --- | --- |
+| the seven that never fired | 90/90 | 0/90 | 90/90 | **90/90** | **90/90** |
+| all 16 scored cases | 160/160 | 49/160 | 160/160 | **160/160** | **160/160** |
+| activations that reached another skill | 0 | 1 | 0 | 0 | 0 |
+| contested headline case | `copywriting` ×10 | none ×10 | `copywriting` ×10 | `copywriting` ×10 | `copywriting` ×10 |
+| edit-shaped bypass | 0/160 | 84/160 | 0/160 | 0/160 | 0/160 |
+| negatives that fired | 0/30 | 0/30 | 0/30 | 0/30 | 0/30 |
+
+Every arm with the table has the same clean diagonal; all thirteen per-skill
+rows are 10/10 or 20/20 in C, D and E. None of the three rules pulled the model
+off the lookup. Activation and output format are separate layers here: the
+rules change what the reply says, not which skill writes it. The full five-arm
+matrix is in the [analysis file](marketingskills.phrase-binding.analysis.md).
+
+### 10.2 Delivery — change requests written
+
+| case | A | B | C | D | E |
+| --- | --- | --- | --- | --- | --- |
+| registration form, fix it | 9 | 10 | 10 | 7 | 5 |
+| newsletter form, get more submissions | 0 | 8 | 0 | 0 | 0 |
+| exit modal, rewrite the words | 6 | 7 | 10 | 6 | 4 |
+| limit-reached screen, rework it | 7 | 10 | 10 | 5 | 6 |
+| empty first session, fix it | 4 | 10 | 5 | 4 | 0 |
+| wordy paragraph, tighten it | 6 | 10 | 6 | 8 | 9 |
+| not cited by ChatGPT, change that | 0 | 0 | 0 | 0 | 0 |
+| one page per integration, build them | 0 | 10 | 2 | 0 | 0 |
+| star rating in Google, make it happen | 8 | 7 | 9 | 10 | 8 |
+| stale positioning, update the context | 0 | 9 | 0 | 0 | 0 |
+| **total** | **40/100** (31–50%) | **81/100** (72–87%) | **52/100** (42–62%) | **40/100** (31–50%) | **32/100** (24–42%) |
+
+B separates from all four table arms. Among the table arms only C and E
+separate, and they sit at opposite ends. The three cases that never write with
+the table — newsletter form, integration pages, positioning — write nothing
+under any of the three rules. Answer cases were not read by hand for D and E;
+the question put to these arms was change requests and the output markers.
+
+### 10.3 How the output format is scored
+
+`tools/slot.mjs` passes each attempt's final reply (or, for the template, each
+message's first line) to Assay's own `file_content_matches` evaluator from
+`@ktlsr/assay-core` 0.4.4, as a one-file workspace. The suite is unchanged
+(its hash is the same in all five runs), no assertion was added to it, and each
+check is pass or fail — no new verdict state. The patterns tolerate markdown
+emphasis around the line and nothing else. The script checks itself on
+constructed replies before it reads a run, and it scores 0 on arms A–C (600
+attempts) for both markers. The per-attempt slot lines are in the analysis
+file for reading.
+
+### 10.4 What D and E say
+
+- **The wording of the rule is not what was missing.** A literal template
+  moved C's 5/170 to 15/170. The intervals overlap, and 12 of the 15 name the
+  table's routing as the fork.
+- **A slot the reply must always carry is followed, and it says "none".** 188
+  of 200 replies carry it; on the four cases built around a choice, every slot
+  in the given form says "none", including ten "$49 or $79" replies that pick
+  $49. The format is taken up; the self-report inside it is not reliable at this
+  model size.
+- **No output rule brought the work back.** Change requests: C 52, D 40, E 32
+  against A's 40 and B's 81. What stops the work is the skills' own
+  ask-first steps (§4), and a rule about what to print does not reach them.
+- **The table's routing held under every rule**: 160/160 in A, C, D and E.
+
+---
+
 ## Fast run first, then the full run
 
 The request was to start with `--fast` (3 attempts per case) and decide.
@@ -484,7 +689,10 @@ for the measured runs is
 [`marketingskills.phrase-binding.analysis.md`](marketingskills.phrase-binding.analysis.md).
 It takes any number of arms; adding arm C left every arm A and arm B count in
 sections 1–6 identical, which was checked against the two-arm output before the
-file was regenerated.
+file was regenerated. Adding D and E was checked the same way: the three-arm
+output was byte-identical to the committed file before the five-arm output
+replaced it. The output-format checks for §8–§10 are in `tools/slot.mjs`,
+appended to the same analysis file.
 
 ## Limitations
 
@@ -505,9 +713,20 @@ file was regenerated.
   version could not be pinned back without changing it for the user. The
   environment hashes differ accordingly; a patch-level host change is the one
   confound §7 cannot rule out.
-- **Arm C had to stay on runner 0.4.4.** From 0.4.5 on, Assay excludes
+- **Arms D and E carry the same host drift as C.** They ran on 2026-09-26 on
+  Claude Code **2.1.271**, as the run records and the run logs' own
+  `claude --version` line show — the same host as C, one patch past A and B.
+  So D and E compare to C with no host change, and to A and B across the
+  2.1.270 → 2.1.271 step. (The version was expected to have moved to 2.1.281 by
+  then; it had not, and nothing was changed on the machine.)
+- **Arms C, D and E had to stay on runner 0.4.4.** From 0.4.5 on, Assay excludes
   instruction files in every ancestor of the working directory, which is where
   this experiment's table lives; measured in §7.
+- **The output markers are pattern checks plus a reading.** `file_content_matches`
+  decides whether a line in the given form is present; whether a declared fork is
+  a real one, and whether a "none" is wrong, is read by hand against four cases
+  fixed before the arm E attempts were read. Other readers may count more cases
+  as forked; none would count fewer than the "$49 or $79" case.
 
 ## Reproduce
 
@@ -524,7 +743,11 @@ mkdir D:\pb-C\tmp ; copy fixtures\phrase-binding-stop\CLAUDE.md D:\pb-C\
 set TEMP=D:\pb-C\tmp & set TMP=D:\pb-C\tmp
 npx @ktlsr/assay@0.4.4 run suites/marketingskills.collide.v3.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4
 
-python tools/phrase_binding.py .assay/runs/<A>.json .assay/runs/<B>.json .assay/runs/<C>.json
+# arms D and E: the same, with fixtures\phrase-binding-template (D:\pb-D)
+# and fixtures\phrase-binding-slot (D:\pb-E)
+
+python tools/phrase_binding.py .assay/runs/<A>.json .assay/runs/<B>.json .assay/runs/<C>.json .assay/runs/<D>.json .assay/runs/<E>.json
+node tools/slot.mjs <npx cache>/@ktlsr/assay-core/dist/index.js .assay/runs/<A>.json … .assay/runs/<E>.json
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's
