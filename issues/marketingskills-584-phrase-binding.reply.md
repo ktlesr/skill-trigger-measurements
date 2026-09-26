@@ -1,6 +1,6 @@
 <!--
 Reply draft for coreyhaines31/marketingskills discussion #584, to jimy-r's
-2026-09-13 comment. NOT POSTED. Numbers: reports/marketingskills.phrase-binding.md,
+2026-09-13 comment. POSTED 2026-09-13 as #discussioncomment-18422708. Numbers: reports/marketingskills.phrase-binding.md,
 runs 6e03681d (A) and 5ec9e04b (B).
 -->
 
