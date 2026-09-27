@@ -1,4 +1,5 @@
 <!--
+SUPERSEDED 2026-09-27 by issues/marketingskills-584-combined.reply.md — do not post this one.
 Reply draft for coreyhaines31/marketingskills discussion #584, to jimy-r's
 2026-09-27 comment (#discussioncomment-18619124). NOT POSTED.
 Updated the same day with the arm C re-run on 0.4.9 (run affc439d, §12).

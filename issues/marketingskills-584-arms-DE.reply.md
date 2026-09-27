@@ -1,4 +1,5 @@
 <!--
+SUPERSEDED 2026-09-27 by issues/marketingskills-584-combined.reply.md — do not post this one.
 Reply draft for coreyhaines31/marketingskills discussion #584, to jimy-r's
 2026-09-25 comment (#discussioncomment-18606188), following our 2026-09-26 reply
 (#discussioncomment-18614237) that announced arms D and E. NOT POSTED.
