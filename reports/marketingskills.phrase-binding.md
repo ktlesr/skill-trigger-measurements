@@ -17,6 +17,12 @@
 > as a literal template; arm E drops the default and makes a closing slot
 > mandatory on every reply. §8 is D, §9 is E, §10 puts all five arms side by
 > side. Sections 1–7 are unchanged.
+>
+> **§11, added 2026-09-27**, answers jimy-r's three follow-ups without new
+> runs. It scores arm E against a fork list taken from arm A's own questions,
+> explains why arm C was not re-run on 0.4.8 (under 0.4.8 the table does not
+> load, and the host has moved on), and gives `product-marketing` a delivery
+> row across all five arms.
 
 | | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
 | --- | --- | --- | --- | --- | --- |
@@ -631,6 +637,143 @@ file for reading.
   ask-first steps (§4), and a rule about what to print does not reach them.
 - **The table's routing held under every rule**: 160/160 in A, C, D and E.
 
+## 11. Follow-ups from jimy-r (2026-09-27)
+
+[jimy-r's comment](https://github.com/coreyhaines31/marketingskills/discussions/584#discussioncomment-18619124)
+asked for three things: score arm E against a fork list taken from arm A's own
+questions, re-run arm C on the same engine as D and E, and give
+`product-marketing` its own delivery row. No new runs were made; the host on
+2026-09-27 was **Claude Code 2.1.283** (`claude --version`, checked before
+anything was run).
+
+### 11.1 The fork list, from arm A's questions
+
+Method, as jimy-r proposed. Take every arm A attempt whose final reply puts a
+question to the user (`tools/fork_questions.py`). Drop questions that only ask
+permission ("Should I apply this edit?", "Want me to implement these?") and
+question marks inside drafted copy (headline variants, FAQ entries, email
+CTAs). Label what is left and take the union across the case's ten attempts.
+The dropping and labelling are one reader's reading of 1,200 lines of output.
+
+| Case | A attempts that asked | Known forks (union) |
+| --- | ---: | --- |
+| signup registration form | 0 | — |
+| CRO lead form | 7 | form placement (footer or above) · what subscribers get, how often · what happens after signup · baseline data (conversion, subscribers, traffic) · hero CTA offer (free trial or guide) · ship quick wins or test copy first · where the file is |
+| exit modal wording | 4 | which copy variant / voice · the modal's goal and incentive · trigger (exit intent or the 3 s timer) · audience (new or returning) · baseline data · mobile share |
+| exit modal timing | 9 | goal (newsletter, trial, demo or leads) · incentive / lead magnet · trigger (exit intent, scroll or time) · audience (new or returning, exclude logged-in) · mobile trigger · baseline data and traffic source · top exit page |
+| CRO pricing page | 8 | baseline data (conversion, traffic, plan split, heatmaps, drop-off) · audience / product · rewrite the page or one area |
+| paywall limit screen | 4 | what paid unlocks · price and where it shows · hard wall or escape hatch · baseline conversion · what the user was doing at the limit · match existing style or start fresh · what happens after upgrading |
+| onboarding first session | 5 | activation event · demo data or own data first · activation rate, retained vs churned behaviour · audience / product · trim the signup fields · framework picker · setup complexity · design first or answer first |
+| headline | 8 | which variant · pain point / angle · audience · differentiation · keep or replace the subheadline |
+| copy-editing paragraph | 0 | — (permission questions only) |
+| welcome sequence | 8 | activation goal · conversion goal (upgrade or stay active) · audience and segments · upgrade trigger · first objection · social-proof names · reply channel · in-app onboarding · link docs or recap inline · act now or educate first · baseline data |
+| cold email | 2 | product and proof points · the ask (meeting, demo, reply) · positioning against alternatives · personalise per prospect or fix the core sequence |
+| SEO not found | 2 | which fix first · is this the whole page · target keywords · Search Console data · site context |
+| AI SEO cited | 10 | current AI visibility · who is cited instead · existing content · domain strength · target queries · the domain · crawler access · implement now or test visibility first · goal level |
+| programmatic SEO pages | 10 | output format · URL structure · search intent · what differs per page · conversion goal / CTA · proprietary data · existing docs or hub · competitors · real or placeholder names · static or dynamic |
+| schema star ratings | 2 | where the rating data comes from · FAQ content · stack and existing markup · product type |
+| product-marketing positioning | 10 | which platform teams (internal, or selling to others) · the buyer · why the shift · pain / jobs · customer examples · competition · how the value prop shifts |
+| product-marketing ICP | 7 | which platform teams (size, role) · the buyer · what hand-rolled looks like · top pain · proof and customer mix · draft from existing copy or interview first |
+| `$49 or $79` (negative) | 0 | — |
+| form crash (negative) | 0 | — |
+| slow query (negative) | 5 | the query itself (not in the workspace) |
+
+Two things the list shows before arm E is scored:
+
+- **Most of arm A's questions ask for inputs, not choices.** Conversion rates,
+  traffic sources, customer names. The model had no way to supply them. An
+  explicit X-or-Y choice appears on thirteen of the sixteen non-empty cases (not SEO not-found, schema, slow query).
+- **The `$49 or $79` case has an empty list.** Arm A answered it in 10 of 10
+  attempts without asking. §9.2 counted it as forked by construction; by this
+  method it is not, and E's ten "none" there are not misses.
+
+### 11.2 Arm E against the list
+
+Scored on the last `Forks:` line of each reply (200 attempts: 165 "none",
+23 naming something, 12 with no line; this is looser than `slot.mjs`'s
+end-of-reply form, which counts 162 "none").
+
+| | attempts |
+| --- | ---: |
+| "none" on a case with a non-empty list — **miss** | **134** |
+| … of which on a case whose list has an explicit X-or-Y choice | 107 |
+| "none" on a case with an empty list | 31 |
+| names a listed fork — **hit** | **5** |
+| names something off the list — read by hand | 18 |
+| no `Forks:` line | 12 |
+
+The five hits: exit-modal wording #8 (substance over a newsletter ask, the
+"goal / incentive" fork), exit-modal timing #6 and #8 (exit intent over the
+timer), headline #2 and #9 (one variant over another).
+
+The eighteen off-list slots, read one by one:
+
+- **6 name the routing** as the fork, which the table made for them: lead form
+  #8 and #9, pricing page #1, #3 and #6, SEO not-found #4.
+- **8 are real choices A never asked about**: signup #4 (rewrite over
+  incremental fixes) and #6 (email-only over social auth), copy-editing #1, #7
+  and #8 (which wording, tighten over rewrite), schema #1 (`@graph` over separate
+  scripts), paywall #0 and #2 (minimal or comprehensive screen). Five are on
+  cases whose list is empty, because A only asked permission there.
+- **3 are priorities stated as forks**: pricing page #0 and #7 (value-prop
+  clarity over visual polish), SEO not-found #7 (audit before hunches).
+- **1 is not a fork**: ICP #8 ("the document is ready to use").
+
+So the check jimy-r described runs as he said: 18 slots to read instead of 200,
+and none of them hides a false "none". It still misses 134 times, and it hits
+only 5 times. All five hits are choices between named options. Missing
+inputs, which make up most of A's list, never show up in a slot.
+
+### 11.3 `product-marketing` delivery, all five arms
+
+Attempts that wrote any file, and attempts that wrote the shared context file
+`.agents/product-marketing.md` (`tools/pm_delivery.py`):
+
+| Case | A | B | C | D | E |
+| --- | --- | --- | --- | --- | --- |
+| **ICP — any file written** | **2/10** | 10/10 | **1/10** | **1/10** | **0/10** |
+| ICP — context file | 2/10 | 0/10 | 1/10 | 1/10 | 0/10 |
+| positioning — any file written | 0/10 | 9/10 | 0/10 | 0/10 | 0/10 |
+| positioning — context file | 0/10 | 1/10 | 0/10 | 0/10 | 0/10 |
+| host | 2.1.270 | 2.1.270 | 2.1.271 | 2.1.271 | 2.1.271 |
+
+- The "2 of 20" in the earlier reply is arm A's, and both writes are on the ICP
+  case. Arm C wrote 1 of 20.
+- No rule moved it. On ICP the table arms wrote 2, 1, 1 and 0 of 10. The
+  standing default (C, D) did not change it, and the slot (E) did not either.
+  Without the table, every ICP attempt writes a file. None of those is the
+  shared one; they are ten new `POSITIONING.md`-style files (§5).
+
+### 11.4 Arm C on 0.4.8: not run
+
+Two preconditions failed, and the instruction was to stop if the table did not
+load.
+
+1. **The engine D and E ran on is gone.** C, D and E all ran on 2.1.271, so C
+   already sits beside D and E. The gap jimy-r named is C (2.1.271) against A
+   (2.1.270). The host is now 2.1.283. A re-run today would put C on a third
+   engine, level with neither.
+2. **Under 0.4.8 the table does not reach the agent.** Since 0.4.5 the adapter
+   writes `claudeMdExcludes` for every directory above the working directory.
+   Arm C's file lives in exactly such a directory. `tools/context_probe.mjs`
+   uses the adapter's own `writeMemoryProbe` and starts `claude -p` with no
+   credentials. The session stops at "Not logged in", after the host has loaded
+   its instruction files and fired the hook, and before any model call ($0):
+
+   ```
+   claudeMdExcludes on  · exit 1 · $0 · canary fired · loaded: nothing
+   claudeMdExcludes off · exit 1 · $0 · canary fired · loaded: D:\pb-C8\CLAUDE.md
+   ```
+
+   The canary fires in both runs, so "nothing" means measured and absent, not
+   unmeasured. A 0.4.8 run of arm C would be a no-table run under C's label.
+
+Putting the table in the fixture's own `CLAUDE.md` would get it past the
+exclusion. It would also change the suite hash and move the file from workspace
+scope to project scope, so it would be a different arm, not C re-run. A
+like-for-like re-run needs all three table arms and B on one host, on a runner
+that measures context but lets an ancestor file through.
+
 ---
 
 ## Fast run first, then the full run
@@ -748,6 +891,13 @@ npx @ktlsr/assay@0.4.4 run suites/marketingskills.collide.v3.suite.yaml --skill 
 
 python tools/phrase_binding.py .assay/runs/<A>.json .assay/runs/<B>.json .assay/runs/<C>.json .assay/runs/<D>.json .assay/runs/<E>.json
 node tools/slot.mjs <npx cache>/@ktlsr/assay-core/dist/index.js .assay/runs/<A>.json … .assay/runs/<E>.json
+
+# §11
+python tools/fork_questions.py .assay/runs/<A>.json          # raw questions; the list is read from this
+python tools/pm_delivery.py .assay/runs/<A>.json … .assay/runs/<E>.json
+npm pack @ktlsr/assay-adapters@0.4.8 && tar xzf ktlsr-assay-adapters-0.4.8.tgz
+copy fixtures\phrase-binding-stop\CLAUDE.md D:\pb-C8node tools/context_probe.mjs package/dist/claude-code/adapter.js D:/pb-C8          # loaded: nothing
+node tools/context_probe.mjs package/dist/claude-code/adapter.js D:/pb-C8 noexcl   # loaded: D:\pb-C8\CLAUDE.md
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's
