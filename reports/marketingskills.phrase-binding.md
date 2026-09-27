@@ -845,6 +845,12 @@ assay compare run-2026-09-23T05-36-00-561Z-71c261de run-2026-09-27T10-22-12-730Z
 exit 3
 ```
 
+`--json` gives `"drifted": ["suiteHash", "environmentHash"]` and
+`"unavailable": ["contextHash"]`. The missing context pin is reported on its own,
+so 0.4.8's gate fires on a real pair of runs. It is not the only reason here,
+though, and a pair that differs only in that pin would be needed to show the gate
+in isolation.
+
 That is the expected refusal. Old C never measured its context, and the new
 suite hash, host and plugins each block the comparison on their own. The
 numbers above are set side by side without `compare`'s endorsement. New C is

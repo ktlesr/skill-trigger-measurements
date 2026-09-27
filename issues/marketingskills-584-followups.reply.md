@@ -6,7 +6,9 @@ Meant to go right after issues/marketingskills-584-arms-DE.reply.md, also NOT
 POSTED; the two can be merged into one reply. If they stay separate, the D/E
 draft's "Limits" line about the four fork cases should point here (§11.1 gives
 the pricing case an empty list).
-Numbers: reports/marketingskills.phrase-binding.md §11. No new runs.
+Numbers: reports/marketingskills.phrase-binding.md §11 and §12. Ready to post:
+everything below this comment is the reply body. compare re-verified 2026-09-27
+(exit 3, drifted suiteHash + environmentHash, unavailable contextHash).
 -->
 
 All three are done.
@@ -78,7 +80,11 @@ product context…"), and one labels an ordinary plan as the fork.
 `assay compare` refuses to compare the two C runs. The suite hash moved (the
 declaration is part of the case set), the host moved, the host now ships two
 plugins of its own, and old C never measured its context. So the table above is
-a side-by-side, not something `compare` signs off on. For your review, I'd cite
+a side-by-side, not something `compare` signs off on. The JSON puts
+`contextHash` under `unavailable` on a line of its own ("even without that
+change the conditions could not be shown to match"), so 0.4.8's context gate
+fires on a real pair, though here it is one of three reasons, not the only one.
+For your review, I'd cite
 new C as the baseline: it's the only table arm whose context is pinned.
 
 ## `product-marketing` delivery, all six runs
@@ -96,8 +102,8 @@ A correction: the 2 of 20 was arm A's, and both writes were on the ICP case.
 Arm C wrote 1 of 20.
 
 The number you most wanted to move hasn't moved. With the table, ICP writes 2,
-1, 1, 0 and 0 of 10 across the five table runs. The standing default didn't change it,
-and neither did the slot. Without the table, all ten ICP attempts write
+1, 1, 0 and 0 of 10 across the five table runs. The standing default didn't
+change it, and neither did the slot. Without the table, all ten ICP attempts write
 something, but it's a new `POSITIONING.md`-style file every time and never the
 shared one. So on this case the posture rule, in every form tried, loses to the
 skill's own step of asking about the market before writing.
