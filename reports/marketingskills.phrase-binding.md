@@ -978,7 +978,7 @@ copy fixtures\phrase-binding-stop\CLAUDE.md D:\pb-C8node tools/context_probe.mjs
 node tools/context_probe.mjs package/dist/claude-code/adapter.js D:/pb-C8 noexcl   # loaded: D:\pb-C8\CLAUDE.md
 
 # §12: arm C on 0.4.9, the file declared by the case set
-set TEMP=D:\pb-C9	mp & set TMP=D:\pb-C9	mp & set ASSAY_WORK_ROOT=D:\pb-C9\work
+set TEMP=D:\pb-C9\tmp & set TMP=D:\pb-C9\tmp & set ASSAY_WORK_ROOT=D:\pb-C9\work
 npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armC.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4 --label "arm C — table + standing default (0.4.9)"
 npx @ktlsr/assay@0.4.9 compare <old C> <new C>
 ```
