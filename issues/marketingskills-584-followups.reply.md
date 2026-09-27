@@ -1,6 +1,7 @@
 <!--
 Reply draft for coreyhaines31/marketingskills discussion #584, to jimy-r's
 2026-09-27 comment (#discussioncomment-18619124). NOT POSTED.
+Updated the same day with the arm C re-run on 0.4.9 (run affc439d, §12).
 Meant to go right after issues/marketingskills-584-arms-DE.reply.md, also NOT
 POSTED; the two can be merged into one reply. If they stay separate, the D/E
 draft's "Limits" line about the four fork cases should point here (§11.1 gives
@@ -8,7 +9,7 @@ the pricing case an empty list).
 Numbers: reports/marketingskills.phrase-binding.md §11. No new runs.
 -->
 
-All three are done. One of them is done as a stop, not a run.
+All three are done.
 
 ## The fork list from arm A's own questions
 
@@ -49,55 +50,56 @@ Two things came out of building the list:
   names two prices, and your method doesn't. So E's ten "none" there aren't
   misses by your definition. I'd rather use your list than my framing.
 
-## Arm C on the same engine: stopped before running
+## Arm C again, on a runner that measures context
 
-Two things blocked it, and the second is the one you asked me to check.
+It's re-run. One caveat first: it is not on D and E's engine. They ran on
+Claude Code 2.1.271; the machine is on 2.1.283 now, and I didn't downgrade it.
 
-1. **C already ran on the same engine as D and E.** All three ran on
-   Claude Code 2.1.271. The gap you named is C against A, 2.1.271 against
-   2.1.270. The machine is on 2.1.283 today, so a re-run would put C on a third
-   engine, level with neither.
-2. **Under runner 0.4.8 the table doesn't load.** Since 0.4.5 the runner writes
-   `claudeMdExcludes` for every directory above the working directory, and arm C's
-   file lives in one of those. I checked it for free: the runner's own settings,
-   the file in the ancestor, `claude -p` with no credentials. The host loads its
-   instruction files and fires the hook before it reaches "Not logged in", so the
-   check costs nothing.
+Runner 0.4.8 would have dropped the table: it excludes every instruction file
+above the working directory, and C's file lived there. 0.4.9 lets a case set
+declare its instruction file, and copies it into each working directory as
+`CLAUDE.md`. So this is arm C's file byte for byte, the table plus the Default
+block, now at project scope instead of workspace scope. The record confirms the
+host loaded it (`Project ./CLAUDE.md sha256:b33a9173…`, the same hash as the
+fixture), and the run has a `contextHash` for the first time.
 
-   ```
-   exclusions on:  canary fired · loaded: nothing
-   exclusions off: canary fired · loaded: D:\pb-C8\CLAUDE.md
-   ```
+| | old C (2.1.271, runner 0.4.4) | new C (2.1.283, runner 0.4.9) |
+| --- | --- | --- |
+| activation, 16 scored cases | 160 / 160 | 160 / 160 |
+| change requests, file written | 52 / 100 | **51 / 100** |
+| ICP, file written | 1 / 10 | **0 / 10** |
+| fork line, same detector | 6 / 170 | **3 / 170** |
 
-   A 0.4.8 run labelled "arm C" would really be a run with no table.
+Your 52 of 100 holds on the new engine at 51. It still separates from no table
+(81) and overlaps A (40), D (40) and E (32), as before. Of the three fork lines,
+one names the routing, one states a default ("Default taken: using the Meterly
+product context…"), and one labels an ordinary plan as the fork.
 
-I could put the table in the fixture's own `CLAUDE.md` to get past the
-exclusion. That would change the suite hash and move the file from workspace
-scope to project scope, so it would be a new arm, not C again. For your review:
-C's 52 of 100 and A's 40 are one patch apart, and that is the only confound
-between them. Removing it means re-running B and all four table arms on one
-host, with a runner that measures the context but lets an ancestor file
-through. I'm happy to do that if the patch step matters for the review.
+`assay compare` refuses to compare the two C runs. The suite hash moved (the
+declaration is part of the case set), the host moved, the host now ships two
+plugins of its own, and old C never measured its context. So the table above is
+a side-by-side, not something `compare` signs off on. For your review, I'd cite
+new C as the baseline: it's the only table arm whose context is pinned.
 
-## `product-marketing` delivery, all five arms
+## `product-marketing` delivery, all six runs
 
 Attempts that wrote any file on each case, out of 10:
 
-| | A | B | C | D | E |
-| --- | --- | --- | --- | --- | --- |
-| **ICP** | **2** | 10 | **1** | **1** | **0** |
-| ICP, shared context file | 2 | 0 | 1 | 1 | 0 |
-| positioning | 0 | 9 | 0 | 0 | 0 |
-| positioning, shared context file | 0 | 1 | 0 | 0 | 0 |
+| | A | B | C | D | E | new C |
+| --- | --- | --- | --- | --- | --- | --- |
+| **ICP** | **2** | 10 | **1** | **1** | **0** | **0** |
+| ICP, shared context file | 2 | 0 | 1 | 1 | 0 | 0 |
+| positioning | 0 | 9 | 0 | 0 | 0 | 0 |
+| positioning, shared context file | 0 | 1 | 0 | 0 | 0 | 0 |
 
 A correction: the 2 of 20 was arm A's, and both writes were on the ICP case.
 Arm C wrote 1 of 20.
 
 The number you most wanted to move hasn't moved. With the table, ICP writes 2,
-1, 1 and 0 of 10 across the four arms. The standing default didn't change it,
+1, 1, 0 and 0 of 10 across the five table runs. The standing default didn't change it,
 and neither did the slot. Without the table, all ten ICP attempts write
 something, but it's a new `POSITIONING.md`-style file every time and never the
 shared one. So on this case the posture rule, in every form tried, loses to the
 skill's own step of asking about the market before writing.
 
-Report, §11: https://github.com/ktlesr/skill-trigger-measurements/blob/master/reports/marketingskills.phrase-binding.md
+Report, §11 and §12: https://github.com/ktlesr/skill-trigger-measurements/blob/master/reports/marketingskills.phrase-binding.md

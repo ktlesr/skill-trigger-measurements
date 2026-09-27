@@ -23,6 +23,10 @@
 > explains why arm C was not re-run on 0.4.8 (under 0.4.8 the table does not
 > load, and the host has moved on), and gives `product-marketing` a delivery
 > row across all five arms.
+>
+> **§12, added the same day**, re-runs arm C on runner 0.4.9, which lets the case
+> set declare the instruction file. Delivery 51/100 (old C 52), ICP 0/10, fork
+> line 3/170, contextHash measured. The host is 2.1.283, not D and E's 2.1.271.
 
 | | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
 | --- | --- | --- | --- | --- | --- |
@@ -774,6 +778,80 @@ scope to project scope, so it would be a different arm, not C re-run. A
 like-for-like re-run needs all three table arms and B on one host, on a runner
 that measures context but lets an ancestor file through.
 
+## 12. Arm C again, on runner 0.4.9 (2026-09-27)
+
+0.4.9 added a way for a case set to declare its instruction file
+(`context.instructions`). That made arm C runnable on a runner that measures
+context. §11.4's stop was about 0.4.8. This run uses arm C's
+`CLAUDE.md` unchanged: the table plus the Default block.
+
+| | old C | new C |
+| --- | --- | --- |
+| Run | `71c261de` | `run-2026-09-27T10-22-12-730Z-affc439d` |
+| Label | — | "arm C — table + standing default (0.4.9)" |
+| Runner | 0.4.4 | **0.4.9** |
+| Host | Claude Code 2.1.271 | **2.1.283** (checked and logged before the run) |
+| Where the file sits | an ancestor of the working directory (workspace scope) | the working directory's own `CLAUDE.md` (project scope, how 0.4.9 places it) |
+| Suite | `sha256:ee4ae643…` | `sha256:36ec7cf5…`: [`marketingskills.collide.v3.armC.suite.yaml`](../suites/marketingskills.collide.v3.armC.suite.yaml), v3 byte for byte plus the `context:` block |
+| Host memory | not measured | `Project ./CLAUDE.md sha256:b33a9173…` = `fixtures/phrase-binding-stop/CLAUDE.md` |
+| contextHash | not measured | `sha256:1f802bab…` |
+| Host plugins | `marketing-skills` | `marketing-skills` + the host's own `agents-md` and `telemetry` |
+| Attempts | 200 · 0 unknown · $10.22 | 200 · 0 unknown · $10.48 |
+| Upload | — | [assayctl.dev](https://assayctl.dev/runs/run-2026-09-27T10-22-12-730Z-affc439d), private (its case set is unpublished) |
+
+Before the full run, a $0 check went through the real runner. Two attempts
+with no credentials stop at "Not logged in", and the record already reported
+the declared file as loaded, with its hash.
+
+**The request was for C on the same engine as D and E (2.1.271). It is not.**
+The machine is on 2.1.283 and was not downgraded. The new C differs from the
+old one in host, runner, file scope and suite hash, all at once.
+
+### 12.1 Numbers
+
+| | A | B | old C | D | E | **new C** |
+| --- | --- | --- | --- | --- | --- | --- |
+| activation, 16 scored cases | 160/160 | 49/160 | 160/160 | 160/160 | 160/160 | **160/160** |
+| negatives fired | 0/30 | 0/30 | 0/30 | 0/30 | 0/30 | **0/30** |
+| **change requests: file written** | 40/100 | 81/100 | 52/100 | 40/100 | 32/100 | **51/100** (41–61%) |
+| **product-marketing ICP: file written** | 2/10 | 10/10 | 1/10 | 1/10 | 0/10 | **0/10** |
+| positioning: file written | 0/10 | 9/10 | 0/10 | 0/10 | 0/10 | **0/10** |
+| **fork line, first line of any message** (same detector) | 0/170 | 0/170 | 6/170 | 0/170 | 0/170 | **3/170** (1–5%) |
+| reads refused against the skill's own directory | 15 | 1 | 17 | 9 | 17 | **1** |
+
+- **Delivery reproduces.** 51 against 52 on change requests. No case moves by more
+  than 3 of 10 (exit-modal wording 10 → 7, copy-editing 6 → 9; analysis file,
+  "Action cases, case by case"). New C
+  separates from B and overlaps A, old C, D and E, exactly as old C did.
+- **ICP: 0/10.** Old C was 1/10, not 2/10; the 2/10 was arm A's. No table arm
+  has written more than 2.
+- **Fork line: 3/170**, against 6/170 on the same detector for old C (§7.3
+  counted 5 by hand). Of the three, one names the routing ("Taking the
+  `/marketing-skills:popups` skill path"), one states a default ("Default
+  taken: using the Meterly product context…" on the welcome sequence), and one
+  labels an ordinary plan as the fork taken (AI SEO).
+- **One thing changed:** reads refused because a workspace path was resolved
+  against the skill's directory fell from 17 to 1. Host, runner and file scope
+  all changed together, so this run cannot say which one did it.
+
+### 12.2 `compare` against old C
+
+```
+assay compare run-2026-09-23T05-36-00-561Z-71c261de run-2026-09-27T10-22-12-730Z-affc439d
+  cannot compare these runs
+  suiteHash, environmentHash changed; version 2.1.271 → 2.1.283; tools -TaskOutput;
+  plugins +agents-md@, +telemetry@; memory: not measured → 1 entry
+  also: contextHash could not be read in one or both runs
+exit 3
+```
+
+That is the expected refusal. Old C never measured its context, and the new
+suite hash, host and plugins each block the comparison on their own. The
+numbers above are set side by side without `compare`'s endorsement. New C is
+the first arm with a contextHash, so it is the baseline any later table arm on
+0.4.9 compares against.
+
+
 ---
 
 ## Fast run first, then the full run
@@ -898,6 +976,11 @@ python tools/pm_delivery.py .assay/runs/<A>.json … .assay/runs/<E>.json
 npm pack @ktlsr/assay-adapters@0.4.8 && tar xzf ktlsr-assay-adapters-0.4.8.tgz
 copy fixtures\phrase-binding-stop\CLAUDE.md D:\pb-C8node tools/context_probe.mjs package/dist/claude-code/adapter.js D:/pb-C8          # loaded: nothing
 node tools/context_probe.mjs package/dist/claude-code/adapter.js D:/pb-C8 noexcl   # loaded: D:\pb-C8\CLAUDE.md
+
+# §12: arm C on 0.4.9, the file declared by the case set
+set TEMP=D:\pb-C9	mp & set TMP=D:\pb-C9	mp & set ASSAY_WORK_ROOT=D:\pb-C9\work
+npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armC.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4 --label "arm C — table + standing default (0.4.9)"
+npx @ktlsr/assay@0.4.9 compare <old C> <new C>
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's
