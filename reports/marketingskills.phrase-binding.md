@@ -33,6 +33,10 @@
 > negative. It reproduces the list on arm B (AUC 1.00), but it scores identical
 > decisions as spread (form crash, `$49 or $79`) and cannot see the one fork a
 > prompt spells out, because the model resolves it the same way every time.
+>
+> **§14, added the same day**, is arm F: one precondition in `product-marketing`'s
+> ask step (don't ask about the market when the prompt states it). ICP stays at
+> 0/10; the questions move to the segment and the buyer.
 
 | | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
 | --- | --- | --- | --- | --- | --- |
@@ -966,6 +970,78 @@ spread can't tell an identical decision from a split one.
   incomplete.
 
 
+## 14. Arm F — a precondition on `product-marketing`'s ask step (2026-10-03)
+
+ICP is the case where the prompt already states the new market ("We moved from
+selling to indie developers to selling to platform teams at API companies"),
+and the skill still asks about it. Arm F puts one precondition into that skill
+only, with no global rule. The line goes into Step 1's "If it exists" branch,
+directly above "Ask which sections they want to update":
+
+> Precondition for the next step: if the prompt already states the market (who
+> the product is now sold to), do not ask about the market — take it from the
+> prompt and continue
+
+| | |
+| --- | --- |
+| Run | `run-2026-10-03T13-40-17-501Z-aa524c4d`, label "arm F — product-marketing ask precondition" |
+| Skill | [`skills/marketing-skills-collide-F`](../skills/marketing-skills-collide-F): the 14-skill plugin with that one line added (skill `sha256:b1ff9b44…`) |
+| Context | arm A's table, declared through 0.4.9's `context` ([`marketingskills.collide.v3.armF.suite.yaml`](../suites/marketingskills.collide.v3.armF.suite.yaml), suite `sha256:4f855027…`); host loaded `Project ./CLAUDE.md sha256:b4adbae7…` = the fixture; contextHash `sha256:32b5fbc8…` |
+| Host · runner | Claude Code **2.1.288** (logged before the run; host plugins now also `plugin-authoring`) · `@ktlsr/assay@0.4.9`, `acceptEdits`, `--concurrency 4` |
+| Attempts | 200 · 0 unknown · $9.80 |
+| Upload | [assayctl.dev](https://assayctl.dev/runs/run-2026-10-03T13-40-17-501Z-aa524c4d), private |
+
+### 14.1 Result: nothing moved
+
+| | A | B | old C | D | E | new C | **F** |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **ICP, file written** | 2/10 | 10/10 | 1/10 | 1/10 | 0/10 | 0/10 | **0/10** |
+| positioning, file written | 0/10 | 9/10 | 0/10 | 0/10 | 0/10 | 0/10 | **0/10** |
+| change requests, file written | 40/100 | 81/100 | 52/100 | 40/100 | 32/100 | 51/100 | **44/100** |
+| activation, 16 scored cases | 160/160 | 49/160 | 160/160 | 160/160 | 160/160 | 160/160 | **160/160** |
+| negatives fired | 0/30 | 0/30 | 0/30 | 0/30 | 0/30 | 0/30 | **0/30** |
+
+(The analysis file labels runs by position: arm F appears there as **G**, and
+new C as F.)
+
+### 14.2 What the ICP attempts did instead
+
+All ten fired the skill and read `.agents/product-marketing.md`. **None asked
+what the new market is.** So the precondition was followed in the narrow sense
+it states. Each attempt's last message, read by hand:
+
+| Final message | ICP attempts |
+| --- | ---: |
+| asks which platform teams exactly (internal or external, company size, org shape) | 4 |
+| asks who the buyer or decision-maker is | 3 |
+| asks whether to auto-draft or walk through sections (Step 1's other branch) | 2 |
+| drafts the positioning in the reply and asks what needs correcting | 1 |
+
+The questions moved one level down, from the market to the segment inside it
+and the person who buys. Those are the same forks arm A raised on this case
+(§11.1: which platform teams, the buyer, what hand-rolled looks like). The
+positioning case does the same: buyer, value-prop shift, "should I update all of
+these or focus on specific ones?". One positioning attempt wrote a full
+10,000-character context document into the reply and still didn't save it
+("Ready to use this, or does something need adjusting?").
+
+**Reading.** A precondition scoped to one question removes that one question.
+The skill's ask-first posture, "Validate as you go: summarize each section and
+confirm before moving on" and "Ask relevant questions", finds the next thing to
+ask. Moving ICP would take a precondition on the save itself (write first, ask
+after), not one on a particular question.
+
+### 14.3 Limits
+
+- **No baseline on this engine.** Arm A on 0.4.9 was suggested as F's baseline
+  and not run. F's 0/10 is set beside A's 2/10 across host (2.1.270 → 2.1.288),
+  runner (0.4.4 → 0.4.9) and scope (ancestor → working directory). On ICP that
+  hardly matters, because every table arm since A is at 0 or 1 of 10. For the
+  44/100 it does: F overlaps A, every table arm and new C, and separates only
+  from B.
+- The classification in 14.2 is a reading of ten final messages.
+
+
 ---
 
 ## Fast run first, then the full run
@@ -1099,6 +1175,11 @@ npx @ktlsr/assay@0.4.9 compare <old C> <new C>
 # §13: spread detector
 python tools/spread.py .assay/runs/<A or B>.json
 python tools/spread.py --validate .assay/runs/<A or B>.json
+
+# §14: arm F
+set TEMP=D:\pb-F\tmp & set TMP=D:\pb-F\tmp & set ASSAY_WORK_ROOT=D:\pb-F\work
+npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armF.suite.yaml --skill ./skills/marketing-skills-collide-F --concurrency 4 --label "arm F — product-marketing ask precondition"
+python tools/pm_delivery.py .assay/runs/<A>.json … .assay/runs/<F>.json
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's
