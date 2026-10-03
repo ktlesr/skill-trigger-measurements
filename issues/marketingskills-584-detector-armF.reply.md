@@ -1,10 +1,11 @@
 <!--
-Reply for coreyhaines31/marketingskills discussion #584: the spread-based fork
-detector and arm F. NOT POSTED; ready to post: everything below this comment
-is the reply body.
-Order: issues/marketingskills-584-combined.reply.md (D/E, fork list, C re-run)
-is also NOT POSTED and should go first. This reply refers to its fork list.
-Numbers: reports/marketingskills.phrase-binding.md §13 (detector) and §14
+Reply for coreyhaines31/marketingskills discussion #584, to jimy-r's 2026-10-02
+comment (#discussioncomment-18723033): the spread-based fork detector and arm F.
+NOT POSTED; ready to post: everything below this comment is the reply body.
+The combined reply (D/E, fork list, C re-run) is already posted
+(#discussioncomment-18623961, 2026-09-27). The section sign was dropped when that
+one was posted, so this body avoids it.
+Numbers: reports/marketingskills.phrase-binding.md sections 13 (detector) and 14
 (arm F, run aa524c4d).
 -->
 
@@ -104,4 +105,4 @@ than on any particular question. I can run that as arm G if you want it.
   classification above is my reading of ten final messages.
 - One model (Haiku 4.5), non-interactive, `acceptEdits`.
 
-Report, §13 and §14: https://github.com/ktlesr/skill-trigger-measurements/blob/master/reports/marketingskills.phrase-binding.md
+Report, sections 13 and 14: https://github.com/ktlesr/skill-trigger-measurements/blob/master/reports/marketingskills.phrase-binding.md
