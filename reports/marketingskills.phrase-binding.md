@@ -27,6 +27,12 @@
 > **§12, added the same day**, re-runs arm C on runner 0.4.9, which lets the case
 > set declare the instruction file. Delivery 51/100 (old C 52), ICP 0/10, fork
 > line 3/170, contextHash measured. The host is 2.1.283, not D and E's 2.1.271.
+>
+> **§13, added 2026-10-03**, tests a fork detector that needs no self-report: the
+> spread across a case's ten outputs, checked against §11.1's fork list. It works
+> on arm B's outputs (AUC 1.00, also after a length adjustment) and less well on
+> arm A's, which are mostly the questions themselves. It also finds a fork the
+> question list missed.
 
 | | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
 | --- | --- | --- | --- | --- | --- |
@@ -858,6 +864,84 @@ the first arm with a contextHash, so it is the baseline any later table arm on
 0.4.9 compares against.
 
 
+## 13. A fork detector that needs no self-report (2026-10-03)
+
+jimy-r's next idea: if the ten attempts of one case produce different things,
+that spread is itself a sign of a fork, and the model never has to report it.
+No new runs. `tools/spread.py` reads the existing records.
+
+### 13.1 The measure
+
+Each attempt's **output** is what it left behind. If it wrote files, the
+output is those files, rebuilt from the fixture plus its `Write`/`Edit` calls
+(the calls carry the full text). If it wrote nothing, the output is its final
+reply. Each case gets three spreads over its ten outputs:
+
+- **files**: how many distinct sets of files the writers wrote.
+- **struct**: for the most-written file, the mean pairwise Jaccard distance
+  between structural signatures. For HTML the signature is each element's tag
+  plus its `name`, `id`, `type` and `for`, with text ignored. For Markdown it
+  is the set of headings. Rewording doesn't move it; adding, removing or
+  renaming a field, section or control does.
+- **text**: the mean pairwise Jaccard distance between the outputs' sets of
+  content words (words of four or more letters, minus a short stoplist). For
+  writers the words come from the added lines only. Rewording moves this too,
+  so it is only read relative to other cases. Longer outputs drift apart
+  anyway, so it is also checked after regressing out log output size.
+
+**Agreement with the fork list.** §11.1's list comes from arm A's questions.
+Four cases have an empty list: signup, copy-editing, `$49 or $79` and form
+crash. The test is whether the spread ranks the sixteen listed cases above
+those four. It is scored as AUC: 1.00 means every listed case outranks every
+empty-list case, and 0.50 is chance.
+
+### 13.2 Result
+
+| text spread vs the fork list | raw AUC | length-adjusted AUC |
+| --- | ---: | ---: |
+| arm A outputs | 0.94 | **0.75** |
+| arm B outputs | 1.00 | **1.00** |
+
+- **On arm B it works.** The four empty-list cases have the four lowest
+  spreads (0.28–0.44). All sixteen listed cases sit above them (0.57–0.92),
+  and that ordering survives the length adjustment. This test is not circular:
+  the list comes from arm A's questions, and the spread from arm B's outputs,
+  where the model acted instead of asking (81 of 100 change requests written).
+- **On arm A it is weaker, and the reason is structural.** In 13 of A's 20
+  cases nobody wrote a file, so the output is the stop-and-ask message, which
+  is the same text the fork list was built from. The detector there is mostly
+  measuring how varied the questions were, and once length is accounted for it
+  separates far less well. The detector needs attempts that act.
+- **Struct finds a fork the question list missed.** Signup has an empty list:
+  no A attempt asked anything. Yet it has the highest structural spread in both
+  arms (A 0.48, B 0.58), because the writers kept different fields. In arm B
+  they kept anywhere from 6 to 11 fields, and one never added the email field
+  the form was missing. In arm A they kept 3 to 6. Choosing which fields to drop
+  is a real fork the model took silently every time; arm E's slot named it
+  twice ("minimal signup form over incremental fixes", "email-only over social
+  auth"). Here the question-based list is incomplete and the spread is right.
+- **Struct is blind to copy decisions.** Exit-modal wording, headline and
+  copy-editing all score 0.00, because they change text and nothing else. Text
+  spread catches the copy cases instead: the headline is the highest in arm B,
+  at 0.92.
+
+### 13.3 What this can and cannot say
+
+- **Four negatives.** The empty-list group is four cases, so an AUC of 1.00
+  rests on 64 pairs from one fixture.
+- **Open-endedness is confounded with forks.** The empty-list cases are the
+  closed tasks: fix a null check, tighten a paragraph, read a price off a page.
+  A detector of "how open-ended is this prompt" would score the same. That is
+  partly the point, since open-ended prompts are where forks live, but the
+  spread can't say which fork was taken or whether a reply hid one.
+- **Text spread mixes wording and decisions.** The length adjustment removes
+  one confound, not all of them. Markdown struct reads headings, which carry
+  wording too; that is why the welcome sequence and ICP, both Markdown, score
+  1.00 in B.
+- **The fork list is one reader's reading** (§11.1), and signup shows it is
+  incomplete.
+
+
 ---
 
 ## Fast run first, then the full run
@@ -987,6 +1071,10 @@ node tools/context_probe.mjs package/dist/claude-code/adapter.js D:/pb-C8 noexcl
 set TEMP=D:\pb-C9\tmp & set TMP=D:\pb-C9\tmp & set ASSAY_WORK_ROOT=D:\pb-C9\work
 npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armC.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4 --label "arm C — table + standing default (0.4.9)"
 npx @ktlsr/assay@0.4.9 compare <old C> <new C>
+
+# §13: spread detector
+python tools/spread.py .assay/runs/<A or B>.json
+python tools/spread.py --validate .assay/runs/<A or B>.json
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's
