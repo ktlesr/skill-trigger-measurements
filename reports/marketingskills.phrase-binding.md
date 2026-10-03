@@ -29,10 +29,10 @@
 > line 3/170, contextHash measured. The host is 2.1.283, not D and E's 2.1.271.
 >
 > **§13, added 2026-10-03**, tests a fork detector that needs no self-report: the
-> spread across a case's ten outputs, checked against §11.1's fork list. It works
-> on arm B's outputs (AUC 1.00, also after a length adjustment) and less well on
-> arm A's, which are mostly the questions themselves. It also finds a fork the
-> question list missed.
+> spread across a case's ten outputs, checked against §11.1's fork list. Verdict:
+> negative. It reproduces the list on arm B (AUC 1.00), but it scores identical
+> decisions as spread (form crash, `$49 or $79`) and cannot see the one fork a
+> prompt spells out, because the model resolves it the same way every time.
 
 | | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
 | --- | --- | --- | --- | --- | --- |
@@ -925,7 +925,31 @@ empty-list case, and 0.50 is chance.
   spread catches the copy cases instead: the headline is the highest in arm B,
   at 0.92.
 
-### 13.3 What this can and cannot say
+### 13.3 Verdict: negative as a fork detector
+
+The agreement with the list is real (arm B, AUC 1.00), but it doesn't make the
+spread a fork detector. Two counterexamples settle that:
+
+- **High on noise.** Form crash is the same decision in all twenty attempts:
+  one optional chain on line 14. Its text spread is 0.47 in A and 0.36 in B,
+  because a one-line fix leaves a word set that is either empty or six words,
+  depending on how the line was rewritten. `$49 or $79` gets the same answer in
+  20 of 20 replies ("$49") and scores 0.62 in A and 0.44 in B. Identical
+  decisions land on the same scale as real forks: A's listed cases start at
+  0.44 (schema).
+- **Deaf to signal.** `$49 or $79` is the one case whose prompt spells out the
+  choice. Every attempt resolves it the same way, by reading the current price
+  off the page, so there is no spread to detect. A variance detector sees forks
+  where the model is unsure. It cannot see a fork the model settles
+  identically, without noticing, every time. That is exactly the failure the
+  slot was meant to expose (§9.2). The question-based list is blind to the same
+  case, which is why the two agree.
+
+What the AUC measures, then, is mostly how open-ended a prompt is: the
+empty-list cases are the closed tasks. At the level of a single case, the
+spread can't tell an identical decision from a split one.
+
+### 13.4 What this can and cannot say
 
 - **Four negatives.** The empty-list group is four cases, so an AUC of 1.00
   rests on 64 pairs from one fixture.
