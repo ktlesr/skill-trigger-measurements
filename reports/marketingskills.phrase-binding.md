@@ -37,6 +37,10 @@
 > **§14, added the same day**, is arm F: one precondition in `product-marketing`'s
 > ask step (don't ask about the market when the prompt states it). ICP stays at
 > 0/10; the questions move to the segment and the buyer.
+>
+> **§15, added 2026-10-10**, is arm G, write first and ask after, beside arm A
+> re-run on the same engine (2.1.288). ICP goes from 1/10 to 8/10 and positioning
+> from 0/10 to 7/10. Most of arm A's questions reappear as stated assumptions.
 
 | | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
 | --- | --- | --- | --- | --- | --- |
@@ -1042,6 +1046,129 @@ after), not one on a particular question.
 - The classification in 14.2 is a reading of ten final messages.
 
 
+## 15. Arm G — write first, ask after, with an arm A baseline on the same engine (2026-10-10)
+
+Arm F put a precondition on one question, and the skill asked the next one
+(§14). Arm G moves the question instead of removing it. One precondition goes
+at the top of `product-marketing`'s Step 4 ("Confirm, Version, and Save"),
+starting from the original skill, so arm F's line is not in it:
+
+> **Precondition: write first, ask after.** Before asking the user anything,
+> write your best draft from what the prompt and the existing files already give
+> you, set the version and changelog, and save it to `.agents/product-marketing.md`.
+> Only then show it and ask what needs correcting. Keep the questions; they come
+> after the save, not instead of it.
+
+jimy-r asked for arm A to be re-run in the same batch, so G has a baseline on
+its own engine.
+
+| | arm A re-run | arm F (§14) | **arm G** |
+| --- | --- | --- | --- |
+| Run | `0e10b188`, "arm A — phrase-binding table (2.1.288 baseline)" | `aa524c4d` | `2d4b4a5b`, "arm G — product-marketing write-then-ask" |
+| Skill | original `sha256:aff03848…` | F `sha256:b1ff9b44…` | [`marketing-skills-collide-G`](../skills/marketing-skills-collide-G) `sha256:321ab1cf…` |
+| Suite · context · environment | `4f855027…` · `32b5fbc8…` · `d82d5120…` | same | same |
+| Host | Claude Code **2.1.288** | 2.1.288 | 2.1.288 |
+| Attempts | 200 · 0 unknown · $9.60 | 200 · 0 unknown · $9.80 | 200 · 0 unknown · $10.38 |
+| Upload (private) | [run](https://assayctl.dev/runs/run-2026-10-10T06-34-55-029Z-0e10b188) | [run](https://assayctl.dev/runs/run-2026-10-03T13-40-17-501Z-aa524c4d) | [run](https://assayctl.dev/runs/run-2026-10-10T06-57-19-574Z-2d4b4a5b) |
+
+**How the engine was held at 2.1.288.** The machine had updated to 2.1.296.
+The npm package `@anthropic-ai/claude-code@2.1.288` was installed into a scratch
+directory and put first on `PATH` for the runner only; the machine's own install
+was not touched. Under the runner's fresh `CLAUDE_CONFIG_DIR`, that binary
+reports 2.1.288 in its own init event, which is where the record takes the
+version from. A $0 probe confirmed it before the batch: version 2.1.288, the
+table loaded (`Project ./CLAUDE.md sha256:b4adbae7…`). **The three runs differ
+in the skill and nothing else.** `assay compare` on A-vs-G and A-vs-F names one
+drift, `skillHash`, and stops there, as it does for any skill change.
+
+### 15.1 Delivery
+
+| | arm A re-run | arm F | **arm G** |
+| --- | --- | --- | --- |
+| **ICP: shared context file written** | 1/10 (2–40%) | 0/10 | **8/10** (49–94%) |
+| **positioning: shared context file written** | 0/10 (0–28%) | 0/10 | **7/10** (40–89%) |
+| both product-marketing cases | 1/20 (1–24%) | 0/20 | **15/20** (53–89%) |
+| change requests, file written | 36/100 (27–46%) | 44/100 | **48/100** (38–58%) |
+| activation, 16 scored cases | 160/160 | 160/160 | **160/160** |
+| negatives fired | 0/30 | 0/30 | **0/30** |
+
+- **ICP moved.** 8 of 10 against 1 of 10 on the same engine and suite, and the
+  intervals separate. Every write went to the shared file, never to a new one.
+  The earlier arms on ICP were A 2, old C 1, D 1, E 0, new C 0 and F 0 of 10.
+- **Positioning moved with it**, from 0 to 7 of 10. It is a change request, so
+  most of G's gain over A on change requests (48 against 36) is that one case:
+  +7 of the +12. The other nine change-request cases move by at most 2 of 10.
+  The two intervals overlap.
+- **Routing held.** 160/160 activations with no misroutes, and 0/30 negatives.
+- **The engine moved nothing on its own.** Arm A on 2.1.288 (36/100, ICP 1/10)
+  is where arm A was on 2.1.270 (40/100, ICP 2/10).
+- **The precondition was skipped 5 times out of 20.** In ICP #0 and #8, and in
+  positioning #1, #3 and #4, the skill asked before writing, exactly as in
+  arms A and F.
+
+### 15.2 Assumption match: did the questions turn into stated assumptions?
+
+As jimy-r asked: for each G attempt that wrote, take arm A's fork list for the
+same case (§11.1) and check how each fork shows up in the reply that follows
+the write. It can be **stated as an assumption** ("Decision-makers: VP Eng
+(budget), Staff Eng (integration)…"), **still asked** after the write with no
+choice made, or **gone**, meaning neither stated nor asked. One reader, fifteen
+replies.
+
+**ICP**: 8 writers × arm A's 6 forks
+
+| arm A's fork | stated | still asked only | gone |
+| --- | ---: | ---: | ---: |
+| which platform teams (segment, size) | 6 | 0 | 2 |
+| who the buyer is | 8 | 0 | 0 |
+| what hand-rolled looks like | 7 | 0 | 1 |
+| the top pain | 8 | 0 | 0 |
+| proof and customer mix | 3 | 3 | 2 |
+| draft first or interview first | 8 (the write is the draft) | 0 | 0 |
+| **total, of 48** | **40** | **3** | **5** |
+
+**Positioning**: 7 writers × arm A's 7 forks
+
+| arm A's fork | stated | still asked only | gone |
+| --- | ---: | ---: | ---: |
+| which platform teams (segment, internal or external) | 5 | 0 | 2 |
+| who the buyer is | 7 | 0 | 0 |
+| why the shift happened | 0 | 0 | **7** |
+| pain and jobs | 7 | 0 | 0 |
+| customer examples | 0 | 6 | 1 |
+| competition | 5 | 1 | 1 |
+| how the value prop shifts | 7 | 0 | 0 |
+| **total, of 49** | **31** | **7** | **11** |
+
+- **Most questions became assumptions:** 71 of 97 fork-slots across the two
+  cases. The three jimy-r named all did. The segment was stated in 11 of 15
+  writes, the buyer in 15 of 15, and draft-or-interview was settled by the
+  write itself.
+- **What stayed a question is what the model can't make up:** customer names,
+  testimonials, metrics. Those are asked after the save, with no choice made, in 9 of 15 replies,
+  and several documents leave `[ADD: ]` placeholders for them. That is the
+  ordering the precondition asked for.
+- **What disappeared is mostly "why the shift happened"** (7 of 7 on
+  positioning). None of the writers stated a reason for the pivot or asked for
+  one. It's the one arm A question whose answer only the user has, and that the
+  document can be written without.
+- **Every write was followed by a question.** All 15 replies end by asking what
+  needs correcting, as the precondition says.
+
+### 15.3 Limits
+
+- **One case pair.** The change is in one skill and was scored on its two cases.
+  Whether write-then-ask moves other skills' ask steps is untested.
+- **Ten attempts per case**, one model (Haiku 4.5), non-interactive,
+  `acceptEdits`. In a conversation, A's questions would be answered too. G's
+  advantage is that the work exists before anyone answers.
+- **The assumption match is one reader's classification.** "Stated" means the
+  reply names a choice on that fork; the saved documents were not scored
+  separately.
+- **The engine was pinned by putting a 2.1.288 binary first on PATH**, not by
+  the machine's own install. The record's version comes from the agent's own
+  init event, so it reflects what ran.
+
 ---
 
 ## Fast run first, then the full run
@@ -1180,6 +1307,11 @@ python tools/spread.py --validate .assay/runs/<A or B>.json
 set TEMP=D:\pb-F\tmp & set TMP=D:\pb-F\tmp & set ASSAY_WORK_ROOT=D:\pb-F\work
 npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armF.suite.yaml --skill ./skills/marketing-skills-collide-F --concurrency 4 --label "arm F — product-marketing ask precondition"
 python tools/pm_delivery.py .assay/runs/<A>.json … .assay/runs/<F>.json
+
+# §15: arm A baseline and arm G, with npm @anthropic-ai/claude-code@2.1.288 first on PATH
+# (in Git bash, prepend its bin dir in /c/... form: a C:/... entry is split at the colon)
+npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armF.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4 --label "arm A — phrase-binding table (2.1.288 baseline)"
+npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armF.suite.yaml --skill ./skills/marketing-skills-collide-G --concurrency 4 --label "arm G — product-marketing write-then-ask"
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's

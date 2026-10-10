@@ -1,4 +1,4 @@
-> Positional labels from tools/phrase_binding.py: A–E are arms A–E; **F = arm C re-run on 0.4.9** (`affc439d`); **G = arm F**, the product-marketing precondition (`aa524c4d`).
+> Positional labels from tools/phrase_binding.py: A–E are arms A–E; **F = arm C re-run on 0.4.9** (`affc439d`); **G = arm F**, the ask precondition (`aa524c4d`); **H = arm A re-run on 2.1.288** (`0e10b188`); **I = arm G**, write first, ask after (`2d4b4a5b`).
 
 ## Runs
 
@@ -9,49 +9,51 @@
 - **E** `run-2026-09-26T16-32-52-854Z-e4e274a9` · assay 0.4.4 · claude-code 2.1.271 · 200 attempts · 0 unreadable · $9.26 · suite `sha256:ee4ae643…` · skill `sha256:aff03848…` · env `sha256:7eabde5b…`
 - **F** `run-2026-09-27T10-22-12-730Z-affc439d` · assay 0.4.9 · claude-code 2.1.283 · 200 attempts · 0 unreadable · $10.48 · suite `sha256:36ec7cf5…` · skill `sha256:aff03848…` · env `sha256:110648c2…`
 - **G** `run-2026-10-03T13-40-17-501Z-aa524c4d` · assay 0.4.9 · claude-code 2.1.288 · 200 attempts · 0 unreadable · $9.80 · suite `sha256:4f855027…` · skill `sha256:b1ff9b44…` · env `sha256:d82d5120…`
+- **H** `run-2026-10-10T06-34-55-029Z-0e10b188` · assay 0.4.9 · claude-code 2.1.288 · 200 attempts · 0 unreadable · $9.60 · suite `sha256:4f855027…` · skill `sha256:aff03848…` · env `sha256:d82d5120…`
+- **I** `run-2026-10-10T06-57-19-574Z-2d4b4a5b` · assay 0.4.9 · claude-code 2.1.288 · 200 attempts · 0 unreadable · $10.38 · suite `sha256:4f855027…` · skill `sha256:321ab1cf…` · env `sha256:d82d5120…`
 
-## Activation matrices (rows: expected, cols: first marketing skill to fire; cell = A · B · C · D · E · F · G)
+## Activation matrices (rows: expected, cols: first marketing skill to fire; cell = A · B · C · D · E · F · G · H · I)
 
 | expected \ fired | none | `ai-seo` | `cold-email` | `copy-editing` | `cro` | `emails` | `onboarding` | `paywalls` | `popups` | `product-marketing` | `programmatic-seo` | `schema` | `seo-audit` | `signup` |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `ai-seo` |  | 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |  |  |  |  |
-| `cold-email` | 0 · 3 · 0 · 0 · 0 · 0 · 0 |  | 10 · 7 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |  |  |  |
-| `copy-editing` | 0 · 10 · 0 · 0 · 0 · 0 · 0 |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |  |  |
-| `cro` | 0 · 13 · 0 · 0 · 0 · 0 · 0 |  |  |  | 20 · 7 · 20 · 20 · 20 · 20 · 20 |  |  |  |  |  |  |  |  |  |
-| `emails` | 0 · 1 · 0 · 0 · 0 · 0 · 0 |  |  |  |  | 10 · 9 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |
-| `onboarding` | 0 · 10 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |
-| `paywalls` | 0 · 10 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |
-| `popups` | 0 · 20 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  | 20 · 0 · 20 · 20 · 20 · 20 · 20 |  |  |  |  |  |
-| `product-marketing` | 0 · 20 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  | 20 · 0 · 20 · 20 · 20 · 20 · 20 |  |  |  |  |
-| `programmatic-seo` | 0 · 10 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 |  |  |  |
-| `schema` | 0 · 1 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  |  | 10 · 9 · 10 · 10 · 10 · 10 · 10 |  |  |
-| `seo-audit` | 0 · 2 · 0 · 0 · 0 · 0 · 0 | 0 · 1 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  |  | 10 · 7 · 10 · 10 · 10 · 10 · 10 |  |
-| `signup` | 0 · 10 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 |
+| `ai-seo` |  | 10 · 10 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |  |  |  |  |
+| `cold-email` | 0 · 3 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  | 10 · 7 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |  |  |  |
+| `copy-editing` | 0 · 10 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |  |  |
+| `cro` | 0 · 13 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  | 20 · 7 · 20 · 20 · 20 · 20 · 20 · 20 · 20 |  |  |  |  |  |  |  |  |  |
+| `emails` | 0 · 1 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  | 10 · 9 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |  |
+| `onboarding` | 0 · 10 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |  |
+| `paywalls` | 0 · 10 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |  |  |  |
+| `popups` | 0 · 20 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  | 20 · 0 · 20 · 20 · 20 · 20 · 20 · 20 · 20 |  |  |  |  |  |
+| `product-marketing` | 0 · 20 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  | 20 · 0 · 20 · 20 · 20 · 20 · 20 · 20 · 20 |  |  |  |  |
+| `programmatic-seo` | 0 · 10 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |  |
+| `schema` | 0 · 1 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  |  | 10 · 9 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |  |
+| `seo-audit` | 0 · 2 · 0 · 0 · 0 · 0 · 0 · 0 · 0 | 0 · 1 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  |  | 10 · 7 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |  |
+| `signup` | 0 · 10 · 0 · 0 · 0 · 0 · 0 · 0 · 0 |  |  |  |  |  |  |  |  |  |  |  |  | 10 · 0 · 10 · 10 · 10 · 10 · 10 · 10 · 10 |
 
 ## Win rate per skill (own cases; first marketing skill to fire = expected). 95% Wilson.
 
-| skill | A | B | C | D | E | F | G | A vs B |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `ai-seo` | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
-| `cold-email` | 10/10 (72–100%) | 7/10 (40–89%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
-| `copy-editing` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
-| `cro` | 20/20 (84–100%) | 7/20 (18–57%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | **separate** |
-| `emails` | 10/10 (72–100%) | 9/10 (60–98%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
-| `onboarding` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
-| `paywalls` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
-| `popups` · | 20/20 (84–100%) | 0/20 (0–16%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | **separate** |
-| `product-marketing` · | 20/20 (84–100%) | 0/20 (0–16%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | **separate** |
-| `programmatic-seo` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
-| `schema` | 10/10 (72–100%) | 9/10 (60–98%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
-| `seo-audit` | 10/10 (72–100%) | 7/10 (40–89%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
-| `signup` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
+| skill | A | B | C | D | E | F | G | H | I | A vs B |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `ai-seo` | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
+| `cold-email` | 10/10 (72–100%) | 7/10 (40–89%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
+| `copy-editing` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
+| `cro` | 20/20 (84–100%) | 7/20 (18–57%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | **separate** |
+| `emails` | 10/10 (72–100%) | 9/10 (60–98%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
+| `onboarding` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
+| `paywalls` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
+| `popups` · | 20/20 (84–100%) | 0/20 (0–16%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | **separate** |
+| `product-marketing` · | 20/20 (84–100%) | 0/20 (0–16%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | 20/20 (84–100%) | **separate** |
+| `programmatic-seo` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
+| `schema` | 10/10 (72–100%) | 9/10 (60–98%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
+| `seo-audit` | 10/10 (72–100%) | 7/10 (40–89%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | overlap |
+| `signup` · | 10/10 (72–100%) | 0/10 (0–28%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | 10/10 (72–100%) | **separate** |
 
-- contested headline case (copywriting or copy-editing accepted): A {'copywriting': 10} · B {'none': 10} · C {'copywriting': 10} · D {'copywriting': 10} · E {'copywriting': 10} · F {'copywriting': 10} · G {'copywriting': 10}
+- contested headline case (copywriting or copy-editing accepted): A {'copywriting': 10} · B {'none': 10} · C {'copywriting': 10} · D {'copywriting': 10} · E {'copywriting': 10} · F {'copywriting': 10} · G {'copywriting': 10} · H {'copywriting': 10} · I {'copywriting': 10}
 
 ## Pooled
 
-- the 7 skills that never fired in the v2 full run: A 90/90 (96–100%) · B 0/90 (0–4%) · C 90/90 (96–100%) · D 90/90 (96–100%) · E 90/90 (96–100%) · F 90/90 (96–100%) · G 90/90 (96–100%) · A vs B **separate**
-- all 16 scored cases: A 160/160 (98–100%) · B 49/160 (24–38%) · C 160/160 (98–100%) · D 160/160 (98–100%) · E 160/160 (98–100%) · F 160/160 (98–100%) · G 160/160 (98–100%) · A vs B **separate**
+- the 7 skills that never fired in the v2 full run: A 90/90 (96–100%) · B 0/90 (0–4%) · C 90/90 (96–100%) · D 90/90 (96–100%) · E 90/90 (96–100%) · F 90/90 (96–100%) · G 90/90 (96–100%) · H 90/90 (96–100%) · I 90/90 (96–100%) · A vs B **separate**
+- all 16 scored cases: A 160/160 (98–100%) · B 49/160 (24–38%) · C 160/160 (98–100%) · D 160/160 (98–100%) · E 160/160 (98–100%) · F 160/160 (98–100%) · G 160/160 (98–100%) · H 160/160 (98–100%) · I 160/160 (98–100%) · A vs B **separate**
 - A: 160 activations on scored cases, 0 reached another skill 
 - B: 50 activations on scored cases, 1 reached another skill [('collide.seo_audit.not_found', 'ai-seo')]
 - C: 160 activations on scored cases, 0 reached another skill 
@@ -59,6 +61,8 @@
 - E: 160 activations on scored cases, 0 reached another skill 
 - F: 160 activations on scored cases, 0 reached another skill 
 - G: 160 activations on scored cases, 0 reached another skill 
+- H: 160 activations on scored cases, 0 reached another skill 
+- I: 160 activations on scored cases, 0 reached another skill 
 
 ## Edit-shaped bypass (scored cases: no marketing skill fired, files written anyway)
 
@@ -69,6 +73,8 @@
 - E: bypass 0/160 (0–2%) of scored attempts; 0 silent, 0 of them wrote files; 0 activations came after the first edit
 - F: bypass 0/160 (0–2%) of scored attempts; 0 silent, 0 of them wrote files; 0 activations came after the first edit
 - G: bypass 0/160 (0–2%) of scored attempts; 0 silent, 0 of them wrote files; 0 activations came after the first edit
+- H: bypass 0/160 (0–2%) of scored attempts; 0 silent, 0 of them wrote files; 0 activations came after the first edit
+- I: bypass 0/160 (0–2%) of scored attempts; 0 silent, 0 of them wrote files; 0 activations came after the first edit
 - intervals: **separate**
 
 ## Action cases (the prompt asks for a change): attempts that wrote files
@@ -80,42 +86,59 @@
 - E: 32/100 (24–42%)
 - F: 51/100 (41–61%)
 - G: 44/100 (35–54%)
+- H: 36/100 (27–46%)
+- I: 48/100 (38–58%)
 - A vs B: **separate**
 - A vs C: overlap
 - A vs D: overlap
 - A vs E: overlap
 - A vs F: overlap
 - A vs G: overlap
+- A vs H: overlap
+- A vs I: overlap
 - B vs C: **separate**
 - B vs D: **separate**
 - B vs E: **separate**
 - B vs F: **separate**
 - B vs G: **separate**
+- B vs H: **separate**
+- B vs I: **separate**
 - C vs D: overlap
 - C vs E: **separate**
 - C vs F: overlap
 - C vs G: overlap
+- C vs H: overlap
+- C vs I: overlap
 - D vs E: overlap
 - D vs F: overlap
 - D vs G: overlap
+- D vs H: overlap
+- D vs I: overlap
 - E vs F: overlap
 - E vs G: overlap
+- E vs H: overlap
+- E vs I: overlap
 - F vs G: overlap
+- F vs H: overlap
+- F vs I: overlap
+- G vs H: overlap
+- G vs I: overlap
+- H vs I: overlap
 
 ### Action cases, case by case: attempts that wrote files
 
-| case | A | B | C | D | E | F | G |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| `collide.ai_seo.cited` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| `collide.copy_editing.tighten_paragraph` | 6 | 10 | 6 | 8 | 9 | 9 | 9 |
-| `collide.cro.lead_form` | 0 | 8 | 0 | 0 | 0 | 0 | 0 |
-| `collide.onboarding.first_session` | 4 | 10 | 5 | 4 | 0 | 4 | 4 |
-| `collide.paywalls.limit_screen` | 7 | 10 | 10 | 5 | 6 | 9 | 7 |
-| `collide.popups.exit_modal_wording` | 6 | 7 | 10 | 6 | 4 | 7 | 4 |
-| `collide.product_marketing.positioning` | 0 | 9 | 0 | 0 | 0 | 0 | 0 |
-| `collide.programmatic_seo.integration_pages` | 0 | 10 | 2 | 0 | 0 | 3 | 1 |
-| `collide.schema.star_ratings` | 8 | 7 | 9 | 10 | 8 | 9 | 9 |
-| `collide.signup.registration_form` | 9 | 10 | 10 | 7 | 5 | 10 | 10 |
+| case | A | B | C | D | E | F | G | H | I |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `collide.ai_seo.cited` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `collide.copy_editing.tighten_paragraph` | 6 | 10 | 6 | 8 | 9 | 9 | 9 | 5 | 7 |
+| `collide.cro.lead_form` | 0 | 8 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `collide.onboarding.first_session` | 4 | 10 | 5 | 4 | 0 | 4 | 4 | 5 | 5 |
+| `collide.paywalls.limit_screen` | 7 | 10 | 10 | 5 | 6 | 9 | 7 | 6 | 6 |
+| `collide.popups.exit_modal_wording` | 6 | 7 | 10 | 6 | 4 | 7 | 4 | 3 | 4 |
+| `collide.product_marketing.positioning` | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 7 |
+| `collide.programmatic_seo.integration_pages` | 0 | 10 | 2 | 0 | 0 | 3 | 1 | 0 | 1 |
+| `collide.schema.star_ratings` | 8 | 7 | 9 | 10 | 8 | 9 | 9 | 8 | 10 |
+| `collide.signup.registration_form` | 9 | 10 | 10 | 7 | 5 | 10 | 10 | 9 | 8 |
 
 ## Reads refused because the path was resolved against the skill's own directory
 
@@ -126,6 +149,8 @@
 - E: 17 attempts
 - F: 1 attempts
 - G: 1 attempts
+- H: 2 attempts
+- I: 1 attempts
 
 ## product-marketing cases: where the positioning went
 
@@ -136,6 +161,8 @@
 - E: (nothing written) ×20
 - F: (nothing written) ×20
 - G: (nothing written) ×20
+- H: (nothing written) ×19; .agents/product-marketing.md ×1
+- I: .agents/product-marketing.md ×15; (nothing written) ×5
 
 ## Negatives (any marketing skill fired)
 
@@ -146,6 +173,8 @@
 - E: 0/30 
 - F: 0/30 
 - G: 0/30 
+- H: 0/30 
+- I: 0/30 
 
 ## CLAUDE.md touched by the agent
 
@@ -156,6 +185,8 @@
 - E: 1 attempts `collide.ai_seo.cited` [('Glob', False)]
 - F: 3 attempts `collide.seo_audit.not_found` [('Glob', False)]; `collide.ai_seo.cited` [('Glob', False)]; `collide.product_marketing.icp` [('Read', False)]
 - G: 13 attempts `collide.popups.exit_modal_timing` [('Glob', False)]; `collide.paywalls.limit_screen` [('Glob', False)]; `collide.onboarding.first_session` [('Read', False)]; `collide.onboarding.first_session` [('Glob', False)]; `collide.onboarding.first_session` [('Glob', False)]; `collide.onboarding.first_session` [('Glob', False), ('Read', False)]; `collide.seo_audit.not_found` [('Glob', False)]; `collide.ai_seo.cited` [('Glob', True)]; `collide.ai_seo.cited` [('Read', False)]; `collide.product_marketing.positioning` [('Skill', False)]; `collide.product_marketing.icp` [('Read', False)]; `collide.product_marketing.icp` [('Read', False)]; `trigger.negative.unrelated.slow_query` [('Read', False)]
+- H: 8 attempts `collide.popups.exit_modal_timing` [('Glob', False)]; `collide.onboarding.first_session` [('Glob', False)]; `collide.onboarding.first_session` [('Read', False)]; `collide.cold_email.outreach` [('Read', False)]; `collide.ai_seo.cited` [('Bash', False)]; `collide.ai_seo.cited` [('Glob', False)]; `collide.programmatic_seo.integration_pages` [('Bash', True), ('Read', False)]; `collide.product_marketing.icp` [('Read', False)]
+- I: 13 attempts `collide.onboarding.first_session` [('Bash', False)]; `collide.emails.welcome_sequence` [('Glob', False)]; `collide.seo_audit.not_found` [('Read', False)]; `collide.programmatic_seo.integration_pages` [('Read', False)]; `collide.programmatic_seo.integration_pages` [('Glob', False)]; `collide.product_marketing.positioning` [('Read', False)]; `collide.product_marketing.positioning` [('Read', False)]; `collide.product_marketing.positioning` [('Read', False)]; `collide.product_marketing.icp` [('Read', False)]; `collide.product_marketing.icp` [('Read', False)]; `collide.product_marketing.icp` [('Read', False)]; `collide.product_marketing.icp` [('Read', False)]; `collide.product_marketing.icp` [('Read', False)]
 
 ## Host CLAUDE.md leak (attempts whose trace mentions `graphify`)
 
@@ -166,6 +197,8 @@
 - E: 0/200
 - F: 0/200
 - G: 0/200
+- H: 0/200
+- I: 0/200
 
 ## Opening line names the fork taken (arm C's standing default)
 
@@ -176,6 +209,8 @@
 - E: first line of the first output 0/170 (0–2%) · first line of any message 0/170 (0–2%)
 - F: first line of the first output 1/170 (0–3%) · first line of any message 3/170 (1–5%)
 - G: first line of the first output 0/170 (0–2%) · first line of any message 1/170 (0–3%)
+- H: first line of the first output 0/170 (0–2%) · first line of any message 1/170 (0–3%)
+- I: first line of the first output 0/170 (0–2%) · first line of any message 1/170 (0–3%)
 
 ### Opening lines, for reading by hand
 
@@ -1369,6 +1404,346 @@
 - G `collide.product_marketing.icp` fork=n: I'll help you define your positioning for this market shift. Let me first check if there's an existing context document, then study your codebase to understand the product.
 - G `collide.product_marketing.icp` fork=n: I'll help you build out your product marketing context with your new positioning. Let me start by checking if you have an existing context document and exploring your codebase to understand the produc
 - G `collide.product_marketing.icp` fork=n: I'll help you define your positioning and ideal customer profile for this shift to platform teams. Let me first check if you have an existing context document.
+- H `collide.signup.registration_form` fork=n: I'll help you optimize the signup form to reduce abandonment. Let me first check for context and then examine the register.html file.
+- H `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me start by examining the register.html file and checking for any product marketing context.
+- H `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me first locate and examine the register.html file to identify why people are dropping off.
+- H `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me start by examining the register.html file and understanding the current flow.
+- H `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me first find the register.html file and check for any product marketing context.
+- H `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me first explore your codebase to understand the current state and identify where users are dropping off.
+- H `collide.signup.registration_form` fork=n: I'll diagnose the signup form and fix the issues causing drop-off. Let me first check for context and then examine the form.
+- H `collide.signup.registration_form` fork=n: Now let me find and examine the register.html file to see what's causing the abandonment.
+- H `collide.signup.registration_form` fork=n: I'll help you fix your signup form to reduce drop-off. Let me start by examining the current form and any available context.
+- H `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me first look for the register.html file and check for any product marketing context.
+- H `collide.cro.lead_form` fork=n: Now I can see the issue. The newsletter form is extremely basic and has several conversion killers. Here's my analysis:
+- H `collide.cro.lead_form` fork=n: I'll analyze your newsletter form and provide CRO recommendations. Let me first examine the current state of your index.html file and check for any product marketing context.
+- H `collide.cro.lead_form` fork=n: I'll analyze your newsletter form and provide recommendations to increase submissions. Let me start by examining the current page and any product marketing context.
+- H `collide.cro.lead_form` fork=n: I'll help you improve that newsletter form. Let me first check the current state of the page and any relevant context.
+- H `collide.cro.lead_form` fork=n: Let me look at the current newsletter form in index.html to assess what's working and what's not.
+- H `collide.cro.lead_form` fork=n: I can see the issue—the newsletter form in your footer is extremely bare and lacks the elements that drive conversions. Let me analyze it:
+- H `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your footer and provide optimization recommendations. Let me start by examining the current implementation.
+- H `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your index.html and help you improve submissions. Let me start by looking at the current form.
+- H `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your footer to identify conversion blockers. Let me start by examining the current page.
+- H `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your footer and provide CRO recommendations to increase submissions. Let me start by looking at the current form.
+- H `collide.popups.exit_modal_wording` fork=n: I'll help you improve the exit modal copy using the popups skill.
+- H `collide.popups.exit_modal_wording` fork=n: I'll use the popups skill for this—it's designed exactly for improving exit dialogs that don't get engagement.
+- H `collide.popups.exit_modal_wording` fork=n: I'll help you rewrite the exit modal. Let me first look at the current copy and check for any product marketing context.
+- H `collide.popups.exit_modal_wording` fork=n: I'll read the exit modal and then use the popups skill to rewrite it for better engagement.
+- H `collide.popups.exit_modal_wording` fork=n: Now let me read the current exit modal to see what we're working with.
+- H `collide.popups.exit_modal_wording` fork=n: I'll read the current exit modal to understand what we're working with.
+- H `collide.popups.exit_modal_wording` fork=n: I'll help you improve the exit modal. First, let me check the current content, then use the popups skill to optimize it.
+- H `collide.popups.exit_modal_wording` fork=n: I'll read the file first, then invoke the popups skill to help rewrite it effectively.
+- H `collide.popups.exit_modal_wording` fork=n: I'll help you rewrite the exit modal to boost engagement. Let me first look at the current content and any product marketing context.
+- H `collide.popups.exit_modal_wording` fork=n: I'll invoke the popups skill to help rewrite the exit modal copy.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal should appear. Let me first understand your current setup and context.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first examine the current implementation and check for any existing product marketing context.
+- H `collide.popups.exit_modal_timing` fork=n: Looking at the exit-modal situation, let me first examine what's currently in place.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first check for any product marketing context and then look at the current modal implementation.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first check for any product marketing context, then look at the component.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first check the current modal and look for any product marketing context.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first look at the current implementation.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize the exit modal. Let me first check for product marketing context and examine the current modal.
+- H `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal should appear. Let me first check your current setup and product marketing context.
+- H `collide.popups.exit_modal_timing` fork=n: I'm going to help you optimize when this modal appears. Let me first check the current setup and gather some context.
+- H `collide.cro.pricing_page` fork=n: I'll analyze your pricing page using the CRO framework. Let me start by reading the file.
+- H `collide.cro.pricing_page` fork=n: I'll analyze your pricing page for conversion issues. Let me start by reading the file.
+- H `collide.cro.pricing_page` fork=n: I'll help you fix your pricing page's conversion problem. Before I analyze the page, let me ask a few key questions so I can give targeted recommendations:
+- H `collide.cro.pricing_page` fork=n: I'll analyze your pricing page to identify conversion bottlenecks. Let me start by reading the page.
+- H `collide.cro.pricing_page` fork=n: I'll analyze your pricing page using the CRO framework. Let me start by checking for context and then examining the page.
+- H `collide.cro.pricing_page` fork=n: I'll help you fix your pricing page. Let me first check if there's any existing product marketing context, then I'll need to ask a few questions to give you the most targeted recommendations.
+- H `collide.cro.pricing_page` fork=n: Now let me examine your pricing.html page to diagnose the conversion issues.
+- H `collide.cro.pricing_page` fork=n: I'll analyze your pricing page for conversion issues. Let me first check for any product marketing context, then examine the page itself.
+- H `collide.cro.pricing_page` fork=n: I'll analyze your pricing page for conversion issues. Let me first check for any existing product marketing context and then examine the pricing page itself.
+- H `collide.cro.pricing_page` fork=n: I'll analyze your pricing page using a CRO framework. Let me start by reading the page and checking for any product marketing context.
+- H `collide.paywalls.limit_screen` fork=n: I'll help you rework this paywall. Let me first check the current state of the limit-reached.html file and look for any product marketing context.
+- H `collide.paywalls.limit_screen` fork=n: Let me first look at the current limit-reached page and check for any product marketing context.
+- H `collide.paywalls.limit_screen` fork=n: I'll help you rework the paywall. Let me first check the current page and see if there's product marketing context to inform the changes.
+- H `collide.paywalls.limit_screen` fork=n: I'll use the paywalls skill to help rework this paywall experience.
+- H `collide.paywalls.limit_screen` fork=n: Now let me read the current limit-reached.html file to assess what needs improvement.
+- H `collide.paywalls.limit_screen` fork=n: I'll assess your paywall and gather context to improve it. Let me start by reading the current page and checking for product marketing context.
+- H `collide.paywalls.limit_screen` fork=n: I'll help you rework this paywall. Let me first check for any product marketing context, then examine the current state of the file.
+- H `collide.paywalls.limit_screen` fork=n: Now let me read the current paywall to understand what we're working with:
+- H `collide.paywalls.limit_screen` fork=n: Now let me read the current paywall to understand what we're working with.
+- H `collide.paywalls.limit_screen` fork=n: I'll help you rework the paywall. Let me first check the current page and see if there's product context available.
+- H `collide.onboarding.first_session` fork=n: I'm ready to help fix your onboarding experience. Let me first check if there's any existing product context, then I'll need to understand your current setup.
+- H `collide.onboarding.first_session` fork=n: I'll help you fix the empty dashboard problem. Let me first check for any product marketing context, then examine your current onboarding flow.
+- H `collide.onboarding.first_session` fork=n: I'll help you fix the onboarding to improve activation. Let me start by understanding your product context and current state.
+- H `collide.onboarding.first_session` fork=n: I'll help you fix the first-session experience so users actually see value instead of an empty dashboard and bounce. Let me start by understanding your product and current state.
+- H `collide.onboarding.first_session` fork=n: I'll help you fix the first-time user experience. Let me start by understanding your product and current onboarding state.
+- H `collide.onboarding.first_session` fork=n: I'm loading the onboarding skill to fix your first-session experience. Let me first understand your product and current state by checking for product marketing context and examining the welcome page.
+- H `collide.onboarding.first_session` fork=n: I'll help you fix the onboarding experience. Let me first understand the current state of your product and what's happening on that welcome page.
+- H `collide.onboarding.first_session` fork=n: I'll audit your onboarding experience and fix the empty dashboard problem. Let me start by understanding your product and current state.
+- H `collide.onboarding.first_session` fork=n: I'll start by understanding your product and current onboarding experience. Let me check for product context first, then assess what's happening on that empty dashboard.
+- H `collide.onboarding.first_session` fork=n: I'll audit the current onboarding experience and fix what new users see. Let me start by checking the product context and examining the welcome screen.
+- H `contested.copywriting.headline_better` fork=n: I can see the current headline "Metering Software For Your API" is feature-focused and doesn't communicate the real benefit or pain point. Let me create better alternatives based on your audience: dev
+- H `contested.copywriting.headline_better` fork=n: I can see the current hero section. The headline "Metering Software For Your API" is feature-focused rather than benefit-focused, and the subheadline "Meterly counts things" is far too vague.
+- H `contested.copywriting.headline_better` fork=n: I'll help you write a better headline for the hero. First, let me read the current index.html to see what we're working with.
+- H `contested.copywriting.headline_better` fork=n: I'll help you write a better hero headline. Let me first check the current index.html to see what we're working with, and look for any product marketing context.
+- H `contested.copywriting.headline_better` fork=n: I'll help you write a better headline for the hero. Let me first check the current index.html file.
+- H `contested.copywriting.headline_better` fork=n: I can see the current headline "Metering Software For Your API" is feature-focused rather than benefit-focused. Let me generate some stronger alternatives that communicate the real value—making API bi
+- H `contested.copywriting.headline_better` fork=n: I found the current headline in index.html: **"Metering Software For Your API"**
+- H `contested.copywriting.headline_better` fork=n: I'll read the index.html file first to see the current hero headline, then use the copywriting skill to improve it.
+- H `contested.copywriting.headline_better` fork=n: I'll write better headline options for the hero. Based on the product context (API usage metering and billing platform) and the pain point mentioned in your about section (companies struggle with mete
+- H `contested.copywriting.headline_better` fork=n: I can see the current headline is quite generic and feature-focused. Let me ask a few quick questions to write something more compelling:
+- H `collide.copy_editing.tighten_paragraph` fork=n: I'll help you tighten up the About paragraph in index.html. Let me first find and read the file.
+- H `collide.copy_editing.tighten_paragraph` fork=n: I'll use the copy-editing skill for this. First, let me find and read the index.html file to see the About paragraph.
+- H `collide.copy_editing.tighten_paragraph` fork=n: Now I'll find and read the index.html file to locate the About paragraph.
+- H `collide.copy_editing.tighten_paragraph` fork=n: I'll help you tighten up the About paragraph and fix those typos. Let me first find and read the index.html file.
+- H `collide.copy_editing.tighten_paragraph` fork=n: Now let me find and read the index.html file to see the About paragraph.
+- H `collide.copy_editing.tighten_paragraph` fork=n: Now let me find and read the index.html file to see the About paragraph.
+- H `collide.copy_editing.tighten_paragraph` fork=n: I'll read the index.html file first to see the About paragraph.
+- H `collide.copy_editing.tighten_paragraph` fork=n: I'll help you tighten up the About paragraph and fix the typos. Let me first read the index.html file to see what we're working with.
+- H `collide.copy_editing.tighten_paragraph` fork=n: I'll use the copy-editing skill for this. Let me first read the index.html file to see the About paragraph.
+- H `collide.copy_editing.tighten_paragraph` fork=n: I'll help you tighten up the About paragraph. Let me find and read the index.html file first.
+- H `collide.emails.welcome_sequence` fork=n: I'll help you plan the welcome sequence. Let me first check for any product marketing context and read your existing draft.
+- H `collide.emails.welcome_sequence` fork=n: I can help you build a proper welcome sequence for Meterly. I found your current draft (3 bare-bones messages) and your product marketing context. Let me ask a few clarifying questions so I can plan t
+- H `collide.emails.welcome_sequence` fork=n: Let me check for product marketing context first:
+- H `collide.emails.welcome_sequence` fork=n: Let me read the draft you have and check for any product context:
+- H `collide.emails.welcome_sequence` fork=n: Now let me read your current draft and check for any product context that will inform the sequence.
+- H `collide.emails.welcome_sequence` fork=n: I'll read the current draft and then use the emails skill to help plan this welcome sequence properly.
+- H `collide.emails.welcome_sequence` fork=n: Your current draft is too thin and follows the wrong sequence logic. For an indie API developer audience shipping a paid product, you need to guide them to first success, *then* ask for upgrade—not th
+- H `collide.emails.welcome_sequence` fork=n: I'll help you design this welcome sequence properly. Let me first check for any product marketing context and read what's currently in the draft.
+- H `collide.emails.welcome_sequence` fork=n: I'll read your draft welcome sequence and help you plan it properly.
+- H `collide.emails.welcome_sequence` fork=n: I'll help you plan the welcome sequence. Let me first check for any existing product marketing context and see what's currently in the welcome-sequence.md file.
+- H `collide.cold_email.outreach` fork=n: I'll help you write cold outreach emails for your API company prospects. Let me first check your product marketing context and the prospect list.
+- H `collide.cold_email.outreach` fork=n: I'll help you write cold email outreach to your API platform leads. Let me start by understanding your product positioning and your prospect list.
+- H `collide.cold_email.outreach` fork=n: I'll check for product context and the prospects list to understand what we're working with.
+- H `collide.cold_email.outreach` fork=n: Now let me check for product marketing context to understand what we're selling and who we are.
+- H `collide.cold_email.outreach` fork=n: I'll use the cold-email skill for this. First, let me check the prospects file to understand the context.
+- H `collide.cold_email.outreach` fork=n: I'll help you write cold emails for your API company leads. Let me first check the prospects file to understand who we're targeting, then use the cold-email skill to craft the messages.
+- H `collide.cold_email.outreach` fork=n: I'll check for product marketing context and look at the prospects list to understand who we're reaching out to.
+- H `collide.cold_email.outreach` fork=n: I'll check for product marketing context first, then write tailored cold emails for each prospect based on their specific situations.
+- H `collide.cold_email.outreach` fork=n: I'll use the cold-email skill to craft this outreach campaign.
+- H `collide.cold_email.outreach` fork=n: Looking at this task, I need to understand who you're reaching out to and what value you offer. Let me check your product marketing context and the prospect list.
+- H `collide.seo_audit.not_found` fork=n: I'll run an SEO audit on that page to find out why it's not ranking for its topic.
+- H `collide.seo_audit.not_found` fork=n: I'll help you diagnose why that blog post isn't ranking. Let me start by gathering context about your site and examining the page itself.
+- H `collide.seo_audit.not_found` fork=n: I'll help you figure out why that page isn't ranking. Let me start with a few quick questions to understand the context:
+- H `collide.seo_audit.not_found` fork=n: I'll audit this blog post to find why it's not ranking well despite covering the topic. Let me start by understanding the site context and examining the page itself.
+- H `collide.seo_audit.not_found` fork=n: I'll audit this page for you. Let me start by understanding the site context and then analyzing the page.
+- H `collide.seo_audit.not_found` fork=n: Before I audit the page, I need some context about your site and SEO goals. Let me check for existing documentation first, then ask a few quick questions.
+- H `collide.seo_audit.not_found` fork=n: I'll help you diagnose why this page isn't ranking in search results. Let me start by checking for product marketing context and understanding the site setup.
+- H `collide.seo_audit.not_found` fork=n: I'll start by checking for product-marketing context and then auditing the page.
+- H `collide.seo_audit.not_found` fork=n: I'll audit `blog/how-to-meter-api-usage.html` for SEO issues. Let me first check for any product marketing context, then analyze the page.
+- H `collide.seo_audit.not_found` fork=n: I'll analyze why your API metering how-to guide isn't ranking. Let me start by checking the site context and the page itself.
+- H `collide.ai_seo.cited` fork=n: I'll help you become the go-to answer when people ask AI about API metering. Let me start by understanding your current situation.
+- H `collide.ai_seo.cited` fork=n: I'll help you get your brand cited in AI answers for API metering queries. Let me first check for any existing product or marketing context in your repo.
+- H `collide.ai_seo.cited` fork=n: I'll help you get your content cited in AI-generated answers for API metering queries. Let me start by gathering the context I need.
+- H `collide.ai_seo.cited` fork=n: I'll help you get cited in AI search results when people ask about metering API usage. Let me understand your current situation first.
+- H `collide.ai_seo.cited` fork=n: I'll help you get your content cited in AI answers for API metering queries. Let me start by understanding your current situation.
+- H `collide.ai_seo.cited` fork=n: I've loaded the AI SEO skill. Let's get your brand cited when people ask ChatGPT or Perplexity about metering API usage.
+- H `collide.ai_seo.cited` fork=n: I'll help you get your product cited in AI answers about API metering. Let me start by checking for any product marketing context, then we'll run an AI visibility audit and build a citation strategy.
+- H `collide.ai_seo.cited` fork=n: I'll help you optimize your content for AI search engines so you appear in answers about metering API usage. Let me load the AI SEO skill.
+- H `collide.ai_seo.cited` fork=n: I'll help you get your content cited when people ask ChatGPT and Perplexity about metering API usage. Let me start by checking for existing product context, then ask a few questions to shape the strat
+- H `collide.ai_seo.cited` fork=n: I'll help you get your product cited in ChatGPT and Perplexity when people ask about metering API usage. Let me gather some context first.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll invoke the programmatic-seo skill to help you create optimized integration pages.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build integration pages for SEO. First, let me check what integrations we have in the CSV file.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build landing pages for each integration so they rank for "[tool] + usage billing" searches. Let me first check what integrations we have and the current setup.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build one page per integration for SEO. This is a programmatic SEO task. Let me first check the integrations CSV to see what we're working with.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build pages for each integration. First, let me check the integrations.csv file to see what we're working with.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build programmatic SEO pages for each integration. Let me first check for product marketing context and then examine your integrations data.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build SEO-optimized pages for each integration. Let me start by understanding your product context and the integrations you have.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build programmatic SEO pages for each integration, optimized for "integration + usage billing" searches. Let me start by understanding your context and checking for existing product stra
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build out integration pages for SEO. Let me start by loading the programmatic-seo skill to guide this, then check what integrations you have.
+- H `collide.programmatic_seo.integration_pages` fork=n: I'll help you build one page per integration for SEO. Let me first check what integrations we have in the CSV file.
+- H `collide.schema.star_ratings` fork=n: I'll help you add schema markup to show the pricing page's star rating and FAQ answers in Google results. Let me first check your project structure and understand the current setup.
+- H `collide.schema.star_ratings` fork=n: I'll help you implement schema markup for your pricing page to display star ratings and FAQ answers in Google results. Let me first explore your project structure and understand what we're working wit
+- H `collide.schema.star_ratings` fork=n: I'll help you implement schema markup for your pricing page to display star ratings and FAQ answers in Google results. Let me start by checking for any existing context about your product.
+- H `collide.schema.star_ratings` fork=n: I'll help you add schema markup to show star ratings and FAQ answers in Google results. Let me first explore your project structure to find the pricing page.
+- H `collide.schema.star_ratings` fork=n: I'll help you add schema markup to your pricing page so star ratings and FAQ answers show in Google results. Let me first explore your project structure and understand what we're working with.
+- H `collide.schema.star_ratings` fork=n: I'll help you add schema markup to show your pricing page's star rating and FAQ answers in Google results. Let me first check if there's any product marketing context, then ask a few clarifying questi
+- H `collide.schema.star_ratings` fork=n: I'll help you implement schema markup for the pricing page to show star ratings and FAQ answers in Google results. Let me start by exploring your project structure.
+- H `collide.schema.star_ratings` fork=n: I'll help you add schema markup to your pricing page to display star ratings and FAQ answers in Google results. Let me first explore your project structure to understand what we're working with.
+- H `collide.schema.star_ratings` fork=n: I'll help you add schema markup so your pricing page shows star ratings and FAQ answers in Google results. Let me start with a few key questions:
+- H `collide.schema.star_ratings` fork=n: Now I need to find your pricing page and check for star rating/FAQ data. Let me search for it:
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your positioning context. Let me first check if you have an existing product marketing document.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your positioning context with the new focus on platform teams at API companies. Let me first check what you currently have documented.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your positioning notes. Let me first check if you have an existing context document.
+- H `collide.product_marketing.positioning` fork=n: I'll update your positioning context. Let me first check if you have an existing product marketing document.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your product marketing context. Let me first check if there's an existing positioning document, then we can update it with your new target audience.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your positioning notes. This matches the product-marketing skill — let me load it to guide updating your shared context.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your positioning notes for platform teams at API companies. Let me first check if there's an existing context document.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your product marketing context to reflect your shift to platform teams at API companies. Let me first check if you already have a context document.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update the positioning context. Let me first check if there's an existing document, then we'll update it with your new positioning.
+- H `collide.product_marketing.positioning` fork=n: I'll help you update your positioning notes with this shift from indie developers to platform teams at API companies. Let me first check if you already have a product marketing context document.
+- H `collide.product_marketing.icp` fork=n: I'll help you develop your product marketing context. Let me first check if you already have positioning notes somewhere.
+- H `collide.product_marketing.icp` fork=n: I'll help you create or update your product marketing context for the new positioning. Let me first check if you have an existing document and explore your codebase to understand the product better.
+- H `collide.product_marketing.icp` fork=n: I'll help you document your ideal customer profile and positioning against hand-rolled metering. Let me first check if you have an existing product marketing context document.
+- H `collide.product_marketing.icp` fork=n: I'll help you nail your positioning for the platform team market and your competitive stance against hand-rolled metering. Let me first check if you have an existing product marketing context document
+- H `collide.product_marketing.icp` fork=n: I'll help you work out your positioning for platform teams at API companies. Let me first check if you have existing positioning context documented.
+- H `collide.product_marketing.icp` fork=n: I'll help you establish clear positioning and ICP for your shift to platform teams at API companies. Let me start by checking what marketing context you already have and exploring your codebase.
+- H `collide.product_marketing.icp` fork=n: I'll use the product-marketing skill to work through your positioning against hand-rolled metering and define your ideal customer profile.
+- H `collide.product_marketing.icp` fork=n: I'll use the product marketing skill to work through your positioning and ideal customer profile for platform teams at API companies.
+- H `collide.product_marketing.icp` fork=n: I'll help you work out your positioning for platform teams at API companies. Let me start by checking if there's an existing product marketing context document, then I'll explore your codebase to unde
+- H `collide.product_marketing.icp` fork=n: I'll help you nail your positioning for platform teams at API companies. Let me start by checking if you have an existing product marketing document.
+- I `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me start by examining the current state of register.html and understanding the flow.
+- I `collide.signup.registration_form` fork=n: I'll help you fix the signup form. Let me first examine the current register.html and understand the context.
+- I `collide.signup.registration_form` fork=n: I'll help you fix the registration form. Let me first check if there's any product marketing context, then examine the current form.
+- I `collide.signup.registration_form` fork=n: I'll help you optimize the signup form. Let me start by checking for any product context and then examining the register.html file.
+- I `collide.signup.registration_form` fork=n: I'll start by examining the register.html form to identify friction points causing the ~50% drop-off rate.
+- I `collide.signup.registration_form` fork=n: I'll help you optimize the signup form. Let me start by checking the current state of the register.html file and any product marketing context.
+- I `collide.signup.registration_form` fork=n: I'll help you fix the signup form to improve completion rates. Let me start by checking for product context and examining the register.html file.
+- I `collide.signup.registration_form` fork=n: I need to examine your register.html form to identify where users are dropping off. Let me find and review it.
+- I `collide.signup.registration_form` fork=n: I'll audit your signup form and identify the friction points causing the 50% drop-off. Let me start by finding register.html and checking for context.
+- I `collide.signup.registration_form` fork=n: I'll help you optimize the signup flow. Let me first examine the current register.html file to understand what's causing the high drop-off rate.
+- I `collide.cro.lead_form` fork=n: I'll analyze your newsletter form and provide optimization recommendations. Let me first check for any product context and examine the form itself.
+- I `collide.cro.lead_form` fork=n: I can see the newsletter form in the footer. Let me analyze it using the CRO framework:
+- I `collide.cro.lead_form` fork=n: I can see the newsletter form in your footer. It's extremely minimal and has several conversion killers. Let me analyze it against the CRO framework:
+- I `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your footer and identify ways to increase submissions. Let me start by looking at your current setup.
+- I `collide.cro.lead_form` fork=n: I'll help you improve the newsletter form submissions. Let me first examine the current form and context.
+- I `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your footer to identify why it's underperforming and recommend fixes. Let me start by examining the current form.
+- I `collide.cro.lead_form` fork=n: I'll analyze your newsletter form and help improve its conversion rate. Let me first look at the current form in index.html.
+- I `collide.cro.lead_form` fork=n: I'll help you improve the newsletter form conversion rate. Let me first examine the current footer form.
+- I `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your footer and provide CRO recommendations. Let me first examine the current state of the form.
+- I `collide.cro.lead_form` fork=n: I'll analyze the newsletter form in your footer and provide conversion optimization recommendations. Let me first review the current form.
+- I `collide.popups.exit_modal_wording` fork=n: Now let me read the current exit modal to see what we're working with.
+- I `collide.popups.exit_modal_wording` fork=n: I'll help you rewrite the exit modal text. Let me first read the current file, then use the popups skill to optimize the messaging.
+- I `collide.popups.exit_modal_wording` fork=n: Now I can see the problem. The current modal is generic, offers no value, and uses begging language. Here's the rewrite tailored to your indie API developer audience:
+- I `collide.popups.exit_modal_wording` fork=n: I'll help you rewrite the exit-modal copy. This matches the popups skill in your CLAUDE.md — let me load that first, then review the current content.
+- I `collide.popups.exit_modal_wording` fork=n: I'll help you rewrite the exit-modal to get better engagement. Let me first look at what's currently there.
+- I `collide.popups.exit_modal_wording` fork=n: I'll check for any product marketing context first, then improve this exit-intent popup copy.
+- I `collide.popups.exit_modal_wording` fork=n: Now let me read the current exit modal to see what we're working with:
+- I `collide.popups.exit_modal_wording` fork=n: I'll help you improve the exit-modal messaging. First, let me look at the current content, then I'll use the popups skill to optimize it for better engagement.
+- I `collide.popups.exit_modal_wording` fork=n: I'll help you improve the exit modal. Let me first read the current content, then use the popups skill to rewrite it for better engagement.
+- I `collide.popups.exit_modal_wording` fork=n: I'll help you improve the exit modal copy. Let me first check what's currently in the file.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when this modal should appear. Let me first check for product marketing context, then examine the current modal setup.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first check for any product marketing context, then examine the current modal.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when this popup appears. Let me first check the current modal implementation and see if there's any product marketing context.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first check your business context and the current modal setup.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first check for any existing product/marketing context, then examine the modal.
+- I `collide.popups.exit_modal_timing` fork=n: Let me check the exit-modal.html file and understand the current setup.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit-modal appears. Let me first look at the current implementation.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal appears. Let me first check for any product marketing context and look at your current modal setup.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal should appear. Let me first look at the current implementation and check for any product marketing context.
+- I `collide.popups.exit_modal_timing` fork=n: I'll help you optimize when and to whom the exit modal should appear. Let me first check your product-marketing context and the current exit modal code.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page to identify what's preventing conversions. Let me start by examining the file.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page for conversion issues. Let me start by reading the page and checking for any product marketing context.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page to identify what's limiting conversions. Let me start by reading the file.
+- I `collide.cro.pricing_page` fork=n: Now let me examine your pricing page to identify conversion barriers.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page using the CRO framework. Let me start by checking for context and reading the pricing page.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page using the CRO framework. Let me first check for any product marketing context, then examine your pricing.html.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page using the CRO framework. Let me first read the file to see what we're working with.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page for conversion issues. Let me first check for any product marketing context and then examine the pricing page.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page for conversion issues. Let me start by examining the page and any product/positioning context.
+- I `collide.cro.pricing_page` fork=n: I'll analyze your pricing page to identify conversion issues. Let me first check for product marketing context and then examine the page.
+- I `collide.paywalls.limit_screen` fork=n: I'll use the paywalls skill to rework this. Let me first read the current file to see what we're starting with.
+- I `collide.paywalls.limit_screen` fork=n: I'll rework your limit-reached screen to convert more free users to paid. Let me start by understanding the current state and context.
+- I `collide.paywalls.limit_screen` fork=n: I'll help you rework the paywall. Let me first check the current limit-reached.html file and look for any product marketing context.
+- I `collide.paywalls.limit_screen` fork=n: I'll review your current limit-reached page and then optimize it based on paywall best practices. Let me start by examining the file.
+- I `collide.paywalls.limit_screen` fork=n: I'll help you rework the limit-reached paywall. Let me first check for product context and then look at the current page.
+- I `collide.paywalls.limit_screen` fork=n: I'm loading the paywall skill. Let me first check the current page and look for any product marketing context to inform the rework.
+- I `collide.paywalls.limit_screen` fork=n: I'll help you rework the paywall. Let me first check the current state of the page and any product marketing context.
+- I `collide.paywalls.limit_screen` fork=n: I can see the current paywall is extremely bare-bones — just a fact statement with a naked upgrade link. Given that Meterly's audience is technical indie developers who are already metering calls, I c
+- I `collide.paywalls.limit_screen` fork=n: I'll help you rework the paywall to improve upgrade conversion. Let me first examine the current page and check for any product marketing context.
+- I `collide.paywalls.limit_screen` fork=n: I'll help you rework this paywall to drive more upgrades. Let me first look at what's currently there.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the empty dashboard experience and get new users to their aha moment. Let me first check for product context, then understand your current state.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the first-session experience so new users don't bounce off the empty dashboard. Let me start by understanding your current setup.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the first-session onboarding experience. Let me start by understanding the current state of your app and what happens after users sign up.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the onboarding experience so new users see value instead of an empty dashboard. Let me start by understanding your current setup.
+- I `collide.onboarding.first_session` fork=n: I'm going to audit your first-session experience and help you fix the empty dashboard problem. Let me start by understanding your product and current state.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the onboarding experience and prevent users from bouncing when they see an empty dashboard. Let me first understand your current product and what's happening after signup.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the onboarding experience. Let me start by understanding the current state of your product and where users are dropping off.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the onboarding experience. Let me first understand the current state of your app and the product context.
+- I `collide.onboarding.first_session` fork=n: I'll help you fix the onboarding experience. Let me start by understanding the current state of your product and onboarding flow.
+- I `collide.onboarding.first_session` fork=n: I'll audit your onboarding experience. Let me start by checking your codebase structure and understanding the current state.
+- I `contested.copywriting.headline_better` fork=n: Now let me read the current index.html to see the hero headline:
+- I `contested.copywriting.headline_better` fork=n: I'll read the index.html file to see the current headline, then use the copywriting skill.
+- I `contested.copywriting.headline_better` fork=n: I'll read the index.html file to see the current headline, then use the copywriting skill to improve it.
+- I `contested.copywriting.headline_better` fork=n: I'll help you write a better hero headline. Let me first check the current index.html and see if there's any product marketing context available.
+- I `contested.copywriting.headline_better` fork=n: I can see your current headline is "Metering Software For Your API"—which is technically descriptive but generic and feature-focused. It doesn't speak to the pain point or outcome for API companies.
+- I `contested.copywriting.headline_better` fork=n: I'll help you write a better hero headline. Let me first check the current index.html file to see what we're working with.
+- I `contested.copywriting.headline_better` fork=n: I'll find the index.html file and read the current headline, then use the copywriting skill to improve it.
+- I `contested.copywriting.headline_better` fork=n: I can see the current headline is "Metering Software For Your API" — which is generic and doesn't communicate clear value. The subheadline "Meterly counts things" is also vague.
+- I `contested.copywriting.headline_better` fork=n: I'll help you write a better hero headline. First, let me check the current index.html to see what we're working with.
+- I `contested.copywriting.headline_better` fork=n: Looking at the current headline "Metering Software For Your API" — this is feature-focused and generic. It tells visitors *what* you are, not *why they should care*.
+- I `collide.copy_editing.tighten_paragraph` fork=n: I'll help you tighten up the About paragraph and fix those typos. Let me first locate and read the index.html file.
+- I `collide.copy_editing.tighten_paragraph` fork=n: Looking at the About paragraph, I can identify the issues and tighten it down using the Clarity sweep first.
+- I `collide.copy_editing.tighten_paragraph` fork=n: I'll help you tighten up the About paragraph and fix those typos. Let me first locate and read the index.html file.
+- I `collide.copy_editing.tighten_paragraph` fork=n: Now I'll find the index.html file and review the About paragraph.
+- I `collide.copy_editing.tighten_paragraph` fork=n: Now let me find and read the index.html file to see the About paragraph.
+- I `collide.copy_editing.tighten_paragraph` fork=n: I found the About paragraph and identified the two typos plus significant wordiness. Let me tighten it up.
+- I `collide.copy_editing.tighten_paragraph` fork=n: I'll find and review the About paragraph in index.html.
+- I `collide.copy_editing.tighten_paragraph` fork=n: I'll find and read the index.html file to identify the About paragraph, then use the copy-editing skill to tighten it up.
+- I `collide.copy_editing.tighten_paragraph` fork=n: I'll find the index.html file and apply copy editing to tighten the About paragraph.
+- I `collide.copy_editing.tighten_paragraph` fork=n: I'll help you tighten up the About paragraph. Let me first read the index.html file to see the current copy.
+- I `collide.emails.welcome_sequence` fork=n: I'll help you plan the welcome email sequence. Let me first read the current draft and then apply the marketing skill to structure it properly.
+- I `collide.emails.welcome_sequence` fork=n: I'll read the current draft and check for product marketing context to properly plan this sequence.
+- I `collide.emails.welcome_sequence` fork=n: Let me read the existing draft to understand what you've started:
+- I `collide.emails.welcome_sequence` fork=n: I found the draft and product context. Your current sequence is very thin—just three bullet points. Let me plan this properly for indie API developers.
+- I `collide.emails.welcome_sequence` fork=n: Now let me look at the current draft to understand what you're working with.
+- I `collide.emails.welcome_sequence` fork=n: I'll check for product context and read your current draft to build the plan.
+- I `collide.emails.welcome_sequence` fork=n: I'll help you plan a proper welcome sequence. Let me first check what you have drafted and whether there's any product context available.
+- I `collide.emails.welcome_sequence` fork=n: I can see your current draft is more of a checklist than a strategy. Let me ask a few key questions before redesigning this—the answers will shape the whole sequence:
+- I `collide.emails.welcome_sequence` fork=n: I'll start by reading the current draft to see what you already have, then ask clarifying questions to build a proper plan.
+- I `collide.emails.welcome_sequence` fork=n: Let me check for any product marketing context that would inform this sequence:
+- I `collide.cold_email.outreach` fork=n: I'll read the prospects CSV and check for product marketing context to write these emails effectively.
+- I `collide.cold_email.outreach` fork=n: I'll help you write cold outreach emails. Let me first check the prospects file to understand who we're targeting.
+- I `collide.cold_email.outreach` fork=n: I'll help you write a cold email sequence for your API platform leads. Let me first check for any product marketing context and read your prospects list.
+- I `collide.cold_email.outreach` fork=n: I'll start by checking your product marketing context and looking at your prospects list to understand what we're working with.
+- I `collide.cold_email.outreach` fork=n: Based on the product context, here are three cold emails tailored to each prospect's specific situation, plus two follow-ups.
+- I `collide.cold_email.outreach` fork=n: I'll write a cold email sequence for your API company prospects. First, let me check your prospects list and any product context.
+- I `collide.cold_email.outreach` fork=n: This matches the cold-email skill in your command shortcuts. Let me check the prospects file first, then invoke the skill.
+- I `collide.cold_email.outreach` fork=n: I have the context. You're using **Meterly** (usage metering + usage-based billing for API companies) to reach platform leads who are currently hand-rolling their billing or struggling with accuracy. 
+- I `collide.cold_email.outreach` fork=n: I'll help you write a cold email campaign for your API company prospects. Let me first check for any product marketing context, then look at your prospects list.
+- I `collide.cold_email.outreach` fork=n: I'll check for product marketing context and then read your prospects list to write the cold email sequence.
+- I `collide.seo_audit.not_found` fork=n: I'll use the SEO audit skill to analyze why that page isn't ranking well.
+- I `collide.seo_audit.not_found` fork=n: I'll audit this page for SEO issues. Let me start by checking for any product marketing context and then examining the page itself.
+- I `collide.seo_audit.not_found` fork=n: I'll help you figure out why this page isn't ranking. Let me first gather context about your site and then audit the page.
+- I `collide.seo_audit.not_found` fork=n: I'll audit the page to identify why it's not ranking well despite answering the topic thoroughly. Let me start by checking for product marketing context and then examining the page.
+- I `collide.seo_audit.not_found` fork=n: I'll audit the SEO of that page. Let me start by checking for product marketing context, then examining the page itself.
+- I `collide.seo_audit.not_found` fork=n: I'll audit this page for SEO. Let me start by checking for product context and then reading the page.
+- I `collide.seo_audit.not_found` fork=n: I'll audit the page to identify why it's not ranking for relevant searches. Let me start by examining the page and any marketing context.
+- I `collide.seo_audit.not_found` fork=n: I'll help you fix this page's search visibility. Let me start by checking for product marketing context, then audit the page itself.
+- I `collide.seo_audit.not_found` fork=n: I'll audit why this page isn't ranking. Let me start by checking for context and fetching the page.
+- I `collide.seo_audit.not_found` fork=n: I'll audit this page to identify why it's not ranking well for API metering topics. Let me start by checking for product context and then analyzing the page.
+- I `collide.ai_seo.cited` fork=n: I'll help you get discovered by ChatGPT and Perplexity when people search for API metering solutions. Let me start by understanding your current situation and content.
+- I `collide.ai_seo.cited` fork=n: I'll help you get cited in AI-generated answers about API metering. Let me start by understanding your current situation and product.
+- I `collide.ai_seo.cited` fork=n: I'll help you get your solution cited when people ask AI systems about metering API usage. Let me first check if there's any existing product context, then gather what I need to build a strategy.
+- I `collide.ai_seo.cited` fork=n: I'll help you get your API metering solution cited in ChatGPT and Perplexity answers. Let me start with a quick audit to understand your current visibility and then build a plan.
+- I `collide.ai_seo.cited` fork=n: I'll help you get your API metering solution visible in ChatGPT and Perplexity answers. Let me start with the discovery phase.
+- I `collide.ai_seo.cited` fork=n: I've loaded the AI SEO skill. Let me start by understanding your current situation and what we're working with.
+- I `collide.ai_seo.cited` fork=n: I'll help you get your API metering solution cited in ChatGPT and Perplexity answers. Let me start by understanding your current state and then run an audit.
+- I `collide.ai_seo.cited` fork=n: Let me check for product marketing context first.
+- I `collide.ai_seo.cited` fork=n: Let me check if there's product marketing context available that would help frame this work.
+- I `collide.ai_seo.cited` fork=n: I'll help you get your content cited when people ask AI systems about API metering. Let me start by understanding your current position and what you're working with.
+- I `collide.programmatic_seo.integration_pages` fork=n: I have the integrations.csv file with 5 tools. Before I design the strategy, let me check for any existing product marketing context:
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build an integration pages strategy. Let me first check what we're working with.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build programmatic SEO pages for each integration. Let me start by understanding your integrations and business context.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build pages for each integration with programmatic SEO in mind. Let me start by loading the programmatic SEO skill, which covers exactly this scenario.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build pages for programmatic SEO targeting integration + "usage billing" searches. Let me first read your integrations list, then invoke the programmatic-seo skill.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build SEO-optimized integration pages. Let me start by understanding your current setup.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build programmatic SEO pages for each integration. Let me first check for product marketing context, then ask the key questions to shape the strategy.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build programmatic SEO pages for your integrations. Let me first check what integrations you have listed.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you build pages for each integration. This is programmatic SEO work. Let me first check the integrations list, then load the skill to guide the implementation.
+- I `collide.programmatic_seo.integration_pages` fork=n: I'll help you create pages for each integration optimized for search. First, let me check what integrations we have.
+- I `collide.schema.star_ratings` fork=n: I'll help you add star ratings and FAQ schema to your pricing page so they appear in Google results. Let me first explore your project structure to understand what we're working with.
+- I `collide.schema.star_ratings` fork=n: I'll help you add schema markup to your pricing page to show star ratings and FAQ answers in Google results. Let me first explore your project structure and current pricing page.
+- I `collide.schema.star_ratings` fork=n: I'll help you implement schema markup for the pricing page to show star ratings and FAQ answers in Google results. Let me first explore your project to understand the structure.
+- I `collide.schema.star_ratings` fork=n: I'll help you implement schema markup for your pricing page to display star ratings and FAQ answers in Google results. Let me first explore your project structure and check for any existing context.
+- I `collide.schema.star_ratings` fork=n: I'll help you add schema markup to your pricing page to enable star ratings and FAQ answers in Google results. Let me first explore your project structure to understand what we're working with.
+- I `collide.schema.star_ratings` fork=n: I'll help you implement schema markup for star ratings and FAQ answers on your pricing page. Let me first explore your project structure to find the pricing page.
+- I `collide.schema.star_ratings` fork=n: I'll help you add schema markup to show star ratings and FAQ answers in Google search results. Let me first understand your current setup.
+- I `collide.schema.star_ratings` fork=n: I'll help you add schema markup to show your pricing page's star rating and FAQ answers in Google results. Let me first explore your project to understand its structure.
+- I `collide.schema.star_ratings` fork=n: I'll help you add schema markup to show star ratings and FAQ answers directly in Google results. Let me first explore the project structure and find your pricing page.
+- I `collide.schema.star_ratings` fork=n: I'll help you add schema markup to display star ratings and FAQ answers for the pricing page in Google results. Let me first check the project structure and find the pricing page.
+- I `collide.product_marketing.positioning` fork=n: I'll help you update the positioning context for your shift to platform teams at API companies. Let me first check if you have an existing product marketing context document.
+- I `collide.product_marketing.positioning` fork=n: I'll help you update your positioning to reflect the shift to platform teams at API companies. Let me first check if there's an existing context document to build from.
+- I `collide.product_marketing.positioning` fork=n: I'll check for the existing product marketing context and update it with your new positioning.
+- I `collide.product_marketing.positioning` fork=n: I found your existing context at `.agents\product-marketing.md`. It's quite minimal right now — mostly a one-liner focused on indie developers.
+- I `collide.product_marketing.positioning` fork=n: I'll help you update your product marketing context. Let me first check if you have an existing positioning document.
+- I `collide.product_marketing.positioning` fork=n: I'll check if there's an existing product marketing context document, then update it based on your repositioning to platform teams.
+- I `collide.product_marketing.positioning` fork=n: I'll help you update the positioning context from indie developers to platform teams at API companies. Let me first check for an existing context document and then read your codebase to draft an updat
+- I `collide.product_marketing.positioning` fork=n: I'll help you update your positioning to reflect the shift to platform teams at API companies. Let me first check if you have an existing product marketing context document.
+- I `collide.product_marketing.positioning` fork=n: I'll help you update your positioning context. Let me first check for your existing product marketing document.
+- I `collide.product_marketing.positioning` fork=n: I'll help you update your positioning context. Let me first check if you have an existing product marketing document.
+- I `collide.product_marketing.icp` fork=n: I'll help you work out your ideal customer and positioning for platform teams at API companies. Let me start by checking what context you already have documented.
+- I `collide.product_marketing.icp` fork=n: I'll help you define your ideal customer and positioning now that you're selling to platform teams. Let me start by checking if you already have a product marketing context document, then I'll explore
+- I `collide.product_marketing.icp` fork=n: I'll help you create a product marketing context document for your new positioning. Let me start by checking if you already have one, then I'll explore your codebase to draft the context based on your
+- I `collide.product_marketing.icp` fork=n: I'll start by checking if you have an existing product marketing context document. Let me look for it.
+- I `collide.product_marketing.icp` fork=n: I'll help you work out your ideal customer profile and positioning for the shift to platform teams. Let me first check what product marketing context you already have, then explore your codebase to un
+- I `collide.product_marketing.icp` fork=n: I'll help you define your ideal customer profile and positioning. Let me first check if you already have a product marketing context document, then I'll draft one based on your codebase.
+- I `collide.product_marketing.icp` fork=n: I'll help you define your ideal customer profile and positioning against hand-rolled metering. Let me first check if you have an existing product marketing context document, and explore your codebase 
+- I `collide.product_marketing.icp` fork=n: I'll help you work out the positioning for your shift to platform teams at API companies. Let me first check if you have an existing product marketing context document.
+- I `collide.product_marketing.icp` fork=n: I'll help you work out your positioning for platform teams at API companies. Let me first check if you have an existing product marketing context document, then either update it or create a new one.
+- I `collide.product_marketing.icp` fork=n: I'll help you work out your ideal customer profile and positioning against hand-rolled metering. Let me start by checking if you have any existing product marketing context.
 
 ## Attempts that wrote nothing — final message, for reading by hand
 
@@ -2189,6 +2564,253 @@
 - G `collide.product_marketing.icp` fired=['product-marketing']: Perfect. I can see Meterly is a metering and usage-based billing platform currently positioned at indie developers. The document notes the audience is being revisited, which is exactly what we're doing.  Now I need to un
 - G `collide.product_marketing.icp` fired=['product-marketing']: Great! You have a context document. It's currently minimal and positioned at indie developers. Since you've moved to platform teams at API companies, we need to rebuild the positioning and ICP. Let me walk through what n
 - G `collide.product_marketing.icp` fired=['product-marketing']: Good—I can see Meterly is usage metering and billing for APIs. The existing doc is lightweight but captures the basics. Now let me interview you about the shift to platform teams.  **Quick context check:** 1. **Platform 
+- H `collide.signup.registration_form` fired=['signup']: ## Audit Findings  I found **critical friction points** that explain why people abandon:  ### 🔴 **Critical Issues**  **1. Missing Email Field** - **Impact**: Users can't actually complete signup — there's no email input,
+- H `collide.cro.lead_form` fired=['cro']: Now I can see the issue. The newsletter form is extremely basic and has several conversion killers. Here's my analysis:  ## Problems Found  1. **No value proposition** — "Newsletter" label doesn't explain what subscriber
+- H `collide.cro.lead_form` fired=['cro']: ## Analysis: Newsletter Form Issues  Your footer newsletter form has several critical CRO problems that explain low submission rates:  ### **Main Issues**  1. **Zero Value Proposition** — "Newsletter" says nothing. Why s
+- H `collide.cro.lead_form` fired=['cro']: ## Newsletter Form Analysis  Your footer newsletter form has **low submission friction**, but lacks **clear value**—visitors don't know why they should subscribe. The current form is generic and lacks context.  ### Curre
+- H `collide.cro.lead_form` fired=['cro']: I can see the issue—the newsletter form in your footer is very minimal and lacks the elements that drive signups. Let me ask a few quick questions to tailor the recommendations:  1. **Current performance**: Do you have a
+- H `collide.cro.lead_form` fired=['cro']: I can see the newsletter form in your footer is very minimal and lacks the elements that drive conversions. Here's my analysis and recommendations:  ## Current Issues  1. **No value proposition** – "Newsletter" alone doe
+- H `collide.cro.lead_form` fired=['cro']: I can see the issue—the newsletter form in your footer is extremely bare and lacks the elements that drive conversions. Let me analyze it:  ## Current Form Assessment  ```html <form class="newsletter">   <label>Newslette
+- H `collide.cro.lead_form` fired=['cro']: ## CRO Analysis: Newsletter Form  Your footer newsletter form has **significant conversion barriers**. It's currently missing the critical elements that motivate people to subscribe. Here's what's blocking submissions:  
+- H `collide.cro.lead_form` fired=['cro']: ## Newsletter Form CRO Analysis  I found several issues preventing submissions. Your current form is minimal and doesn't communicate value or build trust.  ### Quick Wins (Implement Now)  **1. Fix the input field** - Cha
+- H `collide.cro.lead_form` fired=['cro']: ## CRO Analysis: Newsletter Form + Page  I can see why your newsletter form is getting minimal traction. It's not just the form itself—the entire page lacks persuasion, and the form has several friction points. Here's wh
+- H `collide.cro.lead_form` fired=['cro']: I can see several friction points in your newsletter form that are likely suppressing submissions. Here's my CRO analysis:  ## Current Issues  1. **No Value Proposition**: The label just says "Newsletter" — visitors don'
+- H `collide.popups.exit_modal_wording` fired=['popups']: Now I see the problem. Your current exit modal is generic newsletter copy that doesn't match your product or audience.  **Current issues:** - Generic "Wait! Don't leave yet" — no relevance to indie API developers - Newsl
+- H `collide.popups.exit_modal_wording` fired=['popups']: I can see the issue. Your current modal is a generic newsletter signup, but it doesn't match your product or audience at all. Meterly is a technical metering SDK for indie developers—not a content company—so a newsletter
+- H `collide.popups.exit_modal_wording` fired=['popups']: Looking at your exit modal, the copy is generic and doesn't give visitors a reason to stay. Here's the rewrite based on exit-intent best practices:  **Current problems:** - "Wait!" and "Don't leave yet" are weak and push
+- H `collide.popups.exit_modal_wording` fired=['popups']: I can see the current exit modal is pretty generic. Before I rewrite it, let me ask a few questions to make sure the new copy actually converts:  **What's the goal here?** Are you trying to: - Build the email list (and i
+- H `collide.popups.exit_modal_wording` fired=['popups']: I can see the problem—your current exit modal is generic and guilt-based ("Wait! Don't leave yet"). Let me ask a few questions so I can rewrite it effectively:  1. **What's your actual goal?** Is this purely newsletter b
+- H `collide.popups.exit_modal_wording` fired=['popups']: Perfect. Now I understand the context. Meterly is a technical product for API developers, but the current exit modal reads like a generic newsletter signup—which explains why nobody engages with it.  Here's a rewritten e
+- H `collide.popups.exit_modal_wording` fired=['popups']: Now I can see the problem. The current modal is generic and doesn't align with Meterly's audience or value. Here's why it's not engaging:  **Issues with the current copy:** - "Wait! Don't leave yet" → Pleading tone, no r
+- H `collide.popups.exit_modal_timing` fired=['popups']: Perfect—I can see the issue. Your exit modal is showing way too early (3 seconds) to everyone, which means it's interrupting before visitors have engaged with your content. Let me ask a few questions to recommend the rig
+- H `collide.popups.exit_modal_timing` fired=['popups']: Now I can see the issue clearly. The modal shows after 3 seconds to everyone with generic copy, which violates core popup principles. Here's what should change:  ## Current Problems  | Issue | Impact | |-------|--------|
+- H `collide.popups.exit_modal_timing` fired=['popups']: Perfect—I can see this is **Meterly**, a usage metering SDK for indie API developers. With that context, the current popup is completely misaligned with your audience and product.  Here's the issue: your audience is indi
+- H `collide.popups.exit_modal_timing` fired=['popups']: Perfect. I can see you're running **Meterly** (usage metering for API companies), and your exit modal is currently interrupting all visitors 3 seconds after they land with a generic newsletter signup.  Here's the issue: 
+- H `collide.popups.exit_modal_timing` fired=['popups']: Looking at your product context (Meterly—usage metering for indie API developers) and the current modal, there are some clear issues:  **Current problems:** - **Timing**: 3 seconds is aggressively early—most visitors hav
+- H `collide.popups.exit_modal_timing` fired=['popups']: Got it! I can see this is Meterly's newsletter signup modal currently set to show after 3 seconds to everyone. That's actually a poor trigger—it interrupts before users have engaged with your content and wastes your best
+- H `collide.popups.exit_modal_timing` fired=['popups']: I can see the issue: showing after just 3 seconds to everyone will feel aggressive and interrupt most visitors immediately. Let me ask a few questions so I can recommend the right strategy:  1. **Traffic sources**: Where
+- H `collide.popups.exit_modal_timing` fired=['popups']: I've found the issue. Your exit modal is showing way too early and to the wrong audience. Here's what I see:  **Current state:** - Shows after 3 seconds to "everyone" (all visitors) - Generic newsletter pitch ("Don't lea
+- H `collide.popups.exit_modal_timing` fired=['popups']: Perfect. I can see your exit modal is currently showing 3 seconds after page load to everyone with a generic newsletter signup. For a technical B2B product like Meterly, that's likely hurting rather than helping.  Let me
+- H `collide.popups.exit_modal_timing` fired=['popups']: Perfect! I can see the current setup and your product context. The modal is set to show everyone after 3 seconds, which is too early and doesn't differentiate between your different visitor types. For Meterly (a technica
+- H `collide.cro.pricing_page` fired=['cro']: ## Analysis: Your Pricing Page  Your page is extremely bare-bones and missing critical conversion elements. Here's what's killing your conversions:  ### **Critical Issues**  1. **No value explanation** — You show prices 
+- H `collide.cro.pricing_page` fired=['cro']: ## Pricing Page CRO Analysis  Your pricing page has **critical conversion blockers**. Here's what's wrong and how to fix it:  ---  ## 🔴 Critical Issues  ### 1. **Broken CTA for Scale Plan** The "Go" link for Scale points
+- H `collide.cro.pricing_page` fired=['cro']: I'll help you fix your pricing page's conversion problem. Before I analyze the page, let me ask a few key questions so I can give targeted recommendations:  1. **Current performance**: What's your current conversion rate
+- H `collide.cro.pricing_page` fired=['cro']: ## Analysis: Why Your Pricing Page Isn't Converting  Your pricing page has a fundamental problem: **it assumes visitors already know what Meterly is and why they need it.** Combined with weak CTA copy and missing plan de
+- H `collide.cro.pricing_page` fired=['cro']: ## Analysis: Meterly Pricing Page  Your pricing page is **severely underoptimized**. It's essentially a skeleton with no persuasion architecture—visitors land on a page titled "Pricing" with no context about what Meterly
+- H `collide.cro.pricing_page` fired=['cro']: Now I can see the issues clearly. Your pricing page is missing critical elements that drive conversions. Before I give you specific fixes, a few quick questions:  1. **Current metrics**: What's your conversion rate now, 
+- H `collide.cro.pricing_page` fired=['cro']: I found significant conversion blockers on your pricing page. Here's what needs to change:  ## Critical Issues  ### 1. **Missing Context (Highest Impact)** Visitors land on a pricing page with zero context about what the
+- H `collide.cro.pricing_page` fired=['cro']: I found major conversion killers on your pricing page. The core issue: **it assumes visitors already know what Meterly is**. The page jumps straight to plans with zero context about the product, what problems it solves, 
+- H `collide.cro.pricing_page` fired=['cro']: ## Analysis: Why Your Pricing Page Isn't Converting  Your pricing page is **too bare-bones to sell**. Visitors land here with no context about what Meterly is or why they need it, and the page doesn't answer "is this pla
+- H `collide.cro.pricing_page` fired=['cro']: ## CRO Analysis: Pricing Page  Your pricing page has significant conversion issues. The core problem: **it assumes visitors already know what Meterly is and why they need it.** Pricing pages often get cold traffic from s
+- H `collide.paywalls.limit_screen` fired=['paywalls']: Perfect. I can see this is Metrely's paywall. The current version is extremely bare-bones—it just states the fact without any context around value, options, or confidence-building.  A few quick questions before I rework 
+- H `collide.paywalls.limit_screen` fired=['paywalls']: Got it. I can see the current page is very minimal—just stating they've hit the limit with a single upgrade link. Let me ask a few clarifying questions so I can recommend the right rework:  1. **Current conversion rate**
+- H `collide.paywalls.limit_screen` fired=['paywalls']: I can see the current page is very bare-bones—just a heading and upgrade link. Before I rework it, I need to understand your upgrade model and value prop:  1. **What does the paid plan unlock?** (Unlimited metered calls?
+- H `collide.paywalls.limit_screen` fired=['paywalls']: I can see the problem—this paywall is doing almost nothing to convert. You have a user who's already proven they value Meterly (they've used 1,000 calls), but the upgrade moment just says "limit reached" with no value me
+- H `collide.onboarding.first_session` fired=['onboarding']: Now I see the problem clearly. Let me outline the comprehensive fix:  ## Current Issues  1. **Empty dashboard is a dead end** — "No data." with zero guidance 2. **Signup captures too much info** (9 fields) before deliver
+- H `collide.onboarding.first_session` fired=['onboarding']: Perfect—Meterly is a usage metering and billing platform for API companies. I can see the problem now: the welcome page just shows an empty dashboard with "No data," which gives users no reason to stay.  For a metering p
+- H `collide.onboarding.first_session` fired=['onboarding']: Based on the product marketing context and current state, here's what I see:  ## Onboarding Audit  **Product:** Meterly (usage metering & billing for API companies)   **Activation goal:** User integrates SDK and sees fir
+- H `collide.onboarding.first_session` fired=['onboarding']: I can see the problem clearly: new users land on an empty dashboard with "No data." and have no idea what to do next. Let me understand a few more things to design the right fix:  1. **What's your activation metric?** Fo
+- H `collide.onboarding.first_session` fired=['onboarding']: ## Onboarding Audit  I found the problem: **users hit an empty dashboard with zero guidance**. Combined with a heavy signup form, they bounce immediately.  ### Current Flow Issues  | Step | Issue | Impact | |------|-----
+- H `contested.copywriting.headline_better` fired=['copywriting']: I can see the current headline "Metering Software For Your API" is feature-focused and doesn't communicate the real benefit or pain point. Let me create better alternatives based on your audience: developers and API comp
+- H `contested.copywriting.headline_better` fired=['copywriting']: I can see the current hero section. The headline "Metering Software For Your API" is feature-focused rather than benefit-focused, and the subheadline "Meterly counts things" is far too vague.   Before I write a stronger 
+- H `contested.copywriting.headline_better` fired=['copywriting']: I can see the current headline is "Metering Software For Your API" — very generic. To write something more compelling, I need a bit of context:  1. **Ideal customer**: Who are you targeting most? (SaaS companies, cloud p
+- H `contested.copywriting.headline_better` fired=['copywriting']: Perfect! I have the context. The current headline "Metering Software For Your API" is generic, and "Meterly counts things" is too vague. Let me write better options based on your positioning.  ---  ## Hero Headline Optio
+- H `contested.copywriting.headline_better` fired=['copywriting']: Based on the product marketing context, I can see Meterly solves a specific pain point for indie developers: replacing hand-rolled metering and monthly spreadsheet exports with a simple SDK solution.  Here are three head
+- H `contested.copywriting.headline_better` fired=['copywriting']: I can see the current headline "Metering Software For Your API" is feature-focused rather than benefit-focused. Let me generate some stronger alternatives that communicate the real value—making API billing easy instead o
+- H `contested.copywriting.headline_better` fired=['copywriting']: I found the current headline in index.html: **"Metering Software For Your API"**  This headline is feature-focused rather than benefit-focused. It tells visitors *what* Meterly is, but not *why* they need it or what prob
+- H `contested.copywriting.headline_better` fired=['copywriting']: Looking at your current headline and the context from your about section, I can see the real pain point isn't just "needing metering software"—it's that metering and billing is **time-consuming and difficult**.  Your cur
+- H `contested.copywriting.headline_better` fired=['copywriting']: I'll write better headline options for the hero. Based on the product context (API usage metering and billing platform) and the pain point mentioned in your about section (companies struggle with metering and billing bei
+- H `contested.copywriting.headline_better` fired=['copywriting']: I can see the current headline is quite generic and feature-focused. Let me ask a few quick questions to write something more compelling:  **About your audience & product:**  1. **Who is your ideal customer?** (e.g., Saa
+- H `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: I'll work through the copy editing sweeps to improve this paragraph.  ## Key Issues Found  **Typos (2):** 1. Line 10: "there API" → should be "their API" 2. Line 10: "beleive" → should be "believe"  **Wordiness:** The se
+- H `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: Found it. Here's my copy-editing analysis:  ## Issues Found  **Typos:** 1. Line 10: "there API" → **their API** 2. Line 10: "beleive" → **believe**  **Wordiness:** The sentence tries to do too much and buries its point. 
+- H `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: I found the About paragraph on line 10. It has **two typos** ("there" should be "their", "beleive" should be "believe") and is indeed quite wordy with repetitive phrasing. Let me apply focused copy-editing sweeps.  **Swe
+- H `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: I'll work through the About paragraph systematically using the Seven Sweeps Framework.  ## Current text (line 10): "Meterly is a platform that is designed in order to help companies that have APIs to be able to meter the
+- H `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: Found it! The About paragraph (line 10) has two typos and is bloated with filler words. Let me apply the copy-editing sweeps:  **Issues identified:** - **Typo 1**: "there" should be "their"  - **Typo 2**: "beleive" shoul
+- H `collide.emails.welcome_sequence` fired=['emails']: Good! I can see Meterly is a usage metering and billing platform for indie API developers. Your current draft is really lean—just three items with no timing, no copy, and jumps to an upsell right away. Let me plan this p
+- H `collide.emails.welcome_sequence` fired=['emails']: I can help you build a proper welcome sequence for Meterly. I found your current draft (3 bare-bones messages) and your product marketing context. Let me ask a few clarifying questions so I can plan this properly:  **Act
+- H `collide.emails.welcome_sequence` fired=['emails']: Good—I can see this is Meterly, a usage metering and billing platform for API companies. Your current draft is a skeleton that needs strategy.  To plan this properly, I need to understand a few things about your users an
+- H `collide.emails.welcome_sequence` fired=['emails']: ## Week-One Welcome Sequence Plan for Meterly  Your current draft is too thin and has the wrong order—it jumps to an upsell before building any trust or showing value. Here's a proper plan:  ---  ### **Sequence Overview*
+- H `collide.emails.welcome_sequence` fired=['emails']: Perfect. I can see you've got a very rough start. Here's a properly structured welcome sequence for Meterly's technical audience—indie developers who just signed up:  ## Welcome Sequence Plan  **Sequence:** First Week On
+- H `collide.emails.welcome_sequence` fired=['emails']: Looking at the current draft, I can see it's missing the structure, timing, and purpose. Let me create a proper welcome sequence plan for Meterly.  Based on the framework, here's a **7-email welcome sequence over 14 days
+- H `collide.emails.welcome_sequence` fired=['emails']: Your current draft is too thin and follows the wrong sequence logic. For an indie API developer audience shipping a paid product, you need to guide them to first success, *then* ask for upgrade—not the reverse.  Let me b
+- H `collide.emails.welcome_sequence` fired=['emails']: I can see the draft is minimal. Let me ask a few strategic questions so we design a sequence that actually drives results:  **About your users:** 1. Are new signups typically evaluating first (free tier), or do some star
+- H `collide.emails.welcome_sequence` fired=['emails']: Your current draft is a good start, but needs more structure and strategy. To plan this properly, I need to understand your product and goals better. Let me ask the key questions:  **About your product & audience:** 1. *
+- H `collide.emails.welcome_sequence` fired=['emails']: Perfect! I have the context. Meterly is a usage metering & billing SDK for indie developers—technical audience, already knows they have the problem. The current draft is too thin and missing the journey.  ## Planned Welc
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I can see you're Meterly—usage metering and billing for API companies—reaching out to platform leads who are clearly struggling with metering (manual billing, inaccurate counters, transitioning to usage pricing)
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I've got your product positioning and your three prospects with very specific pain points. Each one aligns directly with what Meterly solves. Let me write the outreach sequence.  ---  ## First Message  **Subject
+- H `collide.cold_email.outreach` fired=['cold-email']: I've got the context. Meterly is a usage metering and billing platform for API companies. The prospects list has three platform leads at API companies, each with different pain points:  - **Avery** (ExampleShip): billing
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I've got the context. You're Meterly — usage metering and usage-based billing for API companies. Your prospects have very specific pain points that map directly to what you solve.  Here are three emails: one ope
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the context. Meterly is a usage metering and billing platform for API companies. Your prospects have specific pain points that align well with what you solve. Let me write a personalized sequence for each
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the context. You're Meterly — usage metering and billing for API companies. Your three prospects each have a specific pain point that maps perfectly to what you solve.  Let me write personalized first ema
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the context: Meterly is a usage metering and billing platform for API companies. Your prospects have specific pain points (manual billing, moving to usage pricing, drifting counters). Let me write a seque
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the context. Meterly is a usage metering and billing platform for API companies — replacing hand-rolled in-memory counters and spreadsheet exports. Each prospect has a specific pain point that maps direct
+- H `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have what I need. Let me write a three-email cold outreach sequence tailored to these platform leads at API companies.  ---  ## Email 1: The Problem Hook  **To:** Avery Example (Head of Platform, ExampleShip) 
+- H `collide.cold_email.outreach` fired=['cold-email']: I have what I need. You're Meterly — usage metering and billing for API companies. Your prospects are platform leads dealing with the pain of hand-rolled solutions: manual billing from logs, drifting in-memory counters, 
+- H `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit Report: `blog/how-to-meter-api-usage.html`  ---  ### **Executive Summary**  **Overall Health: ❌ Critical Issues**  This page has **severe SEO problems** that prevent it from ranking, despite addressing a rel
+- H `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit Report: `/blog/how-to-meter-api-usage.html`  I found **critical issues** preventing this page from ranking. Here's the breakdown:  ---  ### **Priority Issues**  **1. Generic, Non-Keyword Title (CRITICAL)** -
+- H `collide.seo_audit.not_found` fired=['seo-audit']: I'll help you figure out why that page isn't ranking. Let me start with a few quick questions to understand the context:  1. **What's the site?** (SaaS, blog, developer docs, etc.) What's the main business? 2. **What key
+- H `collide.seo_audit.not_found` fired=['seo-audit']: # SEO Audit Report: blog/how-to-meter-api-usage.html  ## Executive Summary  **Overall Health:** 🔴 Critical — This page ranks poorly because it fails fundamental SEO requirements despite having a good URL and relevant top
+- H `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit: `blog/how-to-meter-api-usage.html`  **Executive Summary**  This page has strong potential — the URL is descriptive and the topic directly addresses a pain point for your audience (indie API developers). How
+- H `collide.seo_audit.not_found` fired=['seo-audit']: Can you help me understand your site better so I can audit the blog post? Please answer:  1. **Where is your site hosted?** (Is it a SaaS, static site, WordPress, Next.js, etc.?) 2. **Do you have the blog post file or UR
+- H `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit: `blog/how-to-meter-api-usage.html`  I found **critical issues** that explain why this page doesn't rank, despite covering a valuable topic. The page is essentially incomplete from an SEO and content perspec
+- H `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit: `blog/how-to-meter-api-usage.html`  **Problem identified:** The page has good topic relevance but is severely neglected from an SEO perspective. It likely won't rank because it fails on multiple critical te
+- H `collide.seo_audit.not_found` fired=['seo-audit']: # SEO Audit: `blog/how-to-meter-api-usage.html`  ## Executive Summary  **Overall Health: Critical** — This page is severely under-optimized and unlikely to rank for its target keyword. The page exists but is essentially 
+- H `collide.seo_audit.not_found` fired=['seo-audit']: Now I can see the issues. Your API metering guide has several critical SEO problems preventing it from ranking.  ## SEO Audit: `blog/how-to-meter-api-usage.html`  ### **Executive Summary**  The page has **poor technical 
+- H `collide.ai_seo.cited` fired=['ai-seo']: I'll help you become the go-to answer when people ask AI about API metering. Let me start by understanding your current situation.  ## Quick Discovery  **1. Current AI Visibility** - Have you checked ChatGPT, Perplexity,
+- H `collide.ai_seo.cited` fired=['ai-seo']: Great! I have context on Meterly. Let me gather a few critical data points to build your AI SEO strategy:  **1. Current AI Visibility Check** — Have you tested these queries in ChatGPT and Perplexity to see if you're bei
+- H `collide.ai_seo.cited` fired=['ai-seo']: I'll help you get your content cited in AI-generated answers for API metering queries. Let me start by gathering the context I need.  ## Quick Context Check  To tailor the optimization, I need to understand:  ### 1. **Wh
+- H `collide.ai_seo.cited` fired=['ai-seo']: I'll help you get cited in AI search results when people ask about metering API usage. Let me understand your current situation first.  **Quick audit questions:**  1. **Current visibility**: Have you tested queries like 
+- H `collide.ai_seo.cited` fired=['ai-seo']: Perfect. So you're **Meterly** — usage metering for API companies. You have strong proof (140 customers, 2.1B calls/month), but you're invisible when developers ask ChatGPT or Perplexity how to meter their API usage.  I'
+- H `collide.ai_seo.cited` fired=['ai-seo']: Perfect — I have your product context. You're Meterly: usage metering and usage-based billing for API companies.  Here's the situation: when someone asks ChatGPT or Perplexity "how to meter API usage" or related queries,
+- H `collide.ai_seo.cited` fired=['ai-seo']: Perfect. Meterly is a usage metering + usage-based billing platform for API companies. Let me ask a few quick questions to understand your current AI search visibility and content:  **Current AI Visibility:** 1. Have you
+- H `collide.ai_seo.cited` fired=['ai-seo']: Great context. You're Meterly, a usage metering and billing SDK for API companies. Now I need to understand your current AI search visibility to build the right strategy.  **Quick audit questions:**  1. **Current AI visi
+- H `collide.ai_seo.cited` fired=['ai-seo']: Good — I found your product context. Meterly is a usage metering platform for API companies with real traction (140 customers, 2.1B calls/month). Now I need to understand your current AI visibility and what to optimize. 
+- H `collide.ai_seo.cited` fired=['ai-seo']: I'll help you get your product cited in ChatGPT and Perplexity when people ask about metering API usage. Let me gather some context first.  **Current State — Quick Audit:**  1. **Have you tested this yourself?** Search C
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Now I have the context. Let me provide a **programmatic SEO strategy** for your integration pages.  ## Strategy: Integration + Conversion Hybrid  **Target pattern:** "[Tool] usage billing" searches - ExamplePay + usage b
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect. Now I have the context—Meterly is a usage metering and billing platform. Let me design a programmatic SEO strategy for your integration pages.  ## Strategy: Integration Pages for Meterly  **Opportunity:** You ha
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect! I can see you have **Meterly** (usage-based billing platform) with 6 integrations. Let me outline a programmatic SEO strategy for building integration pages that rank for "[tool] + usage billing" searches.  ## S
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: I have the integrations CSV and understand the goal: create pages ranking for "[integration name] usage billing" searches. Before I build the templates and pages, I need to clarify a few things to ensure they provide rea
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect! Now I understand—Meterly is a usage-based billing platform, and these pages are for people searching how to integrate Meterly with the billing and analytics tools they already use.  A few more questions to lock 
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect. I have what I need. Meterly is a usage-based billing platform for API developers, integrating with payment gateways, subscription managers, and analytics. Let me design your integration pages strategy.  ## Oppor
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect. I have the context. Meterly is a usage-based billing platform, and you want to create integration pages for each tool that will rank for "[Tool Name] + Meterly" and billing-related searches.  Let me build a prog
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect—I have your product context. Meterly is a usage metering and billing platform for API companies. Now I need to understand how to make each integration page unique and valuable.  ## Questions to Shape the Strategy
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect! I have the context. This is Meterly—usage metering and usage-based billing for API companies. The integrations are billing providers, subscription services, analytics platforms, and payment gateways.  Before I d
+- H `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect. Now I have the context—Meterly is a usage metering and billing SDK for API companies. The integrations are tools (payment processors, billing platforms, analytics) that developers integrate with.   Here's my str
+- H `collide.schema.star_ratings` fired=['schema']: Perfect! I can see your pricing page with a 4.8/5 star rating and FAQ content. Here's what I need to know to implement the schema correctly:  1. **For the star rating**: Is this rating specifically for your pricing/plans
+- H `collide.schema.star_ratings` fired=['schema']: I'll help you add schema markup so your pricing page shows star ratings and FAQ answers in Google results. Let me start with a few key questions:  1. **What's your pricing page URL and tech stack?** (HTML/template engine
+- H `collide.product_marketing.positioning` fired=['product-marketing']: I found your existing positioning doc—it's pretty lean right now. Here's what's captured:  **Current positioning:** - **Product:** Meterly — usage metering and usage-based billing for API companies - **Audience:** indie 
+- H `collide.product_marketing.positioning` fired=['product-marketing']: I found your current product marketing context—it's pretty lean but has the fundamentals. Here's what's captured:  **Current state (v0 / incomplete):** - **Product:** Meterly — usage metering and usage-based billing for 
+- H `collide.product_marketing.positioning` fired=['product-marketing']: Found it! Your current positioning document is lightweight but captures the essentials. Here's what's there:  **Current state:** - **Product:** Meterly — usage metering and usage-based billing for API companies - **Audie
+- H `collide.product_marketing.positioning` fired=['product-marketing']: Found your existing product marketing document. It's currently positioned toward indie developers, but there's a note that the audience is being revisited. Let me update this for your platform team positioning.  Here's w
+- H `collide.product_marketing.positioning` fired=['product-marketing']: Found your existing document at `.agents/product-marketing.md`. It's a V1 stub that captures the core: Meterly does usage metering and billing for API companies, with a technical voice and solid proof points (140 custome
+- H `collide.product_marketing.positioning` fired=['product-marketing']: Good news — you already have a document, though it's concise and explicitly notes the audience is "being revisited." Let me help you update it with your new positioning for platform teams at API companies.  Right now it 
+- H `collide.product_marketing.positioning` fired=['product-marketing']: Found it! Your current context is lean but has a key note: "Audience: indie developers shipping a paid API (being revisited, see below)." Let me summarize what's there:  **Current snapshot:** - **Product:** Meterly — usa
+- H `collide.product_marketing.positioning` fired=['product-marketing']: You have a context document, but it's fairly minimal and notes the audience is "being revisited." Perfect timing. Let me understand your new positioning to platform teams at API companies.  **Current state:** The doc pos
+- H `collide.product_marketing.positioning` fired=['product-marketing']: I found the existing document. It's quite minimal and the audience is listed as "indie developers," which you're moving away from. Let me gather the updated context.  To update this properly, I need to understand the pla
+- H `collide.product_marketing.positioning` fired=['product-marketing']: Found it. Your current context is quite minimal — just a one-liner, audience, and a few proof points. The audience line even notes it was "being revisited," which is exactly what we're doing now.  **What's there:** - Pro
+- H `collide.product_marketing.icp` fired=['product-marketing']: Your current context is a minimal stub targeting indie developers—exactly what you're moving away from. Time to rebuild it for your new audience: platform teams at API companies.  I'll gather the key information to repos
+- H `collide.product_marketing.icp` fired=['product-marketing']: Now I'll draft an updated v2 context document that reflects your shift to platform teams at API companies. This will capture the new ICP, positioning against hand-rolled metering, and how you win. Then we'll iterate unti
+- H `collide.product_marketing.icp` fired=['product-marketing']: I found your existing context document. It's currently positioned around indie developers, but you note it's being revisited—which is exactly what we need to update today.  Here's what's captured now: - **Product:** Mete
+- H `collide.product_marketing.icp` fired=['product-marketing']: Got it. Your current document is brief and frames your audience as indie developers. Here's what's captured:  **Current state:** - Product: Meterly — usage metering and usage-based billing for API companies - Audience: i
+- H `collide.product_marketing.icp` fired=['product-marketing']: Good news—you have a v0 positioning document already. Here's what's captured:  **Current state:** - **Audience:** Indie developers shipping a paid API (flagged as "being revisited") - **What you replace:** Hand-rolled in
+- H `collide.product_marketing.icp` fired=['product-marketing']: Good—I have a clear picture. You've got Meterly with 140 paying customers and 2.1B metered calls monthly, and you're pivoting from indie developers to platform teams at API companies. The current doc explicitly flags thi
+- H `collide.product_marketing.icp` fired=['product-marketing']: Good — you have a context document, but it's quite lean and flagged for revision. The current version targets indie developers ("being revisited"), and you're shifting to platform teams at API companies.  Let me gather t
+- H `collide.product_marketing.icp` fired=['product-marketing']: I can see your existing context from September 10 focused on indie developers. You've shifted to platform teams at API companies and want to reposition against hand-rolled metering.  I have two options to freshen this up
+- H `collide.product_marketing.icp` fired=['product-marketing']: You have an existing document, but it's clearly dated. It says the audience is "indie developers" and notes it's "being revisited" — which is exactly what we're doing now.  **Current state:** - v1 (minimal): Captures tha
+- I `collide.signup.registration_form` fired=['signup']: Found the problem. This form is a **friction nightmare** with 9 fields asking for information you don't need yet. For an indie developer audience, this is abandonment bait.  ## Key Issues  | Issue | Impact | Fix | |-----
+- I `collide.signup.registration_form` fired=['signup']: Found critical issues. Your signup form is **missing the email field entirely** and has **9 fields when it should have 3–4 max**. That explains the 50% drop-off.  ## Critical Issues  | Issue | Impact | Fix | |-------|---
+- I `collide.cro.lead_form` fired=['cro']: ## CRO Analysis: Newsletter Form in Footer  **Current state:** Simple inline form with minimal context, weak copy, and form friction.  ### Quick Wins (Implement Now)  1. **Fix Input Type**    - Change `type="text"` to `t
+- I `collide.cro.lead_form` fired=['cro']: I can see the newsletter form in the footer. Let me analyze it using the CRO framework:  ## Current Form Assessment  **Line 13:** ```html <form class="newsletter"><label>Newsletter</label><input type="text" name="addr"><
+- I `collide.cro.lead_form` fired=['cro']: I can see the newsletter form in your footer. It's extremely minimal and has several conversion killers. Let me analyze it against the CRO framework:  ## Current Issues  **Form Label:** Just says "Newsletter" — no reason
+- I `collide.cro.lead_form` fired=['cro']: I can see several issues with your newsletter form that are likely keeping submission rates low. Here's my analysis:  ## Quick Wins (Implement Now)  ### 1. **Fix the Input Type** Change `type="text"` to `type="email"` fo
+- I `collide.cro.lead_form` fired=['cro']: ## CRO Analysis: Meterly Newsletter Form  I can see why submissions are low. Your newsletter form has several critical issues:  ### Current State Issues  1. **No value proposition** — Why should someone subscribe? What w
+- I `collide.cro.lead_form` fired=['cro']: ## Newsletter Form Analysis  Your footer form has several conversion-killing issues. Here's what I found:  ### **Critical Problems**  1. **Wrong input type** — `type="text"` instead of `type="email"` (no validation, no m
+- I `collide.cro.lead_form` fired=['cro']: I can see your newsletter form is quite basic and missing key conversion elements. Here's my analysis and recommendations:  ## Current Form Issues  ```html <form class="newsletter">   <label>Newsletter</label>   <input t
+- I `collide.cro.lead_form` fired=['cro']: I can see the newsletter form in your footer. It has several friction points that are likely limiting signups. Let me provide targeted CRO recommendations:  ## Issues Identified  **Current form:** ```html <form class="ne
+- I `collide.cro.lead_form` fired=['cro']: ## CRO Analysis: Newsletter Form  Your current form has significant friction and motivation issues. Here's what I found:  ### Current State Issues  **Value Proposition:** None. "Newsletter" doesn't tell visitors why they
+- I `collide.cro.lead_form` fired=['cro']: Now I can see the issue. Your newsletter form has several critical conversion blockers. Here's my assessment and recommendations:  ## Current Problems  1. **No value proposition** — "Newsletter" tells visitors nothing ab
+- I `collide.popups.exit_modal_wording` fired=['popups']: Now I can see the problem. The current modal is generic, offers no value, and uses begging language. Here's the rewrite tailored to your indie API developer audience:  **Current issues:** - "Wait!" and "Don't leave yet" 
+- I `collide.popups.exit_modal_wording` fired=['popups']: Now I understand the context. Meterly targets indie developers building paid APIs, and your voice is plain and technical. The current exit modal is too generic and doesn't speak to your audience.  Here are three rewrite 
+- I `collide.popups.exit_modal_wording` fired=['popups']: Now I understand the context. This is Meterly (usage metering for API companies), and your current exit popup is generic and doesn't connect to the product value. Here are three strong rewrites:  **Option 1: Lead with th
+- I `collide.popups.exit_modal_wording` fired=['popups']: Looking at your exit modal, I see the problems that are killing engagement:  1. **Generic headline**: "Wait!" doesn't give a reason to stay 2. **No value prop**: "Sign up for our newsletter" is vague—what do they actuall
+- I `collide.popups.exit_modal_wording` fired=['popups']: Looking at your exit-modal.html, I can see why it's not engaging. Let me break down the issues and provide improved copy:  ## Current Problems  1. **Weak headline**: "Wait!" is generic and doesn't communicate value 2. **
+- I `collide.popups.exit_modal_wording` fired=['popups']: Based on Metrely's context, I can see why the current exit modal isn't converting. You're asking developers for their email with no clear value prop—just "sign up for our newsletter."  Here's the problem: - **"Wait!"** —
+- I `collide.popups.exit_modal_timing` fired=['popups']: ## Assessment  Looking at your current setup: **3-second automatic popup for newsletter signup to everyone is not working for you because:**  1. **Too intrusive, too early** — Visitors haven't engaged with content yet. A
+- I `collide.popups.exit_modal_timing` fired=['popups']: I found the context. Meterly is a usage metering SDK for indie API developers. The current exit modal has some real problems:  **Current issues:** - **Timer-based, not exit intent** — appearing 3 seconds into every sessi
+- I `collide.popups.exit_modal_timing` fired=['popups']: Based on the product context (Meterly—API metering for indie developers) and the current modal, here's what's wrong and how to fix it:  ## Current Problems  1. **3 seconds is way too early** — Users haven't understood wh
+- I `collide.popups.exit_modal_timing` fired=['popups']: Now I see the issue. Your exit modal shows **after 3 seconds to everyone**, which is too early and too broad. For Meterly (a technical metering/billing platform), you need a smarter strategy.  ## Current Problems  1. **3
+- I `collide.popups.exit_modal_timing` fired=['popups']: Now I see the situation. You have an exit modal for **Meterly** (API usage metering), showing a generic newsletter signup after 3 seconds to everyone. That's a missed opportunity.  Let me ask a few clarifying questions t
+- I `collide.popups.exit_modal_timing` fired=['popups']: I can see the issue. The exit-modal is showing after just 3 seconds to everyone, which is counterproductive. The name suggests it should be an **exit-intent popup**, but it's actually interrupting visitors during the fir
+- I `collide.popups.exit_modal_timing` fired=['popups']: Perfect. I can see the issue: your exit-modal is showing 3 seconds after page load to everyone with a generic newsletter signup—but for **Meterly**, a technical API metering product with indie developer buyers, this miss
+- I `collide.popups.exit_modal_timing` fired=['popups']: Now I can see the issue clearly. Your exit modal is **too early, too broad, and too generic** for your audience.  **Current state:** - Shows to **everyone** after just **3 seconds** (before they've even engaged) - Promot
+- I `collide.popups.exit_modal_timing` fired=['popups']: Got it. You have a **B2B SaaS product (Meterly)** for indie API developers, and the exit modal is currently showing to everyone after 3 seconds with just a generic newsletter pitch.  That's too aggressive and not well-ta
+- I `collide.popups.exit_modal_timing` fired=['popups']: Based on your product context (Meterly—usage metering for API companies), your current exit modal has some key issues:  **Current problems:** 1. **Too early (3s)**: Shows before visitors understand what you do or why the
+- I `collide.cro.pricing_page` fired=['cro']: ## Analysis: Why Your Pricing Page Isn't Converting  Your pricing page has several **critical gaps** that explain the low conversion rate. Let me break down the problems:  ---  ## The Core Issues  ### 1. **No Value Propo
+- I `collide.cro.pricing_page` fired=['cro']: ## Pricing Page Analysis  Your page is getting traffic but has **major friction points** preventing conversions. Here's what's wrong and what to fix:  ---  ### Critical Issues (Fix Immediately)  #### 1. **No Value Propos
+- I `collide.cro.pricing_page` fired=['cro']: ## Analysis: Why Your Pricing Page Isn't Converting  Your pricing page has **critical structural gaps** that are causing visitors to leave before considering a purchase. Here's what's broken:  ### The Core Problem  **Vis
+- I `collide.cro.pricing_page` fired=['cro']: ## CRO Analysis: Your Pricing Page  I can see the core conversion problems. Your page has the right information *structure* but is missing critical elements that turn browsers into buyers. Here's what's blocking conversi
+- I `collide.cro.pricing_page` fired=['cro']: Now I have the full picture. Your pricing page has **10 major conversion-blocking issues**. Here's what's wrong and how to fix it:  ## Quick Wins (Implement Now)  ### 1. **Fix the CTA copy** — "Go" is invisible - Change 
+- I `collide.cro.pricing_page` fired=['cro']: ## CRO Analysis: Your Pricing Page  I can see the core issue immediately. **Your pricing page assumes visitors already understand what Meterly does.** You're showing plans and prices, but no context about value, use case
+- I `collide.cro.pricing_page` fired=['cro']: ## Quick Wins (Implement Now)  1. **Fix the broken "Contact us" CTA** — The Scale plan link goes to `#`. This dead end kills conversions for high-value prospects.  2. **Replace "Go" with value-driven CTAs** — Instead of 
+- I `collide.cro.pricing_page` fired=['cro']: ## CRO Analysis: Your Pricing Page  Your page has a **critical structural problem**: visitors see pricing tiers without understanding what they're buying or why they need it. This kills conversion before the CTA.  ### Th
+- I `collide.cro.pricing_page` fired=['cro']: ## CRO Analysis: Pricing Page  Your pricing page has a critical problem: **it assumes visitors already know what Meterly does and why they need it.** Combined with weak CTAs and missing trust signals, this creates decisi
+- I `collide.cro.pricing_page` fired=['cro']: ## Analysis: Your Pricing Page  Your page has a critical conversion problem: **visitors don't understand the value proposition or why they should care**. It reads like a pricing table, not a sales page. Here's what's bro
+- I `collide.paywalls.limit_screen` fired=['paywalls']: I can see your current limit-reached screen is very bare—just a headline, message, and upgrade link. That explains the low conversion. To rework this effectively, I need a few details:  1. **Upgrade options** — What do t
+- I `collide.paywalls.limit_screen` fired=['paywalls']: I can see the current page is extremely bare—just one sentence and a link. With product context (Meterly is usage metering for API companies, 140 paying customers), I can make this much stronger. Before I rework it, a fe
+- I `collide.paywalls.limit_screen` fired=['paywalls']: Now I can see what we're working with. The current paywall is extremely minimal—just a headline, one sentence, and a bare link. This triggers at exactly the right moment (when they hit the limit), but the messaging and o
+- I `collide.paywalls.limit_screen` fired=['paywalls']: Got it—Meterly is a usage metering SDK for indie API developers. The limit-reached screen appears when free users hit their 1,000 metered call limit.  To rework this effectively, I need a few details:  1. **Pricing & tie
+- I `collide.onboarding.first_session` fired=['onboarding']: ## Onboarding Audit: Metrely  I can see why new users bounce. After landing on **app/welcome.html**, they see an empty dashboard with "No data." — no guidance, no value, no clear next step.  ### Core Problems  1. **Signu
+- I `collide.onboarding.first_session` fired=['onboarding']: Now I understand the problem. You've got a strong product (140 customers, 2.1B calls/month) but new users hit a blank dashboard with no clear next step. Let me redesign the onboarding to get them to their first metered c
+- I `collide.onboarding.first_session` fired=['onboarding']: Now I see the problem clearly. Let me give you the audit and a fix:  ## 🔴 Onboarding Audit — Meterly  ### Current State - **Signup** → 9 required fields (too much friction for an API product) - **Landing page** → Complet
+- I `collide.onboarding.first_session` fired=['onboarding']: Now I see the problem. The welcome page is literally just an empty table saying "No data." — it's a blank slate with zero guidance or momentum.  Let me ask a few quick questions to design the right fix:  1. **Activation 
+- I `collide.onboarding.first_session` fired=['onboarding']: Now I can see the problem clearly. Let me provide a comprehensive onboarding audit and fix.  ## 🚨 Onboarding Audit: Current State  **The problem:** After signup, users land on a **completely empty dashboard with zero gui
+- I `contested.copywriting.headline_better` fired=['copywriting']: Perfect! I have the context. Based on the product marketing notes, here's what I'm working with:  **Current situation:** - Headline: "Metering Software For Your API" (generic, feature-focused) - Subheadline: "Meterly cou
+- I `contested.copywriting.headline_better` fired=['copywriting']: Looking at your current headline "Metering Software For Your API," I see an opportunity to shift from **features** (what it is) to **benefits** (what it lets you do) and from **vague** to **specific**.  ## Analysis  The 
+- I `contested.copywriting.headline_better` fired=['copywriting']: Based on the product marketing context, here are headline options that better communicate Meterly's core value:  ## Recommended Headlines  **Option 1: "Bill API customers in one SDK call"** - **Why it works:** Direct, be
+- I `contested.copywriting.headline_better` fired=['copywriting']: Based on the product context and current copy, I can see the hero headline is weak. It's generic ("Metering Software For Your API") and the subheading undersells the product ("Meterly counts things").  Here are three str
+- I `contested.copywriting.headline_better` fired=['copywriting']: I can see your current headline is "Metering Software For Your API"—which is technically descriptive but generic and feature-focused. It doesn't speak to the pain point or outcome for API companies.  Based on the context
+- I `contested.copywriting.headline_better` fired=['copywriting']: Perfect. I have the context I need. Let me write you better hero copy based on Meterly's positioning.  ## Current Issues  Your current headline ("Metering Software For Your API") is feature-focused and tells visitors *wh
+- I `contested.copywriting.headline_better` fired=['copywriting']: Based on the copywriting principles, here are stronger headline options for Meterly's hero:  ### Headline Options  **Option 1: "Never Leave Money on the Table. Meter Every API Call."** - **Why:** Uses the "Never [pain]" 
+- I `contested.copywriting.headline_better` fired=['copywriting']: Based on the product marketing context, here are headline options:  ## Headline Options  **Option 1: "Stop managing your own metering"** ← Recommended - Directly names the pain point (hand-rolled counters and spreadsheet
+- I `contested.copywriting.headline_better` fired=['copywriting']: Now I can see the current headline. Let me provide better options that focus on the customer's real pain and the transformation, rather than just describing what the product is.  ## Current State **Headline:** "Metering 
+- I `contested.copywriting.headline_better` fired=['copywriting']: Looking at the current headline "Metering Software For Your API" — this is feature-focused and generic. It tells visitors *what* you are, not *why they should care*.  From the about section, I can see the real pain: API 
+- I `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: Looking at the About paragraph, I can identify the issues and tighten it down using the Clarity sweep first.  **Current paragraph (line 10):** > Meterly is a platform that is designed in order to help companies that have
+- I `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: I found the About paragraph. It has two typos ("there" should be "their" in "their API", and "beleive" should be "believe") and is quite wordy with several structural issues.  Here's the tightened version:  **Current:** 
+- I `collide.copy_editing.tighten_paragraph` fired=['copy-editing']: Found the issues! The About paragraph has two typos ("there" → "their" and "beleive" → "believe") and is unnecessarily wordy with redundant phrases like "is a platform that is designed in order to" and repeated "to be ab
+- I `collide.emails.welcome_sequence` fired=['emails']: I've loaded the email sequence skill. Before I plan this properly, I need to understand your product and goals better. Looking at your current draft, I can see you're sending welcome → SDK awareness → upgrade pitch, but 
+- I `collide.emails.welcome_sequence` fired=['emails']: Now I have the context. Your current sequence is just 3 generic lines, and it's missing the strategy that makes welcome sequences work. Here's a proper plan for Meterly's welcome sequence:  ## Welcome Sequence Plan: Mete
+- I `collide.emails.welcome_sequence` fired=['emails']: Based on the product marketing context, I can see **Meterly** is a usage metering and billing SDK for indie API developers. Your current draft has 3 generic placeholder messages, but they need structure around activation
+- I `collide.emails.welcome_sequence` fired=['emails']: I found the draft and product context. Your current sequence is very thin—just three bullet points. Let me plan this properly for indie API developers.  ## Welcome Sequence Plan for Meterly  **Sequence Overview** - **Len
+- I `collide.emails.welcome_sequence` fired=['emails']: Perfect. Here's a proper plan for your welcome sequence:  ## Welcome Sequence Plan for Meterly  **Trigger:** Account signup   **Goal:** Get indie developers to implement the SDK, see it work, and convert to paid   **Leng
+- I `collide.emails.welcome_sequence` fired=['emails']: I have the context now. Let me create a comprehensive plan for your welcome sequence. Your current draft has 3 bare-bones messages, but they need structure and purpose.  ## Welcome Sequence Plan for Meterly  **Product**:
+- I `collide.emails.welcome_sequence` fired=['emails']: Perfect. I have the product context—Meterly is usage metering and billing for API companies, targeting indie developers. Your voice is plain and technical.  Before I plan the sequence, I need to clarify a few things:  **
+- I `collide.emails.welcome_sequence` fired=['emails']: I can see your current draft is more of a checklist than a strategy. Let me ask a few key questions before redesigning this—the answers will shape the whole sequence:  1. **What's the primary goal?** Is it:    - Getting 
+- I `collide.emails.welcome_sequence` fired=['emails']: Perfect. I can see you're working on Meterly's welcome sequence. The current draft is a skeleton—let me ask a few questions so we build this properly, then I'll create a full plan with timing, copy, and what each email a
+- I `collide.emails.welcome_sequence` fired=['emails']: Got it. Your current draft has three messages, but it's missing the strategic structure that makes welcome sequences work. Before I plan this, I need to understand a few things:  1. **Primary conversion goal**: Is it get
+- I `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the product context (Meterly — usage metering and billing for API companies) and three prospects with specific problems. Let me write a sequence for each prospect.  ---  ## **Prospect 1: Avery Example (Ex
+- I `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the context — Meterly is a usage metering and billing platform for API companies. Each prospect has a specific pain point that maps directly to what we solve. Here are the three email sequences:  ---  ## 
+- I `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the context I need. Let me write a personalized first email for each of your three prospects, plus two follow-up templates.  ---  ## Email 1: To Avery (ExampleShip) — Manual billing problem  **Subject:** 
+- I `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have everything I need. Your prospects all have the core problem Meterly solves — they're either billing manually, drifting on usage tracking, or building new pricing models without infrastructure. Let me writ
+- I `collide.cold_email.outreach` fired=['cold-email']: Based on the product context, here are three cold emails tailored to each prospect's specific situation, plus two follow-ups.  ---  ## **First Email — Customized to each prospect**  ### **To: Avery Example (ExampleShip) 
+- I `collide.cold_email.outreach` fired=['cold-email']: Perfect. I can see you have three solid prospects with clear signals, and Meterly solves the exact problems they're facing. I'll write personalized emails for each prospect, plus a follow-up sequence. Here's the first me
+- I `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have the context I need. You're selling **Meterly** (usage metering and billing for API companies), targeting platform leads who are building or struggling with usage-based pricing. Your three prospects have s
+- I `collide.cold_email.outreach` fired=['cold-email']: I have the context. You're using **Meterly** (usage metering + usage-based billing for API companies) to reach platform leads who are currently hand-rolling their billing or struggling with accuracy. Each prospect has a 
+- I `collide.cold_email.outreach` fired=['cold-email']: Perfect. I have your product context and the prospects list. I can see specific pain points for each:  - **Avery** (ExampleShip): Billing by hand from logs — manual and error-prone - **Blake** (ExampleLingo): Moving to u
+- I `collide.cold_email.outreach` fired=['cold-email']: Based on your product marketing context and prospects, here's a cold email sequence tailored to your audience:  ---  ## First Email — Three Variations  **Version 1: For Avery (billed by hand from logs)**  Subject: billin
+- I `collide.seo_audit.not_found` fired=['seo-audit']: I found several critical SEO issues that are preventing this page from ranking:  ## Major Issues Found  1. **Generic Title Tag** (Critical)    - Current: `<title>Post</title>`    - Problem: No keyword, not descriptive, w
+- I `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit Report: `blog/how-to-meter-api-usage.html`  ### Executive Summary  This page has **critical SEO issues** preventing it from ranking. The primary problems are:  1. **Non-existent title tag** ("Post") — not op
+- I `collide.seo_audit.not_found` fired=['seo-audit']: ---  ## SEO Audit: `blog/how-to-meter-api-usage.html`  ### Executive Summary  This page has **critical SEO deficiencies** preventing it from ranking, despite addressing a relevant topic for your audience. The page is eff
+- I `collide.seo_audit.not_found` fired=['seo-audit']: # SEO Audit Report: blog/how-to-meter-api-usage.html  ## Executive Summary  **Overall Health: CRITICAL**   This page has excellent potential (the topic is search-friendly, the URL is good) but is currently **invisible to
+- I `collide.seo_audit.not_found` fired=['seo-audit']: ---  ## **SEO Audit: `blog/how-to-meter-api-usage.html`**  ### **Executive Summary**  This page has **strong content** — it directly answers the search intent for "how to meter API usage" — but **critical on-page and tec
+- I `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit Report: blog/how-to-meter-api-usage.html  ---  ## Executive Summary  **Overall Health: Critical Issues** 🚨  This page has significant barriers to search visibility despite covering a relevant topic. It won't
+- I `collide.seo_audit.not_found` fired=['seo-audit']: # SEO Audit: `blog/how-to-meter-api-usage.html`  ## Executive Summary  The page has **critical on-page SEO deficiencies** that directly prevent it from ranking. While the URL slug is excellent, the page itself is severel
+- I `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit: `blog/how-to-meter-api-usage.html`  ### Executive Summary  **Health:** Critical. The page is essentially invisible to search engines and has zero click potential even if it ranked.  **Top Issues:** 1. **Tit
+- I `collide.seo_audit.not_found` fired=['seo-audit']: # SEO Audit: blog/how-to-meter-api-usage.html  ## Executive Summary  This page has **critical SEO barriers preventing indexation and ranking**. The title tag is a placeholder, content is extremely thin, and basic on-page
+- I `collide.seo_audit.not_found` fired=['seo-audit']: ## SEO Audit Report: `blog/how-to-meter-api-usage.html`  ### Executive Summary  This page has **critical SEO deficiencies** preventing it from ranking. Despite a keyword-rich URL and a solid topic, the page is a content 
+- I `collide.ai_seo.cited` fired=['ai-seo']: I'll help you get discovered by ChatGPT and Perplexity when people search for API metering solutions. Let me start by understanding your current situation and content.  **Quick context questions:**  1. **What's your prod
+- I `collide.ai_seo.cited` fired=['ai-seo']: Now I have a clear picture. Here's what I found:  **Current state:** - You have a blog post on "how to meter API usage" — exactly the right topic — but it's extremely thin (one paragraph) - Homepage has weak positioning 
+- I `collide.ai_seo.cited` fired=['ai-seo']: Good — I see Meterly meters API usage for indie developers shipping paid APIs. Now let me understand your current AI visibility gap and what content you already have.  **Quick audit questions:**  1. **Current AI visibili
+- I `collide.ai_seo.cited` fired=['ai-seo']: Now let me gather the critical info. I'll ask you a few quick questions so I can audit your current AI visibility and build a concrete plan:  **1. Your domain and current state:**    - What's your domain? (e.g., meterly.
+- I `collide.ai_seo.cited` fired=['ai-seo']: Perfect — I have the Meterly context. Now let me gather the AI SEO diagnostics:  ## Current AI Visibility Audit  I need to understand where you stand today. **Have you checked these key queries on ChatGPT and Perplexity 
+- I `collide.ai_seo.cited` fired=['ai-seo']: I've loaded the AI SEO skill. Let me start by understanding your current situation and what we're working with.  **Key questions to get oriented:**  1. **Current visibility** — Have you checked ChatGPT, Perplexity, or Go
+- I `collide.ai_seo.cited` fired=['ai-seo']: ## AI Visibility Audit: Why You're Not Getting Cited  I found the problem. Here's what's holding Meterly back:  ### **Content Extractability Score: 1/10**  **Your blog post on "how to meter API usage":** - 2-3 sentences,
+- I `collide.ai_seo.cited` fired=['ai-seo']: Got the context — Meterly, usage metering + usage-based billing for API companies, 140 paying customers. Let's fix your AI visibility for "how to meter API usage" queries.  To build the optimization plan, I need to under
+- I `collide.ai_seo.cited` fired=['ai-seo']: I'll help you get cited when people ask AI about metering API usage. Let me start with a quick diagnostic to understand your current position.  **Four quick questions:**  1. **Current AI Visibility** — Have you checked i
+- I `collide.ai_seo.cited` fired=['ai-seo']: I'll help you get your content cited when people ask AI systems about API metering. Let me start by understanding your current position and what you're working with.  **Quick questions to focus the work:**  1. **Current 
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect! I found the context. **Meterly** is a usage metering and billing platform for API companies. Your integrations are with billing providers (ExamplePay, ExampleSubscriptions, ExampleGateway, ExampleCloud Gateway) 
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: I see you have 5 integrations to build pages for. Before I design the strategy, I need to understand your product and positioning. Let me ask a few quick questions:  1. **What is your product?** (e.g., a billing platform
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect—I have the context. Meterly is a usage metering and usage-based billing platform for API companies. You have 5 integrations to build pages around, and the goal is to capture people searching for those tools combi
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect—I have the context. Meterly is a usage metering/billing platform, and you want to target "[Integration] usage billing" searches to reach developers choosing billing providers.  ## Strategy  **Playbook:** Integrat
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect! I have the context. You're Meterly (usage-based billing for APIs), and you have 5 integration partners. Let me design a programmatic SEO strategy for integration pages that target "[Tool] usage billing" searches
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: Perfect. I have the context: **Meterly** integrates with multiple billing/gateway/analytics tools. You want developers searching "[tool name] usage billing" or "[tool] metering" to find your integration pages.  ## Progra
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: I see you want to build integration pages for each tool targeting "[tool name] usage billing" searches. Let me ask some clarifying questions to build an effective strategy:  **1. Business Context** - What's your main pro
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: To build an effective programmatic SEO strategy for your integration pages, I need a few clarifications:  1. **What's your product?** (The thing that integrates with these tools—e.g., a billing platform, payment processo
+- I `collide.programmatic_seo.integration_pages` fired=['programmatic-seo']: I can see your integration opportunities. Before building the strategy, I need to understand your context better:  1. **What's your main product?** Is this a platform that users integrate with these billing/analytics/gat
+- I `collide.product_marketing.positioning` fired=['product-marketing']: Found it. The current doc is quite bare-bones and notes the audience is "being revisited." Let me build this out with your new positioning.  To create a solid foundation, I need to understand the platform team opportunit
+- I `collide.product_marketing.positioning` fired=['product-marketing']: I found your existing context at `.agents\product-marketing.md`. It's quite minimal right now — mostly a one-liner focused on indie developers.   Since you're repositioning to platform teams at API companies, this is a s
+- I `collide.product_marketing.positioning` fired=['product-marketing']: Perfect! You have a v1 context, but it's minimal and marked as "being revisited." Here's what's currently captured:  **Current state:** - **Audience:** Indie developers shipping a paid API (flagged as needing update) - *
+- I `collide.product_marketing.icp` fired=['product-marketing']: I can see you have a terse positioning context focused on indie developers. Let me ask a few targeted questions to build out a proper positioning for your shift to platform teams at API companies.  **About the market shi
+- I `collide.product_marketing.icp` fired=['product-marketing']: You have a minimal context doc that explicitly flags the audience shift as "being revisited." Perfect—let's update it with your new positioning.  I can see you're: - **Currently:** positioning to indie developers - **Mov
 
 ---
 
@@ -2205,6 +2827,8 @@
 | E | 169/200 | 162 | 188 | 188 | 34 · 34 of 40 |
 | F | 0/200 | 0 | 0 | 0 | 0 · 0 of 40 |
 | G | 0/200 | 0 | 0 | 0 | 0 · 0 of 40 |
+| H | 0/200 | 0 | 0 | 0 | 0 · 0 of 40 |
+| I | 0/200 | 0 | 0 | 0 | 0 · 0 of 40 |
 
 Per forked case (slot / none / attempts):
 
@@ -2215,6 +2839,8 @@ Per forked case (slot / none / attempts):
 - E: pricing_decision 10/10/10 · exit_modal_timing 8/8/10 · positioning 8/8/10 · icp 8/8/10
 - F: pricing_decision 0/0/10 · exit_modal_timing 0/0/10 · positioning 0/0/10 · icp 0/0/10
 - G: pricing_decision 0/0/10 · exit_modal_timing 0/0/10 · positioning 0/0/10 · icp 0/0/10
+- H: pricing_decision 0/0/10 · exit_modal_timing 0/0/10 · positioning 0/0/10 · icp 0/0/10
+- I: pricing_decision 0/0/10 · exit_modal_timing 0/0/10 · positioning 0/0/10 · icp 0/0/10
 
 ## Fork template (arm D's rule), scored attempts
 
@@ -2227,6 +2853,8 @@ Per forked case (slot / none / attempts):
 | E | 0/170 | 0 | 0 |
 | F | 0/170 | 0 | 0 |
 | G | 0/170 | 0 | 0 |
+| H | 0/170 | 0 | 0 |
+| I | 0/170 | 0 | 0 |
 
 ## Slot lines, for reading by hand
 
