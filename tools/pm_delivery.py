@@ -14,4 +14,4 @@ for i, p in enumerate(sys.argv[1:]):
         ws = [[w.replace("\\", "/") for w in (a.get("env") or {}).get("writes") or []] for a in c["attempts"]]
         ctx = sum(1 for w in ws if any(x.endswith(".agents/product-marketing.md") for x in w))
         cells.append(f"{c['caseId'].rsplit('.', 1)[1]}: any file {sum(1 for w in ws if w)}/{len(ws)}, context file {ctx}/{len(ws)}")
-    print(f"{chr(65 + i)} · claude-code {run['environment']['version']} · " + " · ".join(cells))
+    print(f"{chr(65 + i)} · claude-code {run.get('environment', {}).get('version', '?')} · " + " · ".join(cells))

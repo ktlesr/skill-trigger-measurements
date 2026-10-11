@@ -41,6 +41,11 @@
 > **§15, added 2026-10-10**, is arm G, write first and ask after, beside arm A
 > re-run on the same engine (2.1.288). ICP goes from 1/10 to 8/10 and positioning
 > from 0/10 to 7/10. Most of arm A's questions reappear as stated assumptions.
+>
+> **§16, added 2026-10-11**, is arm H: arm G plus one line asking the model to
+> list what it left open. Every write carried the list, but "gone" didn't move
+> (ICP 5 of 54) and the reason for the pivot came back in none of the writes.
+> ICP 9/10; positioning 3/10, overlapping G's 7.
 
 | | Arm A — phrase-binding table | Arm B — no instruction file | Arm C — table + standing default | Arm D — C with a literal fork template | Arm E — table + mandatory closing slot |
 | --- | --- | --- | --- | --- | --- |
@@ -1171,6 +1176,135 @@ replies.
 
 ---
 
+## 16. Arm H — write, ask, and list what's open (2026-10-11)
+
+jimy-r read arm G's cost in the "gone" column (§15.2): sixteen of arm A's forks
+were neither stated nor asked, and the reason for the pivot vanished in all 7
+positioning writes. He proposed one more line after the save that lists what was
+left open, and expected it to pull some of those back into "still asked".
+
+Arm H is arm G's skill with that one line added, directly after G's
+precondition in `product-marketing`'s Step 4:
+
+> **After the save, list what's open.** Next to asking what needs correcting,
+> list what you left open: the questions the document could be written without,
+> but whose answer only the user has.
+
+The line gives no example. An example such as "why the shift happened" would
+have named the fork being scored.
+
+| | arm G (§15) | **arm H** |
+| --- | --- | --- |
+| Run | `2d4b4a5b` | `56966467`, "arm H — write, ask, and list what's open" |
+| Skill | `sha256:321ab1cf…` | [`marketing-skills-collide-H`](../skills/marketing-skills-collide-H) `sha256:702a2464…` |
+| Suite · environment | `4f855027…` · `d82d5120…` | same · same |
+| Context | `32b5fbc8…` | **not recorded** (below) |
+| Host | Claude Code 2.1.288 | 2.1.288 (environment hash, below) |
+| Attempts | 200 · 0 unknown · $10.38 | 200 · 0 unknown · $10.15 |
+| Upload (private) | [run](https://assayctl.dev/runs/run-2026-10-10T06-57-19-574Z-2d4b4a5b) | [run](https://assayctl.dev/runs/run-2026-10-11T09-54-39-699Z-56966467) |
+
+**The record has no context hash, and the reason is one attempt.** Positioning
+#9 did not open the skill. It read the working directory's `CLAUDE.md` (the
+table the case set declares), added a "Positioning" section to it, and stopped.
+The runner hashes each attempt's loaded instruction files when the attempt ends,
+not when they load (`readMemoryProbe` in the 0.4.9 adapter). So that attempt
+reported a different `CLAUDE.md` hash from the other 199. With the per-attempt
+environments disagreeing, the runner writes no environment block and no
+`contextHash`, and `assay compare` against G refuses on two counts, the skill
+and the missing context. The table did load: the $0 probe before the batch
+shows `Project ./CLAUDE.md sha256:b4adbae7…` and context `32b5fbc8…`, the same as
+G. The host is pinned by the environment hash, which covers version, tools,
+skills and plugins but not memory, and is `d82d5120…`, the same as G's 2.1.288
+record. Every skill path in the traces is under `bundled-skills\2.1.288`. That
+the record can lose its context hash because an agent edited the context file
+is a runner defect. It is noted for the Assay repo; it does not change what ran.
+
+### 16.1 Delivery
+
+| | arm A re-run | arm G | **arm H** |
+| --- | --- | --- | --- |
+| **ICP: shared context file written** | 1/10 | 8/10 (49–94%) | **9/10** (60–98%) |
+| **positioning: shared context file written** | 0/10 | 7/10 (40–89%) | **3/10** (11–60%) |
+| both product-marketing cases | 1/20 | 15/20 (53–89%) | **12/20** (39–78%) |
+| change requests, file written | 36/100 | 48/100 (38–58%) | **40/100** (31–50%) |
+| activation, 16 scored cases | 160/160 | 160/160 | **159/160** |
+| negatives fired | 0/30 | 0/30 | **0/30** |
+
+- **ICP held.** 9 of 10 against G's 8.
+- **Positioning fell, from 7 to 3 of 10**, and the intervals overlap. In six
+  positioning attempts the skill fired and asked first ("Which platform teams
+  specifically?", "Should I auto-draft…or walk through it?"), the stop arm A
+  makes. The new line comes after the save, so it gives the model no new
+  reason to stop before it; with ten attempts I can't tell this from noise.
+- **Change requests 40/100**, overlapping both A and G. Outside positioning, no
+  case moves by more than 3.
+- **The one miss** is positioning #9 above: no skill fired, and the positioning
+  went into `CLAUDE.md`. It's the only bypass in A, G and H on this engine.
+- **The precondition was skipped in 7 of 19 attempts where the skill fired**
+  (19–59%), against G's 5 of 20 (11–47%): positioning #1–#5 and #7, and ICP #6.
+
+### 16.2 Did the open list bring the forks back?
+
+Same method as §15.2: arm A's fork list per case, each fork in the reply after
+the write scored as stated, still asked with no choice made, or gone. Only the
+attempts that wrote the shared file count: 9 on ICP, 3 on positioning. One
+reader.
+
+**The line was followed in every write.** All 12 replies carry a separate list:
+"What's still open (only you can fill in)", "Sections left open (only you know
+these for certain)", "Open questions for you".
+
+**ICP**: 9 writers × 6 forks
+
+| arm A's fork | stated | still asked only | gone | arm G (8 writers) |
+| --- | ---: | ---: | ---: | --- |
+| which platform teams (segment, size) | 7 | 0 | 2 | 6 / 0 / 2 |
+| who the buyer is | 9 | 0 | 0 | 8 / 0 / 0 |
+| what hand-rolled looks like | 7 | 0 | 2 | 7 / 0 / 1 |
+| the top pain | 8 | 0 | 1 | 8 / 0 / 0 |
+| proof and customer mix | 3 | 6 | 0 | 3 / 3 / 2 |
+| draft first or interview first | 9 (the write is the draft) | 0 | 0 | 8 / 0 / 0 |
+| **total** | **43 of 54** | **6** | **5** | **40 / 3 / 5 of 48** |
+
+**Positioning**: 3 writers × 7 forks
+
+| arm A's fork | stated | still asked only | gone | arm G (7 writers) |
+| --- | ---: | ---: | ---: | --- |
+| which platform teams (segment, internal or external) | 2 | 0 | 1 | 5 / 0 / 2 |
+| who the buyer is | 3 | 0 | 0 | 7 / 0 / 0 |
+| **why the shift happened** | 0 | 0 | **3** | 0 / 0 / **7** |
+| pain and jobs | 3 | 0 | 0 | 7 / 0 / 0 |
+| customer examples | 0 | 3 | 0 | 0 / 6 / 1 |
+| competition | 1 | 1 | 1 | 5 / 1 / 1 |
+| how the value prop shifts | 3 | 0 | 0 | 7 / 0 / 0 |
+| **total** | **12 of 21** | **4** | **5** | **31 / 7 / 11 of 49** |
+
+- **"Gone" did not move.** ICP 5 of 54 slots (9%) against G's 5 of 48 (10%);
+  positioning 5 of 21 (24%) against 11 of 49 (22%).
+- **The pivot reason came back in none of the three positioning writes**, and in
+  none of the twelve writes overall. No attempt in either case, writer or not,
+  asked why the shift happened.
+- **What the line pulled into "still asked" is proof.** Proof and customer mix
+  on ICP went from 2 gone and 3 asked in G to 0 gone and 6 asked. Those are the
+  items the document already holds placeholders for.
+- **What the model lists as "only the user knows"** is customer names,
+  testimonials, metrics (CAC, churn, growth), pricing, and competitors it might
+  have missed: blanks in the template's Proof Points and Goals sections. A
+  question the template has no field for, like the reason for the pivot,
+  doesn't reach the list.
+
+### 16.3 Limits
+
+- **Three positioning writers.** The positioning table rests on 3 replies, so
+  its "gone" share is soft. The ICP table (9 writers) carries the comparison.
+- **No context hash in the record**, for the reason above. The context is
+  established by the probe and the unchanged suite; it is not pinned in the
+  record, so `assay compare` can't confirm it.
+- **One reader**, one model (Haiku 4.5), non-interactive, `acceptEdits`, ten
+  attempts per case.
+
+---
+
 ## Fast run first, then the full run
 
 The request was to start with `--fast` (3 attempts per case) and decide.
@@ -1312,6 +1446,8 @@ python tools/pm_delivery.py .assay/runs/<A>.json … .assay/runs/<F>.json
 # (in Git bash, prepend its bin dir in /c/... form: a C:/... entry is split at the colon)
 npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armF.suite.yaml --skill ./skills/marketing-skills-collide --concurrency 4 --label "arm A — phrase-binding table (2.1.288 baseline)"
 npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armF.suite.yaml --skill ./skills/marketing-skills-collide-G --concurrency 4 --label "arm G — product-marketing write-then-ask"
+# §16: arm H, same setup
+npx @ktlsr/assay@0.4.9 run suites/marketingskills.collide.v3.armF.suite.yaml --skill ./skills/marketing-skills-collide-H --concurrency 4 --label "arm H — write, ask, and list what's open"
 ```
 
 On Windows, keep `TEMP` off the home directory in both arms, or the host's

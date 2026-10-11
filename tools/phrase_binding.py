@@ -115,7 +115,7 @@ def main(*paths):
     for arm, r in runs.items():
         unknown = sum(1 for x in F[arm] if not (x[3].get("trigger") or {}).get("available"))
         usd = sum((x[3].get("cost") or {}).get("usd", 0) for x in F[arm])
-        print(f"- **{arm}** `{r['id']}` · assay {r['assayVersion']} · claude-code {r['environment']['version']} · "
+        print(f"- **{arm}** `{r['id']}` · assay {r['assayVersion']} · claude-code {r.get('environment', {}).get('version', '?')} · "
               f"{len(F[arm])} attempts · {unknown} unreadable · ${usd:.2f} · suite `{r['pins']['suiteHash'][:15]}…` · "
               f"skill `{r['pins']['skillHash'][:15]}…` · env `{r['pins']['environmentHash'][:15]}…`")
 
