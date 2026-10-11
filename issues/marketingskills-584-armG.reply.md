@@ -1,7 +1,7 @@
 <!--
 Reply for coreyhaines31/marketingskills discussion #584, to jimy-r's 2026-10-09
 comment (#discussioncomment-18836226): arm G and the arm A baseline.
-NOT POSTED; ready to post: everything below this comment is the reply body.
+POSTED 2026-10-10 07:57 (#discussioncomment-18848178).
 No section signs in the body (GitHub dropped them on an earlier post).
 Numbers: reports/marketingskills.phrase-binding.md section 15. Runs: arm A
 re-run 0e10b188, arm G 2d4b4a5b, arm F aa524c4d, all Claude Code 2.1.288.
