@@ -197,7 +197,8 @@ command's job, without naming it):
 
 80 attempts on this case, 0 activations. The base model writes the file
 itself, 70 times out of 80. `document.md` has never been opened in any of the
-**960** measured attempts across four versions, two hosts and two modes. This
+**960** measured attempts: three versions (4.2.2 measured twice), two hosts
+and two modes. This
 case and its 80 attempts are for #375.
 
 ## Limitations
