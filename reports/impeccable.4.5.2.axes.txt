@@ -1,0 +1,324 @@
+
+========================================================================
+4.2.2-rebase acceptEdits  —  mode acceptEdits  —  10 record(s)
+========================================================================
+skillHash       sha256:d33f14889036f0fa39bdbca7e21e9788e8b5333a241638b04c38f69c8bbbbc27
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:01906722306804e71a6bd13ff876f0d4ad884c5ea217e4e24a956213eec77b34
+model           claude-haiku-4-5-20251001
+records         run-2026-10-17T08-21-32-979Z-8d493b86, run-2026-10-17T09-01-42-594Z-64a97390, run-2026-10-17T09-46-56-566Z-c097945c, run-2026-10-17T10-18-17-278Z-37b9b0b5, run-2026-10-17T10-48-02-284Z-4104e987, run-2026-10-17T11-22-25-247Z-210509dc, run-2026-10-17T14-12-07-330Z-b8745414, run-2026-10-17T14-41-18-033Z-410fac0b, run-2026-10-17T15-19-59-167Z-e6f3aff1, run-2026-10-17T15-54-12-602Z-cc730ad6
+attempts 120 · tool calls 884 · $7.77 · 66.2 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           0/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                    10/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                        9/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       0/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=19 FN=31 FP=0 TN=70 unknown=0
+  precision 100% (N=19, 83%-100%)
+  recall    38% (N=50, 26%-52%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 23
+    refused by the permission layer        19
+    refused: host pre-parse (malformed syntax) 4
+  base directory resolved:
+    correct (skill dir)                    21
+    wrong (plugin root)                    2
+  by tool:
+    Bash                                   19
+    PowerShell                             4
+  verbs:
+    context                                23
+  distinct error texts:
+    [refused by the permission layer] This command requires approval
+    [refused: host pre-parse (malformed syntax)] Command contains malformed syntax that cannot be parsed: pwsh exited with code 1: The command line is too long.
+    [refused by the permission layer] This Bash command contains multiple operations. The following part requires approval: "D:/pb-452/tmp/assay-skill-bnRItk/skills/impeccable/scripts/impeccable" context
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            19
+    attempted the launcher                 19
+    launcher calls                         23
+    calls per activation                   1.21
+    activations where every call failed    19
+    of those, told the user                10
+      ...before the next tool call         6
+      ...with the 4.5.2 sentence verbatim  0
+      ...edited UI                         18
+      ...read craft-floor before that edit 0
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 0 · total reads: 0
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        18
+  of those, read craft-floor first:  0  (0% (N=18, 0%-18%))
+  read it only after the first edit: 0
+    trigger.positive.forgettable_usage                   0/10
+    trigger.positive.hero_direction                      0/8
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        8
+  document_md      0
+  any_reference    0
+
+========================================================================
+4.5.2 acceptEdits  —  mode acceptEdits  —  10 record(s)
+========================================================================
+skillHash       sha256:cd56611e16c54bd4139d2abecfdd4dfe93c2e52925a5f7833aa3b28960490f99
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:34380acefa198f31a900e806bf03a042908bfcb28542796b6c6dcf798655888e
+model           claude-haiku-4-5-20251001
+records         run-2026-10-17T08-16-15-727Z-04ae5de7, run-2026-10-17T08-54-47-222Z-9d776358, run-2026-10-17T09-39-26-780Z-c2253d1e, run-2026-10-17T10-11-47-170Z-7ab03030, run-2026-10-17T10-40-47-909Z-7d1b7cff, run-2026-10-17T11-15-00-117Z-783d06dd, run-2026-10-17T11-38-23-975Z-5156ea6a, run-2026-10-17T14-34-24-744Z-266b8691, run-2026-10-17T15-13-11-879Z-ff4157ee, run-2026-10-17T15-46-59-283Z-ee83fdd6
+attempts 120 · tool calls 925 · $7.57 · 63.5 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           0/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                    10/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                       10/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       2/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=22 FN=28 FP=0 TN=70 unknown=0
+  precision 100% (N=22, 85%-100%)
+  recall    44% (N=50, 31%-58%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 23
+    refused by the permission layer        20
+    refused: host pre-parse (malformed syntax) 3
+  base directory resolved:
+    correct (skill dir)                    23
+  by tool:
+    Bash                                   20
+    PowerShell                             3
+  verbs:
+    context                                23
+  distinct error texts:
+    [refused by the permission layer] This command requires approval
+    [refused: host pre-parse (malformed syntax)] Command contains malformed syntax that cannot be parsed: pwsh exited with code 1: The command line is too long.
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            22
+    attempted the launcher                 21
+    launcher calls                         23
+    calls per activation                   1.05
+    activations where every call failed    21
+    of those, told the user                17
+      ...before the next tool call         16
+      ...with the 4.5.2 sentence verbatim  21
+      ...edited UI                         21
+      ...read craft-floor before that edit 0
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 0 · total reads: 0
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        21
+  of those, read craft-floor first:  0  (0% (N=21, 0%-15%))
+  read it only after the first edit: 0
+    trigger.positive.forgettable_usage                   0/9
+    trigger.positive.hero_direction                      0/10
+    trigger.positive.settings_rework                     0/2
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        9
+  document_md      0
+  any_reference    0
+
+========================================================================
+4.2.2-rebase bypassPermissions  —  mode bypassPermissions  —  10 record(s)
+========================================================================
+skillHash       sha256:d33f14889036f0fa39bdbca7e21e9788e8b5333a241638b04c38f69c8bbbbc27
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:d555d7a8491685741b9104876689c1938c6579c8b3413e642df8e889f8a37110
+model           claude-haiku-4-5-20251001
+records         run-2026-10-17T08-41-02-482Z-f9d66396, run-2026-10-17T09-29-19-327Z-37663eb2, run-2026-10-17T11-04-51-481Z-88dd0a44, run-2026-10-17T11-31-29-329Z-8b1f9458, run-2026-10-17T13-36-07-155Z-80f332b3, run-2026-10-17T13-46-37-427Z-db0f8743, run-2026-10-17T14-27-04-426Z-1b624d9f, run-2026-10-17T14-55-27-221Z-4ebf6e5f, run-2026-10-17T15-36-40-327Z-d3ae0a2e, run-2026-10-17T16-11-36-639Z-acbe9d3a
+attempts 120 · tool calls 1127 · $10.04 · 80.8 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           1/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                     9/10  expect=fire  unknown=0
+  trigger.positive.hero_direction                        7/10  expect=fire  unknown=1
+  trigger.positive.settings_rework                       0/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=17 FN=32 FP=0 TN=70 unknown=1
+  precision 100% (N=17, 82%-100%)
+  recall    35% (N=49, 23%-49%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 26
+    ran                                    24
+    failed: parser / quoting               2
+  base directory resolved:
+    correct (skill dir)                    26
+  by tool:
+    Bash                                   22
+    PowerShell                             4
+  verbs:
+    context                                18
+    detect                                 8
+  distinct error texts:
+    [failed: parser / quoting] Exit code 1
+Invoke-Expression: İfade veya deyimde 'detect' belirteci beklenmiyordu.
+    [failed: parser / quoting] Exit code 1
+Invoke-Expression: İfade veya deyimde 'context' belirteci beklenmiyordu.
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            17
+    attempted the launcher                 17
+    launcher calls                         26
+    calls per activation                   1.53
+    activations where every call failed    0
+    of those, told the user                0
+      ...before the next tool call         0
+      ...with the 4.5.2 sentence verbatim  0
+      ...edited UI                         0
+      ...read craft-floor before that edit 0
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 6 · total reads: 19
+    craft-floor.md                 6   hero_direction×3, forgettable_usage×3
+    init.md                        4   hero_direction×2, forgettable_usage×2
+    new-work.md                    4   hero_direction×3, forgettable_usage×1
+    delight.md                     2   forgettable_usage×2
+    bolder.md                      2   forgettable_usage×2
+    onboard.md                     1   empty_state×1
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        14
+  of those, read craft-floor first:  6  (43% (N=14, 21%-67%))
+  read it only after the first edit: 0
+    trigger.positive.empty_state                         0/1
+    trigger.positive.forgettable_usage                   3/6
+    trigger.positive.hero_direction                      3/7
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        10
+  document_md      0
+  any_reference    0
+
+========================================================================
+4.5.2 bypassPermissions  —  mode bypassPermissions  —  10 record(s)
+========================================================================
+skillHash       sha256:cd56611e16c54bd4139d2abecfdd4dfe93c2e52925a5f7833aa3b28960490f99
+suiteHash       sha256:c820aafc5cc50f635fb7c46b864eb8ed1642b67bfea9daac2e634c8581a33545
+environmentHash sha256:e6556588c393c3f1109151ff47bec70bc15568ca300fbcae4123df9a162474bc
+model           claude-haiku-4-5-20251001
+records         run-2026-10-17T08-27-09-123Z-4e445458, run-2026-10-17T09-23-10-002Z-8b8be090, run-2026-10-17T09-53-54-734Z-0499ee99, run-2026-10-17T10-25-49-973Z-8da3789e, run-2026-10-17T10-55-43-066Z-6d4e68c9, run-2026-10-17T13-54-52-932Z-cf29fcf1, run-2026-10-17T14-19-59-070Z-494dd307, run-2026-10-17T14-48-51-911Z-ad85913c, run-2026-10-17T15-26-53-810Z-d26e739b, run-2026-10-17T16-02-26-813Z-23ad5dae
+attempts 120 · tool calls 1030 · $9.84 · 80.3 min
+
+--- AXIS 1: activation ---
+  complete.persists_design_system                        0/10  expect=fire  unknown=0
+  trigger.positive.empty_state                           0/10  expect=fire  unknown=0
+  trigger.positive.forgettable_usage                     9/10  expect=fire  unknown=1
+  trigger.positive.hero_direction                       10/10  expect=fire  unknown=0
+  trigger.positive.settings_rework                       1/10  expect=fire  unknown=0
+  trigger.negative.near_neighbor.cta_instrumentation     0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.double_submit           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.print_booklet           0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.token_substitution      0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.undefined_email         0/10  expect=quiet unknown=0
+  trigger.negative.near_neighbor.wordmark                0/10  expect=quiet unknown=0
+  trigger.negative.unrelated.slow_query                  0/10  expect=quiet unknown=0
+  TP=20 FN=29 FP=0 TN=70 unknown=1
+  precision 100% (N=20, 84%-100%)
+  recall    41% (N=49, 28%-55%)
+
+--- AXIS 2: launcher path and execution ---
+  invocations naming the launcher: 36
+    ran                                    28
+    failed: parser / quoting               4
+    ran: engine declined (precondition / wrong verb) 2
+    failed: agent used cmd syntax in bash (launcher not reached) 1
+    failed: path does not exist            1
+  base directory resolved:
+    correct (skill dir)                    34
+    wrong (plugin root)                    2
+  by tool:
+    Bash                                   29
+    PowerShell                             7
+  verbs:
+    context                                23
+    detect                                 5
+    concept-seed                           3
+    hooks                                  2
+    surface-brief                          1
+    init                                   1
+    serve-question                         1
+  distinct error texts:
+    [failed: parser / quoting] Exit code 1
+Invoke-Expression: İfade veya deyimde 'context' belirteci beklenmiyordu.
+    [failed: agent used cmd syntax in bash (launcher not reached)] Exit code 1
+/usr/bin/bash: line 2: cd: too many arguments
+    [failed: path does not exist] Exit code 1
+&: 'D:\pb-452\tmp\assay-skill-1bIbjK\scripts\impeccable.cmd' terimi bir cmdlet, işlev, betik dosyası veya yürütülebilir program adı olarak tanınmıyor.
+Adın yazımını denetleyin veya yol eklenmişse yolun doğru
+    [ran: engine declined (precondition / wrong verb)] Exit code 1
+NO_PRODUCT_MD: the dice stay in the cup until product truth exists. Complete the init ask round and write PRODUCT.md first (reference/init.md), then re-run this exact command. Challengers fuse their form with
+    [ran: engine declined (precondition / wrong verb)] Exit code 1
+"init" is not a CLI command. Type /impeccable init in your AI coding agent's chat (Claude Code, Cursor, Codex, ...), not in this terminal.
+
+  launcher discipline (4.2.2 'Launcher unavailable' instruction):
+    activations                            20
+    attempted the launcher                 20
+    launcher calls                         36
+    calls per activation                   1.8
+    activations where every call failed    1
+    of those, told the user                1
+      ...before the next tool call         1
+      ...with the 4.5.2 sentence verbatim  1
+      ...edited UI                         1
+      ...read craft-floor before that edit 0
+
+--- AXIS 3: command-reference reads ---
+  distinct reference files read: 7 · total reads: 27
+    craft-floor.md                 9   hero_direction×4, forgettable_usage×4, settings_rework×1
+    new-work.md                    8   forgettable_usage×5, hero_direction×3
+    init.md                        5   hero_direction×4, forgettable_usage×1
+    mode-operate.md                2   forgettable_usage×2
+    mode-persuade.md               1   hero_direction×1
+    shape.md                       1   forgettable_usage×1
+    operate.md                     1   forgettable_usage×1
+
+--- AXIS 4: craft-floor before a UI edit ---
+  activations that edited UI:        17
+  of those, read craft-floor first:  9  (53% (N=17, 31%-74%))
+  read it only after the first edit: 0
+    trigger.positive.forgettable_usage                   4/9
+    trigger.positive.hero_direction                      4/7
+    trigger.positive.settings_rework                     1/1
+
+--- completion case (document-shaped, coordinate with #375) ---
+  n                10
+  fired            0
+  design_md        8
+  document_md      0
+  any_reference    0

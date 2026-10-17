@@ -122,6 +122,11 @@ def launcher_calls(m):
                 by_design = (verb == "detect" and ("antipattern" in err or body[:1] in "[{"))
                 if not r.get("isError") or by_design:
                     outcome = "ran"
+                elif "NO_PRODUCT_MD" in err or "is not a CLI command" in err:
+                    # the engine ran and declined the verb or its precondition
+                    outcome = "ran: engine declined (precondition / wrong verb)"
+                elif "cd: too many arguments" in err and "cd /d" in cmd:
+                    outcome = "failed: agent used cmd syntax in bash (launcher not reached)"
                 elif r.get("refusal") and "malformed syntax" in err:
                     # host 2.1.30x parses PowerShell before asking; a quoting
                     # fault now surfaces here instead of as a ParserError.
@@ -131,10 +136,12 @@ def launcher_calls(m):
                 elif "fatal error - add_item" in err:
                     outcome = "host shell broken (Git bash)"
                 elif ("Unexpected token" in err or "ParserError" in err
-                      or "syntax error near unexpected token" in err):
+                      or "syntax error near unexpected token" in err
+                      or "belirteci beklenmiyordu" in err):   # tr-TR "Unexpected token"
                     outcome = "failed: parser / quoting"
                 elif ("No such file or directory" in err or "is not recognized" in err
-                      or "cannot find path" in err.lower() or "ObjectNotFound" in err):
+                      or "cannot find path" in err.lower() or "ObjectNotFound" in err
+                      or "olarak tanınmıyor" in err):         # tr-TR "is not recognized"
                     outcome = "failed: path does not exist"
                 elif "no engine binary found" in err:
                     outcome = "failed: no engine binary"
