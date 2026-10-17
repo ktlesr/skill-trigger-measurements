@@ -66,4 +66,22 @@ a refusal: `Unexpected token 'context'`. Every other figure is unchanged.
 ## Chunk ledger
 
 <!--LEDGER-->
+| Mode | Chunk | Attempts | Record | State |
+| --- | --- | --- | --- | --- |
+| 4.5.2 acceptEdits | acceptEdits-chunk1 | 12 | `run-2026-10-17T08-16-15-727Z-04ae5de7` | ok |
+| 4.5.2 acceptEdits | acceptEdits-chunk2 | 12 | `run-2026-10-17T08-54-47-222Z-9d776358` | ok |
+| **4.5.2 acceptEdits** | **total** | **24 / 120** | | 96 attempts still owed |
+| 4.5.2 bypassPermissions | bypassPermissions-chunk1 | 12 | `run-2026-10-17T08-27-09-123Z-4e445458` | ok |
+| **4.5.2 bypassPermissions** | **total** | **12 / 120** | | 108 attempts still owed |
+| 4.2.2-rebase acceptEdits | acceptEdits-chunk1 | 12 | `run-2026-10-17T08-21-32-979Z-8d493b86` | ok |
+| 4.2.2-rebase acceptEdits | acceptEdits-chunk2 | 12 | `run-2026-10-17T09-01-42-594Z-64a97390` | ok |
+| **4.2.2-rebase acceptEdits** | **total** | **24 / 120** | | 96 attempts still owed |
+| 4.2.2-rebase bypassPermissions | bypassPermissions-chunk1 | 12 | `run-2026-10-17T08-41-02-482Z-f9d66396` | ok |
+| **4.2.2-rebase bypassPermissions** | **total** | **12 / 120** | | 108 attempts still owed |
 <!--/LEDGER-->
+
+
+
+
+
+
