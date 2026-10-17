@@ -51,6 +51,18 @@ acceptEdits, 0 unknown, 2/5 positives fired, 0/7 FP, 2/2 launcher calls refused,
 "Command contains malformed syntax that cannot be parsed: pwsh exited with code
 1: The command line is too long."
 
+## Instrument validation (before reading any 4.5.2 number)
+
+`tools/four_axes.py` gained two things for this run: a separate outcome for
+refusals whose text is the host's PowerShell pre-parse ("Command contains
+malformed syntax that cannot be parsed"), and #756 checks (message before the
+next tool call, the fixed sentence verbatim, craft-floor read on the fallback
+path). Re-run on the stored 4.2.1 and 4.2.2 records it reproduces
+`reports/impeccable.4.2.2.axes.txt` exactly except for one reclassification:
+acceptEdits "refused by the permission layer" 55 -> 50 + **5 pre-parse** (4.2.1)
+and 36 -> 33 + **3 pre-parse** (4.2.2). Those 8 are the quoting defect wearing
+a refusal: `Unexpected token 'context'`. Every other figure is unchanged.
+
 ## Chunk ledger
 
 <!--LEDGER-->

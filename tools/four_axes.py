@@ -122,6 +122,10 @@ def launcher_calls(m):
                 by_design = (verb == "detect" and ("antipattern" in err or body[:1] in "[{"))
                 if not r.get("isError") or by_design:
                     outcome = "ran"
+                elif r.get("refusal") and "malformed syntax" in err:
+                    # host 2.1.30x parses PowerShell before asking; a quoting
+                    # fault now surfaces here instead of as a ParserError.
+                    outcome = "refused: host pre-parse (malformed syntax)"
                 elif r.get("refusal"):
                     outcome = "refused by the permission layer"
                 elif "fatal error - add_item" in err:
@@ -157,6 +161,7 @@ def launcher_discipline(m):
     attempt failed — did the agent tell the user, as 4.2.2 SKILL.md now
     instructs under "Launcher unavailable"?"""
     acts = attempted = calls = all_failed = disclosed = 0
+    disclosed_before_next = verbatim = fallback_floor = fallback_edited = 0
     # A disclosure is a sentence that names the launcher / context step AND says
     # something went wrong with it. Sentence-scoped so the two halves have to
     # belong together; a narrow phrase list under-counted on a first pass.
@@ -188,15 +193,35 @@ def launcher_discipline(m):
             if all(r.get("isError") for _s, r in mine):
                 all_failed += 1
                 last = max(s for s, _r in mine)
+                trace = a.get("trace") or []
                 if any(e.get("kind") == "assistant_message" and e.get("seq", 0) > last
                        and discloses(str(e.get("text") or ""))
-                       for e in (a.get("trace") or [])):
+                       for e in trace):
                     disclosed += 1
+                # 4.5.2 (#756): the message must come before the next tool call
+                # after the first failure, and steps 2-3 still apply.
+                first = min(s for s, _r in mine)
+                nxt = min((e.get("seq", 0) for e in trace if e.get("kind") == "tool_call"
+                           and e.get("seq", 0) > first), default=10**9)
+                if any(e.get("kind") == "assistant_message" and first < e.get("seq", 0) < nxt
+                       and discloses(str(e.get("text") or "")) for e in trace):
+                    disclosed_before_next += 1
+                if any("Context loading did not run" in str(e.get("text") or "")
+                       for e in trace if e.get("kind") == "assistant_message"):
+                    verbatim += 1
+                if craft_floor_first(a) is True:
+                    fallback_floor += 1
+                if craft_floor_first(a) is not None:
+                    fallback_edited += 1
     return {"activations": acts, "attempted the launcher": attempted,
             "launcher calls": calls,
             "calls per activation": round(calls / acts, 2) if acts else 0,
             "activations where every call failed": all_failed,
-            "of those, told the user": disclosed}
+            "of those, told the user": disclosed,
+            "  ...before the next tool call": disclosed_before_next,
+            "  ...with the 4.5.2 sentence verbatim": verbatim,
+            "  ...edited UI": fallback_edited,
+            "  ...read craft-floor before that edit": fallback_floor}
 
 
 # --------------------------------------------------------------- axis 3
@@ -226,6 +251,27 @@ def reference_reads(m):
 
 
 # --------------------------------------------------------------- axis 4
+def craft_floor_first(a):
+    """None if the attempt made no UI edit, else whether craft-floor.md came first."""
+    res = results_by_call(a)
+    first_edit = floor_seq = None
+    for e in (a.get("trace") or []):
+        if e.get("kind") != "tool_call":
+            continue
+        blob = json.dumps(e.get("args") or {}).replace("\\\\", "/").replace("\\", "/")
+        r = res.get(e.get("id")) or {}
+        if e.get("tool") in ("Edit", "Write", "MultiEdit", "NotebookEdit"):
+            path = str((e.get("args") or {}).get("file_path") or "")
+            if path.lower().endswith(UI_EXT) and not r.get("isError") and first_edit is None:
+                first_edit = e.get("seq")
+        if e.get("tool") in ("Read", "Grep", "Glob") and "craft-floor.md" in blob:
+            if not r.get("isError") and floor_seq is None:
+                floor_seq = e.get("seq")
+    if first_edit is None:
+        return None
+    return floor_seq is not None and floor_seq < first_edit
+
+
 def craft_floor(m):
     """Per activation: did it edit UI, and did craft-floor.md come first?"""
     edited = 0
