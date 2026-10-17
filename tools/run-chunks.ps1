@@ -3,7 +3,13 @@ param(
   [int]$Chunks = 5,
   [int]$Only = 0,
   [string]$Tag = "",
-  [int]$Repeat = 2
+  [int]$Repeat = 2,
+  # Arm = file-name tag for ledgers/logs; SkillDir = the build under test.
+  [string]$Arm = "4.2.2",
+  [string]$SkillDir = "./skills/impeccable",
+  [string]$Assay = "0.2.0",
+  [string]$Progress = "impeccable.4.2.2.progress.md",
+  [string[]]$Arms = @()
 )
 $ErrorActionPreference = "Continue"
 $root = "D:\assay-example"
@@ -14,7 +20,12 @@ Get-Content "$root\.env" | Where-Object { $_ -match '^\s*[A-Z_]+=' } | ForEach-O
   Set-Item -Path "env:$($k.Trim())" -Value $v.Trim()
 }
 $env:CLAUDE_CONFIG_DIR = $null
-$ledger = "$root\reports\impeccable.4.2.2.$Mode.ledger.tsv"
+# ~/.claude/CLAUDE.md leaks in through the %TEMP% ancestor walk; keep TEMP on D:.
+New-Item -ItemType Directory -Force D:\pb-452\tmp | Out-Null
+$env:TEMP = 'D:\pb-452\tmp'; $env:TMP = 'D:\pb-452\tmp'
+if (-not $Arms) { $Arms = @($Arm) }
+$Total = 12 * $Repeat * $Chunks
+$ledger = "$root\reports\impeccable.$Arm.$Mode.ledger.tsv"
 if (-not (Test-Path $ledger)) {
   "chunk`tstarted`tfinished`texit`trecord`tattempts" | Set-Content $ledger -Encoding utf8
 }
@@ -29,12 +40,13 @@ function Get-AttemptCount($recName) {
 }
 
 function Update-Progress {
-  $md = "$root\reports\impeccable.4.2.2.progress.md"
+  $md = "$root\reports\$Progress"
   if (-not (Test-Path $md)) { return }
   $rows = @("| Mode | Chunk | Attempts | Record | State |", "| --- | --- | --- | --- | --- |")
-  foreach ($m in @('acceptEdits','bypassPermissions')) {
-    $lg = "$root\reports\impeccable.4.2.2.$m.ledger.tsv"
-    if (-not (Test-Path $lg)) { $rows += "| $m | 1-5 | — | — | not started |"; continue }
+  foreach ($a in $Arms) { foreach ($mm in @('acceptEdits','bypassPermissions')) {
+    $m = "$a $mm"
+    $lg = "$root\reports\impeccable.$a.$mm.ledger.tsv"
+    if (-not (Test-Path $lg)) { $rows += "| $m | — | — | — | not started |"; continue }
     $lines = Get-Content $lg | Select-Object -Skip 1
     if (-not $lines) { $rows += "| $m | 1-5 | — | — | started, no chunk complete |"; continue }
     $tot = 0
@@ -45,8 +57,8 @@ function Update-Progress {
       if ($p[3] -eq '0' -and "$n" -match '^\d+$') { $tot += [int]$n }
       $rows += "| $m | $($p[0]) | $n | ``$($p[4] -replace '\.json$','')`` | $state |"
     }
-    $rows += "| **$m** | **total** | **$tot / 120** | | $(if ($tot -ge 120) {'COMPLETE'} else {"$([Math]::Max(0,120-$tot)) attempts still owed"}) |"
-  }
+    $rows += "| **$m** | **total** | **$tot / $Total** | | $(if ($tot -ge $Total) {'COMPLETE'} else {"$([Math]::Max(0,$Total-$tot)) attempts still owed"}) |"
+  } }
   $table = ($rows -join "`r`n")
   $txt = Get-Content $md -Raw
   $pattern = '(?s)<!--LEDGER-->.*?<!--/LEDGER-->'
@@ -84,11 +96,11 @@ foreach ($i in $range) {
   # NOTE: do NOT splat these into npx. PowerShell''s splat operator eats the
   # leading @ of the package name and npx then has no executable to run.
   if ($Mode -eq 'bypassPermissions') {
-    npx --yes @ktlsr/assay@0.2.0 run suites/impeccable.suite.yaml --skill ./skills/impeccable --repeat $Repeat --permission-mode bypassPermissions --allow-bypass-permissions 2>&1 |
-      Tee-Object -FilePath "$root\reports\impeccable.4.2.2.$tag.run.log"
+    npx --yes "@ktlsr/assay@$Assay" run suites/impeccable.suite.yaml --skill $SkillDir --repeat $Repeat --label "$Arm $Mode $tag" --permission-mode bypassPermissions --allow-bypass-permissions 2>&1 |
+      Tee-Object -FilePath "$root\reports\impeccable.$Arm.$tag.run.log"
   } else {
-    npx --yes @ktlsr/assay@0.2.0 run suites/impeccable.suite.yaml --skill ./skills/impeccable --repeat $Repeat --permission-mode $Mode 2>&1 |
-      Tee-Object -FilePath "$root\reports\impeccable.4.2.2.$tag.run.log"
+    npx --yes "@ktlsr/assay@$Assay" run suites/impeccable.suite.yaml --skill $SkillDir --repeat $Repeat --label "$Arm $Mode $tag" --permission-mode $Mode 2>&1 |
+      Tee-Object -FilePath "$root\reports\impeccable.$Arm.$tag.run.log"
   }
   $code = $LASTEXITCODE
   $finished = (Get-Date -Format o)
