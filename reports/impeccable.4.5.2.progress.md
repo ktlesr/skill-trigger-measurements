@@ -70,15 +70,53 @@ a refusal: `Unexpected token 'context'`. Every other figure is unchanged.
 | --- | --- | --- | --- | --- |
 | 4.5.2 acceptEdits | acceptEdits-chunk1 | 12 | `run-2026-10-17T08-16-15-727Z-04ae5de7` | ok |
 | 4.5.2 acceptEdits | acceptEdits-chunk2 | 12 | `run-2026-10-17T08-54-47-222Z-9d776358` | ok |
-| **4.5.2 acceptEdits** | **total** | **24 / 120** | | 96 attempts still owed |
+| 4.5.2 acceptEdits | acceptEdits-chunk3 | 12 | `run-2026-10-17T09-39-26-780Z-c2253d1e` | ok |
+| 4.5.2 acceptEdits | acceptEdits-chunk4 | 12 | `run-2026-10-17T10-11-47-170Z-7ab03030` | ok |
+| 4.5.2 acceptEdits | acceptEdits-chunk5 | 12 | `run-2026-10-17T10-40-47-909Z-7d1b7cff` | ok |
+| 4.5.2 acceptEdits | acceptEdits-chunk6 | 12 | `run-2026-10-17T11-15-00-117Z-783d06dd` | ok |
+| 4.5.2 acceptEdits | acceptEdits-chunk7 | 12 | `run-2026-10-17T11-38-23-975Z-5156ea6a` | ok |
+| **4.5.2 acceptEdits** | **total** | **84 / 120** | | 36 attempts still owed |
 | 4.5.2 bypassPermissions | bypassPermissions-chunk1 | 12 | `run-2026-10-17T08-27-09-123Z-4e445458` | ok |
-| **4.5.2 bypassPermissions** | **total** | **12 / 120** | | 108 attempts still owed |
+| 4.5.2 bypassPermissions | bypassPermissions-chunk2 | 12 | `run-2026-10-17T09-23-10-002Z-8b8be090` | ok |
+| 4.5.2 bypassPermissions | bypassPermissions-chunk3 | 12 | `run-2026-10-17T09-53-54-734Z-0499ee99` | ok |
+| 4.5.2 bypassPermissions | bypassPermissions-chunk4 | 12 | `run-2026-10-17T10-25-49-973Z-8da3789e` | ok |
+| 4.5.2 bypassPermissions | bypassPermissions-chunk5 | 12 | `run-2026-10-17T10-55-43-066Z-6d4e68c9` | ok |
+| 4.5.2 bypassPermissions | bypassPermissions-chunk6 | ? | `NONE` | FAILED exit -1 |
+| **4.5.2 bypassPermissions** | **total** | **60 / 120** | | 60 attempts still owed |
 | 4.2.2-rebase acceptEdits | acceptEdits-chunk1 | 12 | `run-2026-10-17T08-21-32-979Z-8d493b86` | ok |
 | 4.2.2-rebase acceptEdits | acceptEdits-chunk2 | 12 | `run-2026-10-17T09-01-42-594Z-64a97390` | ok |
-| **4.2.2-rebase acceptEdits** | **total** | **24 / 120** | | 96 attempts still owed |
+| 4.2.2-rebase acceptEdits | acceptEdits-chunk3 | 12 | `run-2026-10-17T09-46-56-566Z-c097945c` | ok |
+| 4.2.2-rebase acceptEdits | acceptEdits-chunk4 | 12 | `run-2026-10-17T10-18-17-278Z-37b9b0b5` | ok |
+| 4.2.2-rebase acceptEdits | acceptEdits-chunk5 | 12 | `run-2026-10-17T10-48-02-284Z-4104e987` | ok |
+| 4.2.2-rebase acceptEdits | acceptEdits-chunk6 | 12 | `run-2026-10-17T11-22-25-247Z-210509dc` | ok |
+| **4.2.2-rebase acceptEdits** | **total** | **72 / 120** | | 48 attempts still owed |
 | 4.2.2-rebase bypassPermissions | bypassPermissions-chunk1 | 12 | `run-2026-10-17T08-41-02-482Z-f9d66396` | ok |
-| **4.2.2-rebase bypassPermissions** | **total** | **12 / 120** | | 108 attempts still owed |
+| 4.2.2-rebase bypassPermissions | bypassPermissions-chunk2 | 12 | `run-2026-10-17T09-29-19-327Z-37663eb2` | ok |
+| 4.2.2-rebase bypassPermissions | bypassPermissions-chunk3 | ? | `NONE` | FAILED exit -1 |
+| 4.2.2-rebase bypassPermissions | bypassPermissions-chunk4 | ? | `NONE` | FAILED exit -1 |
+| 4.2.2-rebase bypassPermissions | bypassPermissions-chunk5 | 12 | `run-2026-10-17T11-04-51-481Z-88dd0a44` | ok |
+| 4.2.2-rebase bypassPermissions | bypassPermissions-chunk6 | 12 | `run-2026-10-17T11-31-29-329Z-8b1f9458` | ok |
+| **4.2.2-rebase bypassPermissions** | **total** | **48 / 120** | | 72 attempts still owed |
 <!--/LEDGER-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
