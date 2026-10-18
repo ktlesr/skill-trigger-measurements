@@ -1305,6 +1305,185 @@ these for certain)", "Open questions for you".
 
 ---
 
+## 17. Arm I — template field for the pivot reason (2026-10-18)
+
+jimy-r read arm H as the third arm that bought the format and not the noticing,
+and proposed the other untested option first (§16.2): give the reason its own
+field in the document template. Arm H showed the model reliably reports the
+template's blanks, so a field turns the pivot reason into one more blank instead
+of asking the model to notice its own decision. His refutation condition: **if
+the reason still goes missing with a field in place, the fork is lost before the
+write, at the ask step.**
+
+Arm I is arm G's skill (§15), not H's: the "list what's open" line is not in it.
+One line is added to `product-marketing`'s document template, in Product
+Overview, after Business model:
+
+> `**What changed from the current positioning, and why:**`
+
+Nothing else changes. The instruction text, Step 4's write-first precondition,
+and the Changelog rule ("summarizing *what changed and why* in one line") are
+G's.
+
+| | arm G (§15) | **arm I** |
+| --- | --- | --- |
+| Run | `2d4b4a5b` | `4efd001a`, "arm I — template field for the pivot reason" |
+| Skill | `sha256:321ab1cf…` | [`marketing-skills-collide-I`](../skills/marketing-skills-collide-I) `sha256:c56595a7…` |
+| Suite · context · environment | `4f855027…` · `32b5fbc8…` · `d82d5120…` | same · same · same |
+| Host | Claude Code 2.1.288 | **2.1.288** (record's `environment.version`) |
+| Runner | assay 0.4.9 | **assay 0.5.0** |
+| Attempts | 200 · 0 unknown · $10.38 | 200 · 0 unknown · $10.56 |
+| Upload (private) | [run](https://assayctl.dev/runs/run-2026-10-10T06-57-19-574Z-2d4b4a5b) | [run](https://assayctl.dev/runs/run-2026-10-18T09-24-21-935Z-4efd001a) |
+
+**Why the runner change doesn't break the comparison.** Between 0.4.9 and 0.5.0
+the runner and core packages are byte-identical; the only code change is in the
+Claude Code adapter, which now hashes instruction files when the host loads them
+instead of when the attempt ends (the defect that cost arm H its context hash,
+§16). How the agent is launched is unchanged. The record bears this out: the
+context hash is back, and suite, context and environment hashes all equal G's.
+`assay compare` G-vs-I names one drift, `skillHash`. The host was held at 2.1.288
+the same way as G and H (§15); a $0 probe confirmed the version and the hashes
+before the batch.
+
+### 17.1 Delivery
+
+| | arm A re-run | arm G | arm H | **arm I** |
+| --- | --- | --- | --- | --- |
+| **ICP: shared context file written** | 1/10 | 8/10 | 9/10 | **9/10** (60–98%) |
+| **positioning: shared context file written** | 0/10 | 7/10 | 3/10 | **7/10** (40–89%) |
+| both product-marketing cases | 1/20 | 15/20 | 12/20 | **16/20** (58–92%) |
+| change requests, file written | 36/100 | 48/100 | 40/100 | **49/100** (39–59%) |
+| activation, 16 scored cases | 160/160 | 160/160 | 159/160 | **160/160** |
+| negatives fired | 0/30 | 0/30 | 0/30 | **0/30** |
+| precondition skipped (skill fired, asked first, no write) | — | 5/20 | 7/19 | **4/20** (8–42%) |
+
+- **The field didn't cost the write.** ICP 9 of 10, positioning 7 of 10, the same
+  as G. H's drop to 3 on positioning didn't repeat, which fits reading it as
+  noise (§16.1).
+- **Precondition skipped 4 times**: positioning #2, #6, #7 and ICP #7. All four
+  asked before writing, as in arm A.
+
+### 17.2 The field: was it filled, and with what?
+
+The prompt gives no reason for the pivot. Both cases say only that the company
+moved from indie developers to platform teams. Whatever goes in the field is
+either the user's reason, asked for, or the model's.
+
+| | positioning (7 writes) | ICP (9 writes) | total |
+| --- | ---: | ---: | ---: |
+| **field present and filled** | 7 | 9 | **16/16** |
+| …with a motive for the move, written as fact | 2 | 5 | **7** |
+| …with what changed and how the new audience differs, no motive | 5 | 4 | **9** |
+| …left blank, marked as an assumption, or `[ADD: ]` | 0 | 0 | **0** |
+| reason asked in the reply after the write | 0 | 0 | **0** |
+| reason stated in the reply after the write | 0 | 0 | **0** |
+
+- **The blank was filled every time**, by the model, in all 16 writes. Nine
+  kept the heading word for word; seven reworded it ("What changed from
+  previous positioning, and why:"), and three of those dropped the "why"
+  ("What changed from previous positioning:", "What changed:").
+- **Seven filled it with a motive the model made up.** "This is a bigger TAM
+  with higher LTV and less price sensitivity" (positioning #4). "This is where
+  we're winning … Indie developers often stay on free tier or leave when
+  complexity grows" (positioning #5). "Why: Indie devs are DIY-friendly and
+  under-monetize metering (churn)" (ICP #0). "We discovered that the biggest pain
+  point isn't indie developers…" (ICP #9). None of them is flagged as a guess.
+- **The other nine answered a different question**: how platform teams differ
+  from indie developers (scale, compliance, buying motion, budget). That's "what
+  changed", with the audience described, and no reason the company moved.
+  Borderline calls: positioning #8 and ICP #6 mention budget as an audience
+  trait, and are counted here; ICP #2 ("Indie devs would rather not sell by
+  usage") is counted as a motive.
+- **No reply after a write listed the field as open or asked about it.** The
+  blanks the model did hand back are the ones it left empty: customer names,
+  testimonials, metrics. This is H's pattern (§16.2) again. The model reports
+  blanks it *left*, and this blank was never left.
+- **The changelog already asked for the reason and never got it.** G's Changelog
+  rule says "what changed and why". All 7 of G's positioning entries name what
+  changed and none says why; arm I's 16 entries are the same. The field is a
+  second, more explicit place for the same answer, and it got filled where the
+  changelog line didn't. It got filled with the model's reason.
+
+### 17.3 Assumption match, same method as §15.2
+
+Arm A's fork list per case, each fork in the reply after the write scored as
+stated, still asked with no choice made, or gone. Replies only, as in G and H;
+the field is scored separately in §17.2. One reader.
+
+| | stated | still asked | gone |
+| --- | ---: | ---: | ---: |
+| ICP, arm G (8 writes × 6) | 40 | 3 | 5 |
+| ICP, arm H (9 writes × 6) | 43 | 6 | 5 |
+| **ICP, arm I (9 writes × 6)** | **46** | **7** | **1** |
+| positioning, arm G (7 writes × 7) | 31 | 7 | 11 |
+| positioning, arm H (3 writes × 7) | 12 | 4 | 5 |
+| **positioning, arm I (7 writes × 7)** | **33** | **7** | **9** |
+
+**Positioning**, arm I by fork:
+
+| arm A's fork | stated | still asked only | gone | arm G |
+| --- | ---: | ---: | ---: | --- |
+| which platform teams | 7 | 0 | 0 | 5 / 0 / 2 |
+| who the buyer is | 6 | 1 | 0 | 7 / 0 / 0 |
+| **why the shift happened (reply)** | **0** | **0** | **7** | 0 / 0 / **7** |
+| pain and jobs | 7 | 0 | 0 | 7 / 0 / 0 |
+| customer examples | 0 | 5 | 2 | 0 / 6 / 1 |
+| competition | 6 | 1 | 0 | 5 / 1 / 1 |
+| how the value prop shifts | 7 | 0 | 0 | 7 / 0 / 0 |
+
+- **In the reply, the pivot reason is gone in 7 of 7**, exactly as in G. Counting
+  the document as well, it's in the field 7 of 7, as the model's own motive in 2
+  and as an audience description in 5. Nowhere is it the user's.
+- **Proof stays where H put it.** Customer examples and testimonials are asked
+  after the save (positioning 5, ICP 7); they are blanks the model leaves.
+- ICP "gone" fell to 1 of 54 (G 5, H 5). That's one reader across three
+  sessions; the shift is in the segment, hand-rolled and proof rows (G: 2, 1
+  and 2 gone; I: 0, 0 and 1), and is the soft number in this section.
+
+**Who asked why at all.** Across arms A, G, H and I, on both cases, four
+attempts asked for the reason: A ICP #2 and #6, G ICP #0, and I positioning #2
+("What's driving the shift?"). All four asked *before* writing, and none of them
+wrote the file. In 43 writes across G, H and I (15, 12 and 16), no reply asked
+it. (Found by a text search for why-questions over every reply in the two
+cases, then read by hand.)
+
+### 17.4 The refutation condition
+
+jimy-r's condition: if the reason still goes missing with a field in place, the
+fork is lost before the write, at the ask step.
+
+**It holds, in a sharper form than predicted.** The reason didn't go missing as
+an empty slot. It was replaced. With the field in place, the user's reason for
+the pivot is absent from 16 of 16 writes and from every reply. In 7 of them the
+field carries a motive the model invented and stated as fact, in the document
+every later skill reads first. In the other 9, the field holds "what changed".
+The field moved the reason from *gone* to *filled by the model*, not to *asked*.
+The only attempts that ever asked for it are four that asked before writing and
+never wrote. So the question lives at the ask step, and write-first removes it.
+A template field gives the model a place to put an answer, not a reason to ask
+for one.
+
+What this suggests, untested: the field needs to say whose answer it is (for
+example "Ask the user; don't infer"), or the write-first precondition needs an
+exception for answers only the user has. Either would be one more arm.
+
+### 17.5 Limits
+
+- **One reader** for §17.2 and §17.3. The motive / audience split in §17.2 has
+  three borderline calls, listed above; moving them either way gives between
+  6 and 9 motives out of 16, not a different conclusion. The ICP "gone" drop in §17.3 is the soft number.
+- **Ten attempts per case**, one model (Haiku 4.5), non-interactive,
+  `acceptEdits`. In a conversation the user would correct an invented motive;
+  in an unattended write it stands.
+- **Runner 0.5.0 against G's 0.4.9.** The diff is the hash timing only, and the
+  record pins match; noted for completeness.
+- **The record was edited in one place before upload.** One `ls -l` error
+  output carried the machine's owner name, which `assay scrub` doesn't catch in
+  its `MACHINE+user` form. That string was replaced with `<user>`; no
+  measured field was touched.
+
+---
+
 ## Fast run first, then the full run
 
 The request was to start with `--fast` (3 attempts per case) and decide.
